@@ -149,7 +149,7 @@ class PlayState extends MusicBeatState
 
 	var protoTEXT:FlxText;
 	var versionProto:String = "0.1.0";
-	var buildNumber:String = "(0047)";
+	var buildNumber:String = "(0050)";
 
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
@@ -667,6 +667,9 @@ class PlayState extends MusicBeatState
 				add(stageCurtains);
 				*/
 		}
+		if (SONG.stage == null){
+			SONG.stage = "stage";
+		};
 
 		var gfVersion:String = 'gf';
 
