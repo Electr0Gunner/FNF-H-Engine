@@ -12,6 +12,7 @@ import ui.TextMenuList.TextMenuItem;
 class PreferencesMenu extends ui.OptionsState.Page
 {
 	public static var preferences:Map<String, Dynamic> = new Map();
+	public static var isFloatMap:Map<String, Bool> = new Map();
 
 	var items:TextMenuList;
 
@@ -61,10 +62,14 @@ class PreferencesMenu extends ui.OptionsState.Page
 	public static function setPref(pref:String, value:Dynamic):Void
 	{
 		preferences.set(pref, value);
+		FlxG.save.data.gamePrefs = preferences;
 	}
 
 	public static function initPrefs():Void
 	{
+		if (FlxG.save.data.gamePrefs != null)
+			preferences = FlxG.save.data.gamePrefs
+		else {
 		preferenceCheck('censor-naughty', true);
 		preferenceCheck('downscroll', false);
 		preferenceCheck('flashing-menu', true);
@@ -72,6 +77,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('auto-pause', false);
 		preferenceCheck('master-volume', 1);
+		}
 
 		#if muted
 		setPref('master-volume', 0);
@@ -86,7 +92,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 
 	private function createPrefItem(prefName:String, prefString:String, prefValue:Dynamic):Void
 	{
-		items.createItem(120, (120 * items.length) + 30, prefName, AtlasFont.Bold, function()
+		items.createItem(220, (120 * items.length) + 30, prefName, AtlasFont.Default, function()
 		{
 			preferenceCheck(prefString, prefValue);
 
@@ -94,7 +100,6 @@ class PreferencesMenu extends ui.OptionsState.Page
 			{
 				case 'TBool':
 					prefToggle(prefString);
-
 				default:
 					trace('swag');
 			}
@@ -104,7 +109,8 @@ class PreferencesMenu extends ui.OptionsState.Page
 		{
 			case 'TBool':
 				createCheckbox(prefString);
-
+			case 'TFloat':
+				isFloatMap.set(prefString, true);
 			default:
 				trace('swag');
 		}
@@ -126,7 +132,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 	{
 		var daSwap:Bool = preferences.get(prefName);
 		daSwap = !daSwap;
-		preferences.set(prefName, daSwap);
+		setPref(prefName, daSwap);
 		checkboxes[items.selectedIndex].daValue = daSwap;
 		trace('toggled? ' + preferences.get(prefName));
 
@@ -163,7 +169,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 	{
 		if (preferences.get(prefString) == null)
 		{
-			preferences.set(prefString, prefValue);
+			setPref(prefString, prefValue);
 			trace('set preference!');
 		}
 		else
