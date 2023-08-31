@@ -94,9 +94,9 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 		Highscore.load();
 
-		#if newgrounds
-		NGio.init();
-		#end
+		//#if newgrounds
+		//NGio.init();
+		//#end
 
 		if (FlxG.save.data.weekUnlocked != null)
 		{
@@ -399,11 +399,11 @@ class TitleState extends MusicBeatState
 			if (FlxG.sound.music != null)
 				FlxG.sound.music.onComplete = null;
 			// netStream.play(Paths.file('music/kickstarterTrailer.mp4'));
-			NGio.unlockMedal(60960);
+			//NGio.unlockMedal(60960);
 
 			// If it's Friday according to da clock
-			if (Date.now().getDay() == 5)
-				NGio.unlockMedal(61034);
+			//if (Date.now().getDay() == 5)
+				//NGio.unlockMedal(61034);
 
 			titleText.animation.play('press');
 
@@ -412,7 +412,7 @@ class TitleState extends MusicBeatState
 
 			transitioning = true;
 			// FlxG.sound.music.stop();
-
+			/*
 			#if newgrounds
 			if (!OutdatedSubState.leftState)
 			{
@@ -438,8 +438,9 @@ class TitleState extends MusicBeatState
 				});
 			}
 			#else
+			*/
 			FlxG.switchState(new MainMenuState());
-			#end
+			//#end
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
