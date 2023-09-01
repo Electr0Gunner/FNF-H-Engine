@@ -31,11 +31,12 @@ class PreferencesMenu extends ui.OptionsState.Page
 
 		add(items = new TextMenuList());
 
-		createPrefItem('naughtyness', 'censor-naughty', true);
-		createPrefItem('downscroll', 'downscroll', false);
-		createPrefItem('flashing menu', 'flashing-menu', true);
+		createPrefItem('Naughtyness', 'censor-naughty', true);
+		createPrefItem('Downscroll', 'downscroll', false);
+		createPrefItem('Flashing Menu', 'flashing-menu', true);
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
+		createPrefItem('Botplay', 'botplay', false);
 		createPrefItem('Auto Pause', 'auto-pause', false);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -75,6 +76,7 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('flashing-menu', true);
 		preferenceCheck('camera-zoom', true);
 		preferenceCheck('fps-counter', true);
+		preferenceCheck('botplay', false);
 		preferenceCheck('auto-pause', false);
 		preferenceCheck('master-volume', 1);
 		}
