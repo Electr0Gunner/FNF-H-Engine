@@ -124,7 +124,7 @@
 	<haxelib name="flixel-ui" />
 
 	<!--In case you want to use the videos-->
-	<haxelib name="hxCodec" />
+	<haxelib name="hxCodec"/>
 
 	<!--haxelib name="newgrounds" unless="switch"/> -->
 	<haxelib name="faxe" if='switch'/>
@@ -137,7 +137,7 @@
 	<!-- https://github.com/ninjamuffin99/Flixel-Animate-Atlas-Player -->
 
 
-	<!--<haxelib name="discord_rpc" if="cpp"/> --> <!-- foesn't work with neko -->
+	<haxelib name="discord_rpc" if="cpp"/> <!-- foesn't work with neko -->
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
 	<!-- <haxelib name="markdown" /> -->
