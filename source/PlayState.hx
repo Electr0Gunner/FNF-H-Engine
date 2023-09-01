@@ -57,6 +57,8 @@ import Discord.DiscordClient;
 
 class PlayState extends MusicBeatState
 {
+	public static var instance:PlayState = null;
+
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
@@ -68,7 +70,7 @@ class PlayState extends MusicBeatState
 
 	var halloweenLevel:Bool = false;
 
-	private var vocals:FlxSound;
+	public var vocals:FlxSound;
 	private var vocalsFinished:Bool = false;
 
 	private var dad:Character;
@@ -151,7 +153,7 @@ class PlayState extends MusicBeatState
 
 	var protoTEXT:FlxText;
 	var versionProto:String = "0.1.0";
-	var buildNumber:String = "(0061)";
+	var buildNumber:String = "(0065)";
 
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
@@ -251,7 +253,9 @@ class PlayState extends MusicBeatState
 
 		switch(SONG.stage)
 		{
-			case 'halloween':
+			case 'halloween':{
+
+			
 				curStage = "halloween";
 				halloweenLevel = true;
 
@@ -266,7 +270,8 @@ class PlayState extends MusicBeatState
 				add(halloweenBG);
 
 				isHalloween = true;
-			case 'philly':
+			}	
+			case 'philly':{
 				curStage = 'philly';
 
 				var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('philly/sky', "week3"));
@@ -309,7 +314,8 @@ class PlayState extends MusicBeatState
 
 				var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('philly/street', "week3"));
 				add(street);
-			case "limo":
+			}
+			case "limo":{
 				curStage = 'limo';
 				defaultCamZoom = 0.90;
 
@@ -349,7 +355,8 @@ class PlayState extends MusicBeatState
 
 				fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('limo/fastCarLol', "week4"));
 			// add(limo);
-			case "mall":
+			}
+			case "mall":{
 				curStage = 'mall';
 
 				defaultCamZoom = 0.80;
@@ -403,7 +410,8 @@ class PlayState extends MusicBeatState
 				santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
 				santa.antialiasing = true;
 				add(santa);
-			case 'mallEvil':
+			}
+			case 'mallEvil':{
 				curStage = 'mallEvil';
 				var bg:FlxSprite = new FlxSprite(-400, -500).loadGraphic(Paths.image('christmas/evilBG', "week5"));
 				bg.antialiasing = true;
@@ -421,7 +429,8 @@ class PlayState extends MusicBeatState
 				var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.image("christmas/evilSnow", "week5"));
 				evilSnow.antialiasing = true;
 				add(evilSnow);
-			case 'school':
+			}
+			case 'school':{
 				curStage = 'school';
 
 				// defaultCamZoom = 0.9;
@@ -486,7 +495,8 @@ class PlayState extends MusicBeatState
 				bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 				bgGirls.updateHitbox();
 				add(bgGirls);
-			case 'schoolEvil':
+			}
+			case 'schoolEvil':{
 				curStage = 'schoolEvil';
 
 				var waveEffectBG = new FlxWaveEffect(FlxWaveMode.ALL, 2, -1, 3, 2);
@@ -546,8 +556,8 @@ class PlayState extends MusicBeatState
 				add(waveSprite);
 				add(waveSpriteFG);
 			 */
-
-			case 'tank':
+			}
+			case 'tank':{
 				defaultCamZoom = 0.90;
 				curStage = 'tank';
 
@@ -619,8 +629,8 @@ class PlayState extends MusicBeatState
 
 				var fgTank3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 				foregroundSprites.add(fgTank3);
-
-			case "stage":
+			}
+			case "stage":{
 				defaultCamZoom = 0.9;
 				curStage = 'stage';
 
@@ -643,31 +653,30 @@ class PlayState extends MusicBeatState
 				stageCurtains.active = false;
 
 				add(stageCurtains);
-			/*
+			}
 			default:
-				defaultCamZoom = 0.9;
-				curStage = 'stage';
+			{
+					defaultCamZoom = 0.9;
+					curStage = 'stage';
+					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
+					bg.antialiasing = true;
+					bg.scrollFactor.set(0.9, 0.9);
+					bg.active = false;
+					add(bg);
 
-				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
-				add(bg);
+					var bgText:FlxText = new FlxText(0, 0, 0, "", 80);
+					bgText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+					bgText.screenCenter();
+					bgText.scrollFactor.set(0.9,0.9);
+					bgText.text = "there aint a stage in the chart, add one dumbass";
+					add(bgText);
 
-				var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-				stageFront.updateHitbox();
-				stageFront.antialiasing = true;
-				stageFront.scrollFactor.set(0.9, 0.9);
-				stageFront.active = false;
-				add(stageFront);
 
-				var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
-				stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-				stageCurtains.updateHitbox();
-				stageCurtains.antialiasing = true;
-				stageCurtains.scrollFactor.set(1.3, 1.3);
-				stageCurtains.active = false;
+					
 
-				add(stageCurtains);
-				*/
+			
+			}
+
 		}
 		if (SONG.stage == null){
 			SONG.stage = "stage";
@@ -1473,7 +1482,7 @@ class PlayState extends MusicBeatState
 	function initDiscord():Void
 	{
 		#if discord_rpc
-		storyDifficultyText = difficultyString();
+		storyDifficultyText = CoolUtil.difficultyString();
 		iconRPC = SONG.player2;
 
 		// To avoid having duplicate images in Discord assets
