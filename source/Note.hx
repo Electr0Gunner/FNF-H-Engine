@@ -28,6 +28,10 @@ class Note extends FlxSprite
 
 	private var willMiss:Bool = false;
 
+	public var playedEditorClick:Bool = false;
+	public var editorBFNote:Bool = false;
+	public var absoluteNumber:Int;
+
 	public var altNote:Bool = false;
 	public var invisNote:Bool = false;
 
