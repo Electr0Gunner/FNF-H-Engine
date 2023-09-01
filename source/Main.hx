@@ -18,7 +18,7 @@ class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = Cache; // The FlxState the game starts with. TitleState
+	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with. TitleState
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
 	#if web
 	var framerate:Int = 60; // How many frames per second the game should run at.
@@ -81,7 +81,7 @@ class Main extends Sprite
 		}
 
 		#if !debug
-		initialState = Cache;
+		initialState = TitleState;
 		#end
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
