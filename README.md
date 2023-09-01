@@ -2,6 +2,9 @@
 
 This is the repository for Friday Night Funkin Source Engine, a engine based on the original FNF source code meant to add features to make modding easier
 
+This engine is still in development and more features will be added with time.
+
+if you have feature ideas or you find bugs you can go on the Pull requests for Ideas and Issues for.. issues.
 
 IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
 
