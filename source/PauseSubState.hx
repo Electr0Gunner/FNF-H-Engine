@@ -1,5 +1,6 @@
 package;
 
+import openfl.Assets;
 import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -32,7 +33,7 @@ class PauseSubState extends MusicBeatSubstate
 	var pauseMusic:FlxSound;
 
 	var practiceText:FlxText;
-	var composer:String = "KawaiSprite";
+	var composer:String = '';
 
 	public function new(x:Float, y:Float)
 	{
@@ -51,37 +52,35 @@ class PauseSubState extends MusicBeatSubstate
 		bg.scrollFactor.set();
 		add(bg);
 
-		if (PlayState.SONG.song == "Monster"){
-			composer = "KawaiSprite and Bassetfilms";
-		};
-		if (PlayState.SONG.song == "Winter-Horrorland"){
-			composer = "KawaiSprite and Bassetfilms";
-		};
+		if (Assets.exists(Paths.text(PlayState.SONG.song.toLowerCase() + '/composer')))
+			composer = Assets.getText(Paths.text(PlayState.SONG.song.toLowerCase() + '/composer'));
 
 		var levelInfo:FlxText = new FlxText(20, 15, 0, "", 32);
-		levelInfo.text += PlayState.SONG.song + " - " + composer;
+		levelInfo.text += PlayState.SONG.song;
+		if (composer != null)
+			levelInfo.text += " - " + composer;
 		levelInfo.scrollFactor.set();
-		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
+		levelInfo.setFormat("VCR OSD Mono", 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
-		levelDifficulty.text += CoolUtil.difficultyString();
+		levelDifficulty.text += PlayState.storyDifficulty.toUpperCase();
 		levelDifficulty.scrollFactor.set();
-		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
+		levelDifficulty.setFormat("VCR OSD Mono", 32);
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
 		var deathCounter:FlxText = new FlxText(20, 15 + 64, 0, "", 32);
 		deathCounter.text = "Blue balled: " + PlayState.deathCounter;
 		deathCounter.scrollFactor.set();
-		deathCounter.setFormat(Paths.font('vcr.ttf'), 32);
+		deathCounter.setFormat("VCR OSD Mono", 32);
 		deathCounter.updateHitbox();
 		add(deathCounter);
 
 		practiceText = new FlxText(20, 15 + 64 + 32, 0, "PRACTICE MODE", 32);
 		practiceText.scrollFactor.set();
-		practiceText.setFormat(Paths.font('vcr.ttf'), 32);
+		practiceText.setFormat("VCR OSD Mono", 32);
 		practiceText.updateHitbox();
 		practiceText.x = FlxG.width - (practiceText.width + 20);
 		practiceText.visible = PlayState.practiceMode;
@@ -156,10 +155,10 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "EASY" | 'NORMAL' | "HARD":
-					PlayState.SONG = Song.loadFromJson(Highscore.formatSong(PlayState.SONG.song.toLowerCase(), curSelected),
+					PlayState.SONG = Song.loadFromJson(Highscore.formatSong(PlayState.SONG.song.toLowerCase(), difficultyChoices[curSelected].toLowerCase()),
 						PlayState.SONG.song.toLowerCase());
 
-					PlayState.storyDifficulty = curSelected;
+					PlayState.storyDifficulty = difficultyChoices[curSelected].toLowerCase();
 
 					FlxG.resetState();
 
@@ -183,12 +182,6 @@ class PauseSubState extends MusicBeatSubstate
 					else
 						FlxG.switchState(new FreeplayState());
 			}
-		}
-
-		if (FlxG.keys.justPressed.J)
-		{
-			// for reference later!
-			// PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
 		}
 	}
 

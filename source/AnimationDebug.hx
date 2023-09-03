@@ -19,8 +19,6 @@ using StringTools;
  */
 class AnimationDebug extends FlxState
 {
-	var bf:Boyfriend;
-	var dad:Character;
 	var char:Character;
 	var textAnim:FlxText;
 	var dumbTexts:FlxTypedGroup<FlxText>;
@@ -30,10 +28,11 @@ class AnimationDebug extends FlxState
 	var daAnim:String = 'spooky';
 	var camFollow:FlxObject;
 
-	public function new(daAnim:String = 'spooky')
+	public function new(daAnim:String = 'spooky', isPlayer:Bool = false)
 	{
 		super();
 		this.daAnim = daAnim;
+		isDad = !isPlayer;
 	}
 
 	override function create()
@@ -44,28 +43,29 @@ class AnimationDebug extends FlxState
 		gridBG.scrollFactor.set(0.5, 0.5);
 		add(gridBG);
 
-		if (daAnim == 'bf')
-			isDad = false;
-
 		if (isDad)
 		{
-			dad = new Character(0, 0, daAnim);
-			dad.screenCenter();
-			dad.debugMode = true;
-			add(dad);
+			var charGhost = new Character(0, 0, daAnim);
+			charGhost.alpha = 0.4;
+			charGhost.color = FlxColor.BLACK;
+			charGhost.debugMode = true;
+			add(charGhost);
 
-			char = dad;
-			dad.flipX = false;
+			char = new Character(0, 0, daAnim);
+			char.debugMode = true;
+			add(char);
 		}
 		else
 		{
-			bf = new Boyfriend(0, 0);
-			bf.screenCenter();
-			bf.debugMode = true;
-			add(bf);
+			var charGhost = new Boyfriend(0, 0, daAnim);
+			charGhost.alpha = 0.4;
+			charGhost.color = FlxColor.BLACK;
+			charGhost.debugMode = true;
+			add(charGhost);
 
-			char = bf;
-			bf.flipX = false;
+			char = new Boyfriend(0, 0);
+			char.debugMode = true;
+			add(char);
 		}
 
 		dumbTexts = new FlxTypedGroup<FlxText>();
@@ -89,6 +89,8 @@ class AnimationDebug extends FlxState
 
 	function genBoyOffsets(pushList:Bool = true):Void
 	{
+		updateTexts();
+
 		var daLoop:Int = 0;
 
 		for (anim => offsets in char.animOffsets)
@@ -146,12 +148,12 @@ class AnimationDebug extends FlxState
 
 		if (FlxG.keys.justPressed.W)
 		{
-			curAnim -= 1;
+			curAnim--;
 		}
 
 		if (FlxG.keys.justPressed.S)
 		{
-			curAnim += 1;
+			curAnim++;
 		}
 
 		if (curAnim < 0)
@@ -180,7 +182,6 @@ class AnimationDebug extends FlxState
 
 		if (upP || rightP || downP || leftP)
 		{
-			updateTexts();
 			if (upP)
 				char.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
 			if (downP)
@@ -190,14 +191,13 @@ class AnimationDebug extends FlxState
 			if (rightP)
 				char.animOffsets.get(animList[curAnim])[0] -= 1 * multiplier;
 
-			updateTexts();
 			genBoyOffsets(false);
 			char.playAnim(animList[curAnim]);
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)
 		{
-			var outputString:String = "";
+			/*var outputString:String = "";
 
 			for (swagAnim in animList)
 			{
@@ -205,7 +205,9 @@ class AnimationDebug extends FlxState
 			}
 
 			outputString.trim();
-			saveOffsets(outputString);
+			saveOffsets(outputString);*/
+
+			saveChar();
 		}
 
 		super.update(elapsed);
@@ -255,5 +257,57 @@ class AnimationDebug extends FlxState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+	}
+
+	/**
+	 * i snatched this from reflashed ngl
+	 */
+	function saveChar()
+	{
+		var char = {
+			"img": char.jsonSystem.img,
+			"charPosition": char.jsonSystem.charPosition,
+			"charCamPosition": null,
+			"anims": char.jsonSystem.anims,
+			"flipX": char.jsonSystem.flipX,
+			"flipY": char.jsonSystem.flipY,
+			"gfIdle": char.jsonSystem.gfIdle,
+			"iconColor": char.jsonSystem.iconColor,
+			"charScale": char.jsonSystem.charScale
+		};
+
+		for (animOffset in animList)
+		{
+			for (anim in char.anims)
+			{
+				if (anim.prefix == animOffset)
+				{
+					anim.x = this.char.animOffsets.get(animOffset)[0];
+					anim.y = this.char.animOffsets.get(animOffset)[1];
+				}
+			}
+		}
+
+		if (char.flipX != true && char.flipX != false)
+			char.flipX = false;
+		if (char.flipY != true && char.flipY != false)
+			char.flipY = false;
+		if (char.gfIdle != true && char.gfIdle != false)
+			char.gfIdle = false;
+		if (char.charPosition == null)
+			char.charPosition = [0, 0];
+		if (char.charCamPosition == null)
+			char.charCamPosition = [0, 0];
+		if (char.charScale == null)
+			char.charScale = [1, 1];
+
+		var data:String = haxe.Json.stringify(char);
+
+		if ((data != null) && (data.length > 0))
+		{
+			var file = new FileReference();
+
+			file.save(data, daAnim + '.json');
+		}
 	}
 }

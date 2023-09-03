@@ -9,6 +9,8 @@ class MusicBeatSubstate extends FlxSubState
 	public function new()
 	{
 		super();
+
+		openfl.system.System.gc();
 	}
 
 	private var curStep:Int = 0;

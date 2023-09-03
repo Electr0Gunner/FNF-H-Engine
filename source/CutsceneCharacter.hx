@@ -29,7 +29,7 @@ class CutsceneCharacter extends FlxTypedGroup<FlxSprite>
 
 	function parseOffsets()
 	{
-		var splitShit:Array<String> = CoolUtil.coolTextFile(Paths.file('images/cutsceneStuff/' + imageShit + "CutsceneOffsets.txt"));
+		var splitShit:Array<String> = CoolUtil.coolTextFile(Paths.text('cutsceneStuff/' + imageShit + "CutsceneOffsets.txt", "images"));
 
 		for (i in splitShit)
 		{

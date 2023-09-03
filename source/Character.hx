@@ -1,14 +1,37 @@
 package;
 
-import Section.SwagSection;
+import haxe.Json;
+import openfl.Assets;
+import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxSort;
-import haxe.io.Path;
 
 using StringTools;
+
+typedef AnimLoader =
+{
+	var prefix:String;
+	var postfix:String;
+	var x:Float;
+	var y:Float;
+	var fps:Int;
+	var looped:Bool;
+	var indices:Array<Int>;
+}
+
+typedef CharLoader =
+{
+	var img:String;
+	var iconColor:String;
+	var flipX:Bool;
+	var flipY:Bool;
+	var gfIdle:Bool;
+	var anims:Array<AnimLoader>;
+	var charScale:Array<Float>;
+	var charPosition:Array<Float>;
+}
 
 class Character extends FlxSprite
 {
@@ -21,6 +44,11 @@ class Character extends FlxSprite
 	public var holdTimer:Float = 0;
 
 	public var animationNotes:Array<Dynamic> = [];
+
+	public var gfIdle:Bool = false;
+	public var iconColor:FlxColor;
+
+	public var jsonSystem:CharLoader;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -37,6 +65,8 @@ class Character extends FlxSprite
 		{
 			case 'gf':
 				// GIRLFRIEND CODE
+				gfIdle = true;
+
 				tex = Paths.getSparrowAtlas('characters/GF_assets');
 				frames = tex;
 				quickAnimAdd('cheer', 'GF Cheer');
@@ -56,6 +86,8 @@ class Character extends FlxSprite
 				playAnim('danceRight');
 
 			case 'gf-christmas':
+				gfIdle = true;
+
 				tex = Paths.getSparrowAtlas('characters/gfChristmas');
 				frames = tex;
 				quickAnimAdd('cheer', 'GF Cheer');
@@ -74,6 +106,8 @@ class Character extends FlxSprite
 
 				playAnim('danceRight');
 			case 'gf-tankmen':
+				gfIdle = true;
+
 				frames = Paths.getSparrowAtlas('characters/gfTankmen');
 				animation.addByIndices('sad', 'GF Crying at Gunpoint', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, true);
 				animation.addByIndices('danceLeft', 'GF Dancing at Gunpoint', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
@@ -103,6 +137,8 @@ class Character extends FlxSprite
 				flipX = true;
 
 			case 'gf-car':
+				gfIdle = true;
+
 				tex = Paths.getSparrowAtlas('characters/gfCar');
 				frames = tex;
 				animation.addByIndices('singUP', 'GF Dancing Beat Hair blowing CAR', [0], "", 24, false);
@@ -116,6 +152,8 @@ class Character extends FlxSprite
 				playAnim('danceRight');
 
 			case 'gf-pixel':
+				gfIdle = true;
+
 				tex = Paths.getSparrowAtlas('characters/gfPixel');
 				frames = tex;
 				animation.addByIndices('singUP', 'GF IDLE', [2], "", 24, false);
@@ -130,20 +168,9 @@ class Character extends FlxSprite
 				updateHitbox();
 				antialiasing = false;
 
-			case 'dad':
-				// DAD ANIMATION LOADING CODE
-				tex = Paths.getSparrowAtlas('characters/DADDY_DEAREST');
-				frames = tex;
-				quickAnimAdd('idle', 'Dad idle dance');
-				quickAnimAdd('singUP', 'Dad Sing Note UP');
-				quickAnimAdd('singRIGHT', 'Dad Sing Note RIGHT');
-				quickAnimAdd('singDOWN', 'Dad Sing Note DOWN');
-				quickAnimAdd('singLEFT', 'Dad Sing Note LEFT');
-
-				loadOffsetFile(curCharacter);
-
-				playAnim('idle');
 			case 'spooky':
+				gfIdle = true;
+
 				tex = Paths.getSparrowAtlas('characters/spooky_kids_assets');
 				frames = tex;
 				quickAnimAdd('singUP', 'spooky UP NOTE');
@@ -381,11 +408,6 @@ class Character extends FlxSprite
 			case 'senpai':
 				frames = Paths.getSparrowAtlas('characters/senpai');
 				quickAnimAdd('idle', 'Senpai Idle');
-				// at framerate 16.8 animation plays over 2 beats at 144bpm,
-				// but if the game lags or the bpm is > 144 (mods etc.)
-				// he may miss his next dance
-				// animation.getByName('idle').frameRate = 16.8;
-
 				quickAnimAdd('singUP', 'SENPAI UP NOTE');
 				quickAnimAdd('singLEFT', 'SENPAI LEFT NOTE');
 				quickAnimAdd('singRIGHT', 'SENPAI RIGHT NOTE');
@@ -487,6 +509,48 @@ class Character extends FlxSprite
 				playAnim('idle');
 
 				flipX = true;
+			default:
+				if (Assets.exists(Paths.json(curCharacter, 'characters')))
+					jsonSystem = Json.parse(Assets.getText(Paths.json(curCharacter, 'characters')));
+				else
+					jsonSystem = Json.parse(Assets.getText(Paths.json('dad', 'characters')));
+
+				if (jsonSystem.flipX != true && jsonSystem.flipX != false)
+					jsonSystem.flipX = false;
+
+				if (jsonSystem.flipY != true && jsonSystem.flipY != false)
+					jsonSystem.flipY = false;
+
+				if (jsonSystem.gfIdle != true && jsonSystem.gfIdle != false)
+					jsonSystem.gfIdle = false;
+
+				if (jsonSystem.charScale == null)
+					jsonSystem.charScale = [1, 1];
+
+				tex = Paths.getSparrowAtlas('characters/${jsonSystem.img}');
+
+				frames = tex;
+
+				scale.set(jsonSystem.charScale[0], jsonSystem.charScale[1]);
+
+				for (anim in jsonSystem.anims){
+					if (anim.fps < 1)
+						anim.fps = 24;
+
+					if (anim.looped != true && anim.looped != false)
+						anim.looped = false;
+
+					animation.addByPrefix(anim.prefix, anim.postfix, anim.fps, anim.looped);
+					addOffset(anim.prefix, anim.x, anim.y);
+				}
+
+				flipX = jsonSystem.flipX;
+				flipY = jsonSystem.flipY;
+
+				if (jsonSystem.gfIdle)
+					playAnim('danceRight');
+				else
+					playAnim('idle');
 		}
 
 		dance();
@@ -512,6 +576,13 @@ class Character extends FlxSprite
 					animation.getByName('singLEFTmiss').frames = oldMiss;
 				}
 			}
+		}
+
+		if (iconColor.toHexString() == null){
+			if (isPlayer)
+				iconColor = 0xFF66FF33;
+			else
+				iconColor = 0xFFFF0000;
 		}
 	}
 
@@ -547,7 +618,7 @@ class Character extends FlxSprite
 
 	private function loadOffsetFile(offsetCharacter:String)
 	{
-		var daFile:Array<String> = CoolUtil.coolTextFile(Paths.file("images/characters/" + offsetCharacter + "Offsets.txt"));
+		var daFile:Array<String> = CoolUtil.coolTextFile(Paths.file("characters/" + offsetCharacter + "Offsets", "images", 'txt'));
 
 		for (i in daFile)
 		{
@@ -560,10 +631,7 @@ class Character extends FlxSprite
 	{
 		if (!curCharacter.startsWith('bf'))
 		{
-			if (animation.curAnim.name.startsWith('sing'))
-			{
-				holdTimer += elapsed;
-			}
+			holdTimer += elapsed;
 
 			var dadVar:Float = 4;
 
@@ -585,9 +653,6 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
-			case 'gf':
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-					playAnim('danceRight');
 			case "pico-speaker":
 				// for pico??
 				if (animationNotes.length > 0)
@@ -626,67 +691,63 @@ class Character extends FlxSprite
 	{
 		if (!debugMode)
 		{
+			if (gfIdle)
+			{
+				danced = !danced;
+
+				if (danced)
+					playAnim('danceRight');
+				else
+					playAnim('danceLeft');
+			}
+
 			switch (curCharacter)
 			{
-				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-tankmen':
-					if (!animation.curAnim.name.startsWith('hair'))
-					{
-						danced = !danced;
-
-						if (danced)
-							playAnim('danceRight');
-						else
-							playAnim('danceLeft');
-					}
-
-				case 'pico-speaker':
-				// lol weed
-				// playAnim('shoot' + FlxG.random.int(1, 4), true);
-
 				case 'tankman':
 					if (!animation.curAnim.name.endsWith('DOWN-alt'))
 						playAnim('idle');
 
-				case 'spooky':
-					danced = !danced;
-
-					if (danced)
-						playAnim('danceRight');
-					else
-						playAnim('danceLeft');
 				default:
-					playAnim('idle');
+					if (!gfIdle)
+						playAnim('idle');
 			}
 		}
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		animation.play(AnimName, Force, Reversed, Frame);
-
-		var daOffset = animOffsets.get(AnimName);
-		if (animOffsets.exists(AnimName))
+		if (animation.exists(AnimName))
 		{
-			offset.set(daOffset[0], daOffset[1]);
+			animation.play(AnimName, Force, Reversed, Frame);
+
+			var daOffset = animOffsets.get(AnimName);
+			if (animOffsets.exists(AnimName))
+			{
+				offset.set(daOffset[0], daOffset[1]);
+			}
+			else
+				offset.set(0, 0);
+
+			if (curCharacter == 'gf')
+			{
+				if (AnimName == 'singLEFT')
+				{
+					danced = true;
+				}
+				else if (AnimName == 'singRIGHT')
+				{
+					danced = false;
+				}
+
+				if (AnimName == 'singUP' || AnimName == 'singDOWN')
+				{
+					danced = !danced;
+				}
+			}
 		}
 		else
-			offset.set(0, 0);
-
-		if (curCharacter == 'gf')
 		{
-			if (AnimName == 'singLEFT')
-			{
-				danced = true;
-			}
-			else if (AnimName == 'singRIGHT')
-			{
-				danced = false;
-			}
-
-			if (AnimName == 'singUP' || AnimName == 'singDOWN')
-			{
-				danced = !danced;
-			}
+			return;
 		}
 	}
 

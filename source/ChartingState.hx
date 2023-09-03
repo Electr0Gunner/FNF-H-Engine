@@ -308,9 +308,9 @@ class ChartingState extends MusicBeatState
 			shiftNotes(Std.int(stepperShiftNoteDial.value),Std.int(stepperShiftNoteDialstep.value),Std.int(stepperShiftNoteDialms.value));
 		});
 
-		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
-		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('gfVersionList'));
-		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
+		var characters:Array<String> = CoolUtil.coolTextFile(Paths.text('characterList'));
+		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.text('gfVersionList'));
+		var stages:Array<String> = CoolUtil.coolTextFile(Paths.text('stageList'));
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
@@ -503,10 +503,10 @@ class ChartingState extends MusicBeatState
 			// vocals.stop();
 		}
 
-		FlxG.sound.playMusic(Paths.inst(daSong), 0.6);
+		FlxG.sound.playMusic(Paths.song(daSong, "Inst", PlayState.storyDifficulty), 0.6);
 
 		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
-		vocals = new FlxSound().loadEmbedded(Paths.voices(daSong));
+		vocals = new FlxSound().loadEmbedded(Paths.song(daSong, "Voices", PlayState.storyDifficulty));
 		FlxG.sound.list.add(vocals);
 
 		FlxG.sound.music.pause();

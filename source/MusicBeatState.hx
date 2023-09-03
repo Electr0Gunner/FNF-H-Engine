@@ -22,6 +22,8 @@ class MusicBeatState extends FlxUIState
 		if (transIn != null)
 			trace('reg ' + transIn.region);
 
+		openfl.system.System.gc();
+
 		super.create();
 	}
 
