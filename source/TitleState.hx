@@ -135,7 +135,7 @@ class TitleState extends MusicBeatState
 		#if discord_rpc
 		DiscordClient.initialize();
 
-		Application.current.onExit.add(function(exitCode)
+		lime.app.Application.current.onExit.add(function(exitCode)
 		{
 			DiscordClient.shutdown();
 		});
