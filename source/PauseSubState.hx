@@ -21,6 +21,7 @@ class PauseSubState extends MusicBeatSubstate
 	var pauseOG:Array<String> = [
 		'Resume',
 		'Restart Song',
+		'Options',
 		'Change Difficulty',
 		'Toggle Practice Mode',
 		'Exit to menu'
@@ -161,7 +162,10 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.storyDifficulty = difficultyChoices[curSelected].toLowerCase();
 
 					FlxG.resetState();
+				case "Options":
+					FlxG.switchState(new ui.OptionsState());
 
+					ui.OptionsState.onPlayState = true;
 				case 'Toggle Practice Mode':
 					PlayState.practiceMode = !PlayState.practiceMode;
 					practiceText.visible = PlayState.practiceMode;

@@ -35,6 +35,8 @@ import Discord.DiscordClient;
 
 class PlayState extends MusicBeatState
 {
+	public static var instance:PlayState = null;
+
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
 	public static var isStoryMode:Bool = false;
@@ -46,7 +48,7 @@ class PlayState extends MusicBeatState
 
 	var halloweenLevel:Bool = false;
 
-	private var vocals:FlxSound;
+	public var vocals:FlxSound;
 	private var vocalsFinished:Bool = false;
 
 	private var dad:Character;
@@ -122,6 +124,7 @@ class PlayState extends MusicBeatState
 	public static var misses:Int = 0;
 
 	var botplayTxt:FlxText;
+
 
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
@@ -287,7 +290,6 @@ class PlayState extends MusicBeatState
 				limo.antialiasing = true;
 
 				fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('week4/limo/fastCarLol'));
-			// add(limo);
 			case "mall":
 				curStage = 'mall';
 
@@ -510,7 +512,6 @@ class PlayState extends MusicBeatState
 
 				var fgTank3:BGSprite = new BGSprite('week7/tank/tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 				foregroundSprites.add(fgTank3);
-
 			case "stage":
 				defaultCamZoom = 0.9;
 				curStage = 'stage';
@@ -533,31 +534,22 @@ class PlayState extends MusicBeatState
 				stageCurtains.scrollFactor.set(1.3, 1.3);
 				stageCurtains.active = false;
 				add(stageCurtains);
-				/*
-					default:
-						defaultCamZoom = 0.9;
-						curStage = 'stage';
+			/*
+			default:
+				defaultCamZoom = 0.9;
+				curStage = 'stage';
 
-						var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
-						add(bg);
+				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
+				add(bg);
 
-						var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-						stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-						stageFront.updateHitbox();
-						stageFront.antialiasing = true;
-						stageFront.scrollFactor.set(0.9, 0.9);
-						stageFront.active = false;
-						add(stageFront);
+					var bgText:FlxText = new FlxText(0, 0, 0, "", 80);
+					bgText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+					bgText.screenCenter();
+					bgText.scrollFactor.set(0.9,0.9);
+					bgText.text = "there aint a stage in the chart, add one dumbass";
+					add(bgText);
+			}
 
-						var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
-						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-						stageCurtains.updateHitbox();
-						stageCurtains.antialiasing = true;
-						stageCurtains.scrollFactor.set(1.3, 1.3);
-						stageCurtains.active = false;
-
-						add(stageCurtains);
-				 */
 		}
 
 		var gfVersion:String = 'gf';
@@ -947,6 +939,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+
 	function ughIntro()
 	{
 		inCutscene = true;
@@ -956,21 +949,21 @@ class PlayState extends MusicBeatState
 		camFollow.x += 100;
 		camFollow.y += 100;
 
-		if (PreferencesMenu.getPref('cutscenes'))
-		{
-			var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-			blackShit.scrollFactor.set();
-			blackShit.alpha = 0;
-			add(blackShit);
+		if (PreferencesMenu.getPref('cutscenes')){
 
-			var vid:FlxVideo = new FlxVideo('music/ughCutscene.mp4');
-			vid.finishCallback = function()
-			{
-				remove(blackShit);
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-				startCountdown();
-				cameraMovement();
-			};
+		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		blackShit.scrollFactor.set();
+		blackShit.alpha = 0;
+		add(blackShit);
+
+		var vid:FlxVideo = new FlxVideo('music/ughCutscene.mp4');
+		vid.finishCallback = function()
+		{
+			remove(blackShit);
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+			startCountdown();
+			cameraMovement();
+		};
 		}
 		else
 		{
@@ -1042,21 +1035,21 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = true;
 
-		if (PreferencesMenu.getPref('cutscenes'))
+		if (PreferencesMenu.getPref('cutscenes')){
+
+		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		blackShit.scrollFactor.set();
+		add(blackShit);
+
+		var vid:FlxVideo = new FlxVideo('music/gunsCutscene.mp4');
+		vid.finishCallback = function()
 		{
-			var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-			blackShit.scrollFactor.set();
-			add(blackShit);
+			remove(blackShit);
 
-			var vid:FlxVideo = new FlxVideo('music/gunsCutscene.mp4');
-			vid.finishCallback = function()
-			{
-				remove(blackShit);
-
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-				startCountdown();
-				cameraMovement();
-			};
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+			startCountdown();
+			cameraMovement();
+		};
 		};
 		else
 		{
@@ -1110,21 +1103,21 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = true;
 
-		if (PreferencesMenu.getPref('cutscenes'))
+		if (PreferencesMenu.getPref('cutscenes')){
+
+		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
+		blackShit.scrollFactor.set();
+		add(blackShit);
+
+		var vid:FlxVideo = new FlxVideo('music/stressCutscene.mp4');
+		vid.finishCallback = function()
 		{
-			var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-			blackShit.scrollFactor.set();
-			add(blackShit);
+			remove(blackShit);
 
-			var vid:FlxVideo = new FlxVideo('music/stressCutscene.mp4');
-			vid.finishCallback = function()
-			{
-				remove(blackShit);
-
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-				startCountdown();
-				cameraMovement();
-			};
+			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+			startCountdown();
+			cameraMovement();
+		};
 		};
 		else
 		{
@@ -1345,10 +1338,55 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	function videoCutscene(path:String, ?endFunc:Void->Void, ?startFunc:Void->Void)
+	{
+		inCutscene = true;
+
+		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
+		blackShit.screenCenter();
+		blackShit.scrollFactor.set();
+		add(blackShit);
+
+		var video = new VideoHandler();
+		video.scrollFactor.set();
+		video.antialiasing = true;
+
+		FlxG.camera.zoom = 1;
+
+		video.playMP4(path, function()
+		{
+			FlxTween.tween(blackShit, {alpha: 0}, 0.4, {
+				ease: FlxEase.quadInOut,
+				onComplete: function(t)
+				{
+					remove(blackShit);
+				}
+			});
+
+			remove(video);
+
+			FlxG.camera.zoom = defaultCamZoom;
+
+			if (endFunc != null)
+			{
+				endFunc();
+			}
+
+			startCountdown();
+		}, false, true);
+
+		add(video);
+
+		if (startFunc != null)
+		{
+			startFunc();
+		}
+	}
+
 	function initDiscord():Void
 	{
 		#if discord_rpc
-		storyDifficultyText = difficultyString();
+		storyDifficultyText = CoolUtil.difficultyString();
 		iconRPC = SONG.player2;
 
 		// To avoid having duplicate images in Discord assets
