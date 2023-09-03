@@ -184,8 +184,7 @@ class ChartingState extends MusicBeatState
 		bpmTxt = new FlxText(1000, 50, 0, "", 16);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
-
-		
+	
 		lilStage = new FlxSprite(32, 432).loadGraphic(Paths.image("chartEditor/lilStage"));
 		lilStage.scrollFactor.set();
 		add(lilStage);
@@ -355,9 +354,9 @@ class ChartingState extends MusicBeatState
 			shiftNotes(Std.int(stepperShiftNoteDial.value),Std.int(stepperShiftNoteDialstep.value),Std.int(stepperShiftNoteDialms.value));
 		});
 
-		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
-		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('gfVersionList'));
-		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
+		var characters:Array<String> = CoolUtil.coolTextFile(Paths.text('characterList'));
+		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.text('gfVersionList'));
+		var stages:Array<String> = CoolUtil.coolTextFile(Paths.text('stageList'));
 		player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			_song.player1 = characters[Std.parseInt(character)];

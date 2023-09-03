@@ -125,7 +125,6 @@ class PlayState extends MusicBeatState
 
 	var botplayTxt:FlxText;
 
-
 	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
 	public static var campaignScore:Int = 0;
@@ -290,6 +289,7 @@ class PlayState extends MusicBeatState
 				limo.antialiasing = true;
 
 				fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('week4/limo/fastCarLol'));
+
 			case "mall":
 				curStage = 'mall';
 
@@ -534,13 +534,14 @@ class PlayState extends MusicBeatState
 				stageCurtains.scrollFactor.set(1.3, 1.3);
 				stageCurtains.active = false;
 				add(stageCurtains);
-			/*
 			default:
-				defaultCamZoom = 0.9;
-				curStage = 'stage';
-
-				var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
-				add(bg);
+					defaultCamZoom = 0.9;
+					curStage = 'stage';
+					var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
+					bg.antialiasing = true;
+					bg.scrollFactor.set(0.9, 0.9);
+					bg.active = false;
+					add(bg);
 
 					var bgText:FlxText = new FlxText(0, 0, 0, "", 80);
 					bgText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -548,8 +549,6 @@ class PlayState extends MusicBeatState
 					bgText.scrollFactor.set(0.9,0.9);
 					bgText.text = "there aint a stage in the chart, add one dumbass";
 					add(bgText);
-			}
-
 		}
 
 		var gfVersion:String = 'gf';
@@ -589,6 +588,8 @@ class PlayState extends MusicBeatState
 			{
 				for (file in sys.FileSystem.readDirectory('./mods/${openfl.Assets.getText(Paths.text('modSelected'))}/data/${SONG.song.toLowerCase()}'))
 				{
+					var realFile = file.split(".");
+					
 					if (file.contains(allow))
 						loadScript(realFile[0]);
 				}
@@ -950,26 +951,6 @@ class PlayState extends MusicBeatState
 		camFollow.y += 100;
 
 		if (PreferencesMenu.getPref('cutscenes')){
-
-		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-		blackShit.scrollFactor.set();
-		blackShit.alpha = 0;
-		add(blackShit);
-
-		var vid:FlxVideo = new FlxVideo('music/ughCutscene.mp4');
-		vid.finishCallback = function()
-		{
-			remove(blackShit);
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-			startCountdown();
-			cameraMovement();
-		};
-		}
-		else
-		{
-			// FlxG.sound.playMusic(Paths.music('DISTORTO'), 0);
-			// FlxG.sound.music.fadeIn(5, 0, 0.5);
-
 			dad.visible = false;
 			var tankCutscene:TankCutscene = new TankCutscene(-20, 320);
 			tankCutscene.frames = Paths.getSparrowAtlas('cutsceneStuff/tankTalkSong1');
@@ -1028,7 +1009,11 @@ class PlayState extends MusicBeatState
 					});
 				});
 			});
-		}
+		}else{
+		cameraMovement();
+		startCountdown();
+		camHUD.visible = true;
+	}
 	}
 
 	function gunsIntro()
@@ -1036,20 +1021,14 @@ class PlayState extends MusicBeatState
 		inCutscene = true;
 
 		if (PreferencesMenu.getPref('cutscenes')){
+			camHUD.visible = false;
 
-		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-		blackShit.scrollFactor.set();
-		add(blackShit);
-
-		var vid:FlxVideo = new FlxVideo('music/gunsCutscene.mp4');
-		vid.finishCallback = function()
-		{
-			remove(blackShit);
-
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-			startCountdown();
-			cameraMovement();
-		};
+			videoCutscene(Paths.video("gunsCutscene"), function()
+			{
+				FlxG.camera.zoom = defaultCamZoom * 1.2;
+				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, ((Conductor.crochet / 1000) * 5) - 0.1, {ease: FlxEase.quadOut});
+				camHUD.visible = true;
+			});
 		};
 		else
 		{
@@ -1104,23 +1083,6 @@ class PlayState extends MusicBeatState
 		inCutscene = true;
 
 		if (PreferencesMenu.getPref('cutscenes')){
-
-		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.BLACK);
-		blackShit.scrollFactor.set();
-		add(blackShit);
-
-		var vid:FlxVideo = new FlxVideo('music/stressCutscene.mp4');
-		vid.finishCallback = function()
-		{
-			remove(blackShit);
-
-			FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-			startCountdown();
-			cameraMovement();
-		};
-		};
-		else
-		{
 			camHUD.visible = false;
 
 			// for story mode shit
@@ -1335,8 +1297,13 @@ class PlayState extends MusicBeatState
 					gfCutsceneLayer.remove(cutsceneShit);
 				});
 			});
+		}else{
+
+				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
+				startCountdown();
+				cameraMovement();
+			}
 		}
-	}
 
 	function videoCutscene(path:String, ?endFunc:Void->Void, ?startFunc:Void->Void)
 	{
@@ -1386,7 +1353,6 @@ class PlayState extends MusicBeatState
 	function initDiscord():Void
 	{
 		#if discord_rpc
-		storyDifficultyText = CoolUtil.difficultyString();
 		iconRPC = SONG.player2;
 
 		// To avoid having duplicate images in Discord assets
@@ -1405,7 +1371,7 @@ class PlayState extends MusicBeatState
 		detailsPausedText = "Paused - " + detailsText;
 
 		// Updating Discord Rich Presence.
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+		DiscordClient.changePresence(detailsText, SONG.song + " - " + storyDifficulty, iconRPC);
 		#end
 	}
 
@@ -1597,7 +1563,7 @@ class PlayState extends MusicBeatState
 		songLength = FlxG.sound.music.length;
 
 		// Updating Discord Rich Presence (with Time Left)
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength);
+		DiscordClient.changePresence(detailsText, SONG.song + " - " + storyDifficulty, iconRPC, true, songLength);
 		#end
 
 		#if sys
@@ -1848,9 +1814,9 @@ class PlayState extends MusicBeatState
 
 			#if discord_rpc
 			if (startTimer.finished)
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
+				DiscordClient.changePresence(detailsText, SONG.song + " - " + storyDifficulty, iconRPC, true, songLength - Conductor.songPosition);
 			else
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+				DiscordClient.changePresence(detailsText, SONG.song  + " - " + storyDifficulty, iconRPC);
 			#end
 		}
 
@@ -1863,9 +1829,9 @@ class PlayState extends MusicBeatState
 		if (health > 0 && !paused && FlxG.autoPause)
 		{
 			if (Conductor.songPosition > 0.0)
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
+				DiscordClient.changePresence(detailsText, SONG.song + " - " + storyDifficulty, iconRPC, true, songLength - Conductor.songPosition);
 			else
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+				DiscordClient.changePresence(detailsText, SONG.song + " - " + storyDifficulty, iconRPC);
 		}
 
 		super.onFocus();
@@ -1874,7 +1840,7 @@ class PlayState extends MusicBeatState
 	override public function onFocusLost():Void
 	{
 		if (health > 0 && !paused && FlxG.autoPause)
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			DiscordClient.changePresence(detailsPausedText, SONG.song + " - " + storyDifficulty, iconRPC);
 
 		super.onFocusLost();
 	}
@@ -1990,7 +1956,7 @@ class PlayState extends MusicBeatState
 			}
 
 			#if discord_rpc
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+			DiscordClient.changePresence(detailsPausedText, SONG.song + " - " + storyDifficulty, iconRPC);
 			#end
 		}
 
@@ -2133,7 +2099,7 @@ class PlayState extends MusicBeatState
 
 				#if discord_rpc
 				// Game Over doesn't get his own variable because it's only used here
-				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
+				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " - " + storyDifficulty, iconRPC);
 				#end
 			}
 		}
