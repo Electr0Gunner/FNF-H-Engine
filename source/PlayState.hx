@@ -818,7 +818,7 @@ class PlayState extends MusicBeatState
 		add(missTxt);
 
 		var watermark = new FlxText(0, FlxG.height * 0.97, FlxG.width,
-			'${SONG.song} - ${storyDifficulty.toUpperCase()} - Sourse Engine V: ${Application.current.meta.get('version')}'
+			'${SONG.song} - ${storyDifficulty.toUpperCase()} - Source Engine V: Alpha ${Application.current.meta.get('version')}'
 			#if debug + ' Build ${Main.buildNumber}' #end, 20);
 		watermark.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		watermark.scrollFactor.set();
@@ -1486,8 +1486,10 @@ class PlayState extends MusicBeatState
 				gf.dance();
 			if (swagCounter % 2 == 0)
 			{
-				boyfriend.playAnim('idle');
-				dad.dance();
+				if (!boyfriend.animation.curAnim.name.startsWith("sing"))
+					boyfriend.playAnim('idle');
+				if (!dad.animation.curAnim.name.startsWith("sing"))
+					dad.dance();
 			}
 			else if (dad.curCharacter == 'spooky' && !dad.animation.curAnim.name.startsWith("sing"))
 				dad.dance();
@@ -3191,7 +3193,7 @@ class PlayState extends MusicBeatState
 
 	/**
 	 * Load Scripts
-	 * @param scriptString -creds to FPS Plus - Reflashed (even tho 504brandon owns the engine)
+	 * @param scriptString -creds to FPS Plus - Reflashed (even tho 504brandon owns the engine) 504brandon also implemented it -electr0
 	 */
 	public function loadScript(scriptString:String)
 	{

@@ -653,6 +653,9 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
+			case 'gf':
+				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+					playAnim('danceRight');
 			case "pico-speaker":
 				// for pico??
 				if (animationNotes.length > 0)
@@ -703,13 +706,34 @@ class Character extends FlxSprite
 
 			switch (curCharacter)
 			{
+				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-tankmen':
+					if (!animation.curAnim.name.startsWith('hair'))
+					{
+						danced = !danced;
+
+						if (danced)
+							playAnim('danceRight');
+						else
+							playAnim('danceLeft');
+					}
+
+				case 'pico-speaker':
+				// lol weed
+				// playAnim('shoot' + FlxG.random.int(1, 4), true);
+
 				case 'tankman':
 					if (!animation.curAnim.name.endsWith('DOWN-alt'))
 						playAnim('idle');
 
+				case 'spooky':
+					danced = !danced;
+
+					if (danced)
+						playAnim('danceRight');
+					else
+						playAnim('danceLeft');
 				default:
-					if (!gfIdle)
-						playAnim('idle');
+					playAnim('idle');
 			}
 		}
 	}
