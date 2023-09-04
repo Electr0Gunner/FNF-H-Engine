@@ -1,0 +1,74 @@
+{
+  "iconColor": null,
+  "img": "Pico_FNF_assetss",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "Pico Idle Dance",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": -29,
+      "y": 27,
+      "postfix": "pico Up note0",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": 200,
+      "y": -70,
+      "postfix": "Pico Down Note0",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": 65,
+      "y": 9,
+      "postfix": "Pico NOTE LEFT0",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": -68,
+      "y": -7,
+      "postfix": "Pico Note Right0",
+      "prefix": "singRIGHT",
+      "looped": false
+    },
+    {
+      "x": -19,
+      "y": 67,
+      "postfix": "pico Up note miss",
+      "prefix": "singUPmiss",
+      "looped": false
+    },
+    {
+      "x": 210,
+      "y": -28,
+      "postfix": "Pico Down Note MISS",
+      "prefix": "singDOWNmiss",
+      "looped": false
+    },
+    {
+      "x": 62,
+      "y": 64,
+      "postfix": "Pico NOTE LEFT miss",
+      "prefix": "singLEFTmiss",
+      "looped": false
+    },
+    {
+      "x": -60,
+      "y": 41,
+      "postfix": "Pico Note Right Miss",
+      "prefix": "singRIGHTmiss",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}
