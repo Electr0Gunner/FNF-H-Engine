@@ -1,0 +1,46 @@
+{
+  "iconColor": null,
+  "img": "Mom_Assets",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "Mom Idle",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": 14,
+      "y": 71,
+      "postfix": "Mom Up Pose",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": 20,
+      "y": -160,
+      "postfix": "MOM DOWN POSE",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": 250,
+      "y": -23,
+      "postfix": "Mom Left Pose",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": 10,
+      "y": -60,
+      "postfix": "Mom Pose Left",
+      "prefix": "singRIGHT",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}
