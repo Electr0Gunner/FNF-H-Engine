@@ -1,6 +1,7 @@
 package;
 
 import Sys.sleep;
+import lime.app.Application;
 
 using StringTools;
 
@@ -79,7 +80,7 @@ class DiscordClient
 			details: details,
 			state: state,
 			largeImageKey: 'icon',
-			largeImageText: "Friday Night Funkin'",
+			largeImageText: "Friday Night Funkin' Source Engine V: " + ${Application.current.meta.get('version')} + ' Build: ${Main.buildNumber}',
 			smallImageKey: smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp: Std.int(startTimestamp / 1000),

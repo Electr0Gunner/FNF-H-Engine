@@ -698,7 +698,7 @@ class Character extends FlxSprite
 			{
 				danced = !danced;
 
-				if (danced)
+				if (danced == true)
 					playAnim('danceRight');
 				else
 					playAnim('danceLeft');
@@ -711,7 +711,7 @@ class Character extends FlxSprite
 					{
 						danced = !danced;
 
-						if (danced)
+						if (danced == true)
 							playAnim('danceRight');
 						else
 							playAnim('danceLeft');
@@ -728,7 +728,7 @@ class Character extends FlxSprite
 				case 'spooky':
 					danced = !danced;
 
-					if (danced)
+					if (danced == true)
 						playAnim('danceRight');
 					else
 						playAnim('danceLeft');
