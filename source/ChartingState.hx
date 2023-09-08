@@ -35,6 +35,7 @@ import openfl.utils.ByteArray;
 import Discord.DiscordClient;
 #end
 
+
 using StringTools;
 
 class ChartingState extends MusicBeatState
