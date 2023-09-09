@@ -1,6 +1,6 @@
-# Friday Night Funkin Source Engine
+# Friday Night Funkin H-Engine
 
-This is the repository for Friday Night Funkin Source Engine, a engine based on the original FNF source code meant to add features to make modding easier
+This is the repository for Friday Night Funkin H-Engine, a engine based on the original FNF source code meant to add features to make modding easier
 
 This engine is still in development and more features will be added with time.
 
