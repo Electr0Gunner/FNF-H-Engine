@@ -818,7 +818,7 @@ class PlayState extends MusicBeatState
 		add(missTxt);
 
 		var watermark = new FlxText(0, FlxG.height * 0.97, FlxG.width,
-			'${SONG.song} - ${storyDifficulty.toUpperCase()} - Source Engine V: Alpha ${Application.current.meta.get('version')}'
+			'${SONG.song} - ${storyDifficulty.toUpperCase()} - H-Engine V: Alpha ${Application.current.meta.get('version')}'
 			#if debug + ' Build ${Main.buildNumber}' #end, 20);
 		watermark.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		watermark.scrollFactor.set();
