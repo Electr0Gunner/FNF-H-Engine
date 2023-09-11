@@ -372,6 +372,7 @@ class ChartingState extends MusicBeatState
 	var check_changeBPM:FlxUICheckBox;
 	var stepperSectionBPM:FlxUINumericStepper;
 	var check_altAnim:FlxUICheckBox;
+	var check_altPlace:FlxUICheckBox;
 
 	function addSectionUI():Void
 	{
@@ -440,6 +441,10 @@ class ChartingState extends MusicBeatState
 		stepperSusLength = new FlxUINumericStepper(10, 10, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 16);
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
+
+		check_altPlace = new FlxUICheckBox(10, 60, null, null, "Alt Animation", 100);
+		check_altPlace.name = 'check_altPlace';
+		tab_group_note.add(check_altPlace);
 
 		var applyLength:FlxButton = new FlxButton(100, 10, 'Apply');
 
@@ -585,6 +590,9 @@ class ChartingState extends MusicBeatState
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
 
 		if (FlxG.keys.justPressed.X)
+			toggleAltAnimNote();
+
+		if (check_altPlace.checked)
 			toggleAltAnimNote();
 
 		if (curBeat % 4 == 0 && curStep >= 16 * (curSection + 1))
@@ -964,6 +972,7 @@ class ChartingState extends MusicBeatState
 		stepperLength.value = sec.lengthInSteps;
 		check_mustHitSection.checked = sec.mustHitSection;
 		check_altAnim.checked = sec.altAnim;
+		check_altPlace.checked = sec.altAnim;
 		check_changeBPM.checked = sec.changeBPM;
 		stepperSectionBPM.value = sec.bpm;
 
