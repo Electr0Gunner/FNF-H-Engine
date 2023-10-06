@@ -1,0 +1,55 @@
+{
+  "iconColor": null,
+  "img": "DADDY_DEAREST",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": true,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "spooky dance idle",
+      "prefix": "danceLeft",
+      "looped": false,
+      "indices": [0, 2, 6]
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "spooky dance idle",
+      "prefix": "danceRight",
+      "looped": false,
+      "indices": [8, 10, 12, 14]
+    },
+    {
+      "x": -11,
+      "y": 50,
+      "postfix": "Dad Sing Note UP",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": 0,
+      "y": -30,
+      "postfix": "Dad Sing Note DOWN",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": -10,
+      "y": 10,
+      "postfix": "Dad Sing Note LEFT",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": -4,
+      "y": 27,
+      "postfix": "Dad Sing Note RIGHT",
+      "prefix": "singRIGHT",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}
