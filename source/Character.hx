@@ -167,7 +167,7 @@ class Character extends FlxSprite
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
 				antialiasing = false;
-
+			/*
 			case 'spooky':
 				gfIdle = true;
 
@@ -183,7 +183,7 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 				playAnim('danceRight');
-				/*
+				
 			case 'mom':
 				tex = Paths.getSparrowAtlas('characters/Mom_Assets');
 				frames = tex;
@@ -199,7 +199,7 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
-			*/
+			
 			case 'mom-car':
 				tex = Paths.getSparrowAtlas('characters/momCar');
 				frames = tex;
@@ -216,6 +216,7 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 				playAnim('idle');
+			*/
 			case 'monster':
 				tex = Paths.getSparrowAtlas('characters/Monster_Assets');
 				frames = tex;
@@ -517,14 +518,14 @@ class Character extends FlxSprite
 				else
 					jsonSystem = Json.parse(Assets.getText(Paths.json('dad', 'characters')));
 
-				if (jsonSystem.flipX != true && jsonSystem.flipX != false)
+				if (jsonSystem.flipX == null)
 					jsonSystem.flipX = false;
 
-				if (jsonSystem.flipY != true && jsonSystem.flipY != false)
+				if (jsonSystem.flipY == null)
 					jsonSystem.flipY = false;
 
-				//if (jsonSystem.gfIdle != true && jsonSystem.gfIdle != false)
-					//jsonSystem.gfIdle = false;
+				if (jsonSystem.gfIdle == null)
+					jsonSystem.gfIdle = false;
 
 				if (jsonSystem.charScale == null)
 					jsonSystem.charScale = [1, 1];
@@ -539,11 +540,14 @@ class Character extends FlxSprite
 					if (anim.fps < 1)
 						anim.fps = 24;
 
-					if (anim.looped != true && anim.looped != false)
+					if (anim.looped == null)
 						anim.looped = false;
 
-					animation.addByPrefix(anim.prefix, anim.postfix, anim.fps, anim.looped);
-					addOffset(anim.prefix, anim.x, anim.y);
+					if (anim.indices != null)
+						animation.addByIndices(anim.prefix, anim.postfix, anim.indices, "", anim.fps, anim.looped);
+					else
+						animation.addByPrefix(anim.prefix, anim.postfix, anim.fps, anim.looped);
+						addOffset(anim.prefix, anim.x, anim.y);
 				}
 
 				flipX = jsonSystem.flipX;
