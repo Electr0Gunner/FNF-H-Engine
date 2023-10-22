@@ -12,7 +12,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 
 - [Electr0Gunner (me!)](https://twitter.com/Electr0Gunner) - Programmer
 - [504Brandon](https://github.com/504brandon) - Coder
-- [Dezerin](https://github/DemonDezerin) - Coder
+- [Dezerin](https://github.com/DemonDezerin) - Coder
 - [Gangster_bacon3](https://www.youtube.com/channel/UCvdmgoCsWhcVPSwB7h91GEg) - Help with making stages appear based on chart
 
 
