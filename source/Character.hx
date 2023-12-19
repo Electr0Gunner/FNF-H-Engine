@@ -31,6 +31,7 @@ typedef CharLoader =
 	var anims:Array<AnimLoader>;
 	var charScale:Array<Float>;
 	var charPosition:Array<Float>;
+	var antialiasing:Bool;
 }
 
 class Character extends FlxSprite
@@ -63,6 +64,7 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
+			/*
 			case 'gf':
 				// GIRLFRIEND CODE
 				gfIdle = true;
@@ -84,7 +86,7 @@ class Character extends FlxSprite
 				loadOffsetFile(curCharacter);
 
 				playAnim('danceRight');
-
+			*/
 			case 'gf-christmas':
 				gfIdle = true;
 
@@ -518,14 +520,17 @@ class Character extends FlxSprite
 				else
 					jsonSystem = Json.parse(Assets.getText(Paths.json('dad', 'characters')));
 
-				if (jsonSystem.flipX == null)
+				if (jsonSystem.flipX != true && jsonSystem.flipX != false)
 					jsonSystem.flipX = false;
 
-				if (jsonSystem.flipY == null)
+				if (jsonSystem.flipY != true && jsonSystem.flipY != false)
 					jsonSystem.flipY = false;
 
-				if (jsonSystem.gfIdle == null)
+				if (jsonSystem.gfIdle != true && jsonSystem.gfIdle != false)
 					jsonSystem.gfIdle = false;
+
+				if (jsonSystem.antialiasing != true && jsonSystem.antialiasing != false)
+					jsonSystem.antialiasing = false;
 
 				if (jsonSystem.charScale == null)
 					jsonSystem.charScale = [1, 1];
@@ -540,7 +545,7 @@ class Character extends FlxSprite
 					if (anim.fps < 1)
 						anim.fps = 24;
 
-					if (anim.looped == null)
+					if (anim.looped != true && anim.looped != false)
 						anim.looped = false;
 
 					if (anim.indices != null)
@@ -552,10 +557,11 @@ class Character extends FlxSprite
 
 				flipX = jsonSystem.flipX;
 				flipY = jsonSystem.flipY;
+				antialiasing = jsonSystem.antialiasing;
 
-				//if (jsonSystem.gfIdle)
-					//playAnim('danceRight');
-				//else
+				if (jsonSystem.gfIdle)
+					playAnim('danceRight');
+				else
 					playAnim('idle');
 		}
 
@@ -700,7 +706,7 @@ class Character extends FlxSprite
 	{
 		if (!debugMode)
 		{
-			/*
+			
 			if (gfIdle)
 			{
 				danced = !danced;
@@ -710,10 +716,10 @@ class Character extends FlxSprite
 				else
 					playAnim('danceLeft');
 			}
-			*/
-
+		
 			switch (curCharacter)
 			{
+				/*
 				case 'gf' | 'gf-christmas' | 'gf-car' | 'gf-pixel' | 'gf-tankmen':
 					if (!animation.curAnim.name.startsWith('hair'))
 					{
@@ -740,6 +746,7 @@ class Character extends FlxSprite
 						playAnim('danceRight');
 					else
 						playAnim('danceLeft');
+					*/
 				default:
 					playAnim('idle');
 			}

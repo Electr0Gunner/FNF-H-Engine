@@ -77,6 +77,7 @@ class ChartingState extends MusicBeatState
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
 	var curSelectedNote:Array<Dynamic>;
+	var isAlt:Bool = false;
 
 	var tempBpm:Float = 0;
 
@@ -174,7 +175,8 @@ class ChartingState extends MusicBeatState
 				gfVersion: 'gf',
 				stage: 'stage',
 				speed: 1,
-				validScore: false
+				validScore: false,
+				showGF: true
 			};
 		}
 
@@ -228,6 +230,8 @@ class ChartingState extends MusicBeatState
 		super.create();
 	}
 
+	var check_gfVisible:FlxUICheckBox;
+
 	function addSongUI():Void
 	{
 		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
@@ -241,6 +245,9 @@ class ChartingState extends MusicBeatState
 			_song.needsVoices = check_voices.checked;
 			trace('CHECKED!');
 		};
+
+		check_gfVisible = new FlxUICheckBox(10, 45, null, null, "Show GF", 100);
+		check_gfVisible.name = 'check_gfVisible';
 
 		var check_mute_inst = new FlxUICheckBox(10, 200, null, null, "Mute Instrumental (in editor)", 100);
 		check_mute_inst.checked = false;
@@ -316,6 +323,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(UI_songTitle);
 
 		tab_group_song.add(check_voices);
+		//tab_group_song.add(check_gfVisible);
 		tab_group_song.add(saveButton);
 		tab_group_song.add(reloadSong);
 		tab_group_song.add(reloadSongJson);
@@ -414,6 +422,7 @@ class ChartingState extends MusicBeatState
 
 		check_altAnim = new FlxUICheckBox(10, 400, null, null, "Alt Animation", 100);
 		check_altAnim.name = 'check_altAnim';
+
 
 		check_changeBPM = new FlxUICheckBox(10, 60, null, null, 'Change BPM', 100);
 		check_changeBPM.name = 'check_changeBPM';
@@ -588,9 +597,6 @@ class ChartingState extends MusicBeatState
 		_song.song = typingShit.text;
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
-
-		if (FlxG.keys.justPressed.X)
-			toggleAltAnimNote();
 
 		if (check_altPlace.checked)
 			toggleAltAnimNote();
@@ -853,6 +859,7 @@ class ChartingState extends MusicBeatState
 
 	function toggleAltAnimNote():Void
 	{
+		isAlt = check_altPlace.checked;
 		if (curSelectedNote != null)
 		{
 			if (curSelectedNote[3] != null)
@@ -1049,6 +1056,12 @@ class ChartingState extends MusicBeatState
 			var daSus = i[2];
 
 			var note:Note = new Note(daStrumTime, daNoteInfo % 4);
+			// if (isAlt){
+			// 	note.alpha = 0.5;
+			// }
+			// else{
+			// 	note.alpha = 1;
+			// } man it makes ALL notes transparent
 			note.sustainLength = daSus;
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();

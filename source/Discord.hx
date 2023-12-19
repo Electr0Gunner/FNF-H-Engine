@@ -80,7 +80,7 @@ class DiscordClient
 			details: details,
 			state: state,
 			largeImageKey: 'icon',
-			largeImageText: "Friday Night Funkin' H-Engine V: " + ${Application.current.meta.get('version')} + ' Build: ${Main.buildNumber}',
+			largeImageText: "Friday Night Funkin' H-Engine ",
 			smallImageKey: smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
 			startTimestamp: Std.int(startTimestamp / 1000),
