@@ -1,0 +1,46 @@
+{
+  "iconColor": null,
+  "img": "Monster_Assets",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "monster idle",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": -20,
+      "y": 94,
+      "postfix": "monster up note",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": -50,
+      "y": -80,
+      "postfix": "monster down",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": 20,
+      "postfix": "Monster left note",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": -51,
+      "y": 30,
+      "postfix": "Monster Right note",
+      "prefix": "singRIGHT",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}

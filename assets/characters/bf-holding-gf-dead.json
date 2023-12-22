@@ -1,0 +1,39 @@
+{
+  "iconColor": null,
+  "img": "bfHoldingGF-DEAD",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 37,
+      "y": 14,
+      "postfix": "RETRY confirm holding gf",
+      "prefix": "deathConfirm",
+      "looped": false
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "BF Dead with GF Loop",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": 37,
+      "y": -3,
+      "postfix": "BF Dies with GF",
+      "prefix": "firstDeath",
+      "looped": false
+    },
+    {
+      "x": 37,
+      "y": 28,
+      "postfix": "BF Dead with GF Loop",
+      "prefix": "deathLoop",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}

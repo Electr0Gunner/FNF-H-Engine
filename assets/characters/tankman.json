@@ -1,0 +1,88 @@
+{
+  "iconColor": null,
+  "img": "tankmanCaptain",
+  "flipX": true,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "Tankman Idle Dance",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": 24,
+      "y": 56,
+      "postfix": "Tankman UP note ",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": 98,
+      "y": -90,
+      "postfix": "Tankman DOWN note ",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": 100,
+      "y": -14,
+      "postfix": "Tankman Right Note ",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": -1,
+      "y": -7,
+      "postfix": "Tankman Note Left ",
+      "prefix": "singRIGHT",
+      "looped": false
+    },
+    {
+      "x": 53,
+      "y": 84,
+      "postfix": "Tankman UP note MISS",
+      "prefix": "singUPmiss",
+      "looped": false
+    },
+    {
+      "x": 69,
+      "y": -99,
+      "postfix": "Tankman DOWN note MISS",
+      "prefix": "singDOWNmiss",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": 16,
+      "postfix": "Tankman Note Left MISS",
+      "prefix": "singLEFTmiss",
+      "looped": false
+    },
+    {
+      "x": -1,
+      "y": -3,
+      "postfix": "Tankman Right Note MISS",
+      "prefix": "singRIGHTmiss",
+      "looped": false
+    },
+    {
+      "x": 24,
+      "y": 56,
+      "postfix": "TANKMAN UGH",
+      "prefix": "singUPalt",
+      "looped": false
+    },
+    {
+      "x": 98,
+      "y": -90,
+      "postfix": "PRETTY GOOD",
+      "prefix": "singDOWNalt",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}

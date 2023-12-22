@@ -1,0 +1,74 @@
+{
+  "iconColor": null,
+  "img": "mom_dad_christmas_assets",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "Parent Christmas Idle",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": -47,
+      "y": 24,
+      "postfix": "Parent Up Note Dad",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": -31,
+      "y": -29,
+      "postfix": "Parent Down Note Dad",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": 16,
+      "postfix": "Parent Left Note Dad",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": -1,
+      "y": -23,
+      "postfix": "Parent Right Note Dad",
+      "prefix": "singRIGHT",
+      "looped": false
+    },
+    {
+      "x": -47,
+      "y": 24,
+      "postfix": "Parent Up Note Mom",
+      "prefix": "singUP-alt",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": -27,
+      "postfix": "Parent Down Note Mom",
+      "prefix": "singDOWN-alt",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": 15,
+      "postfix": "Parent Left Note Mom",
+      "prefix": "singLEFT-alt",
+      "looped": false
+    },
+    {
+      "x": -1,
+      "y": -24,
+      "postfix": "Parent Right Note Mom",
+      "prefix": "singRIGHT-alt",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}

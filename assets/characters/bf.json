@@ -1,0 +1,109 @@
+{
+  "iconColor": null,
+  "img": "BOYFRIEND",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": -5,
+      "y": 0,
+      "postfix": "BF idle dance",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": 38,
+      "y": 27,
+      "postfix": "BF NOTE UP0",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": -10,
+      "y": -50,
+      "postfix": "BF NOTE DOWN0",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": 12,
+      "y": -6,
+      "postfix": "BF NOTE LEFT0",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": -38,
+      "y": -7,
+      "postfix": "BF NOTE RIGHT0",
+      "prefix": "singRIGHT",
+      "looped": false
+    },
+    {
+      "x": -29,
+      "y": 27,
+      "postfix": "BF NOTE UP MISS",
+      "prefix": "singUPmiss",
+      "looped": false
+    },
+    {
+      "x": -19,
+      "y": -11,
+      "postfix": "BF NOTE DOWN MISS",
+      "prefix": "singDOWNmiss",
+      "looped": false
+    },
+    {
+      "x": 12,
+      "y": 24,
+      "postfix": "BF NOTE LEFT MISS",
+      "prefix": "singLEFTmiss",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": 21,
+      "postfix": "BF NOTE RIGHT MISS",
+      "prefix": "singRIGHTmiss",
+      "looped": false
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "postfix": "BF HEY",
+      "prefix": "hey",
+      "looped": false
+    },
+    {
+      "x": 37,
+      "y": 11,
+      "postfix": "BF dies",
+      "prefix": "firstDeath",
+      "looped": false
+    },
+    {
+      "x": 37,
+      "y": 5,
+      "postfix": "BF Dead Loop",
+      "prefix": "deathLoop",
+      "looped": false
+    },
+    {
+      "x": 37,
+      "y": 69,
+      "postfix": "BF Dead Loop",
+      "prefix": "deathConfirm",
+      "looped": false
+    },
+    {
+      "x": -4,
+      "y": 0,
+      "postfix": "BF idle shaking",
+      "prefix": "scared",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}

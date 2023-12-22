@@ -1,0 +1,48 @@
+{
+  "iconColor": null,
+  "img": "senpai",
+  "flipX": false,
+  "flipY": false,
+  "antialiasing": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "Senpai Idle instance",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": 5,
+      "y": 37,
+      "postfix": "Angry Senpai UP NOTE",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": 14,
+      "y": 0,
+      "postfix": "Angry Senpai DOWN NOTE",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": 40,
+      "y": 0,
+      "postfix": "Angry Senpai LEFT NOTE",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "Angry Senpai RIGHT NOTE",
+      "prefix": "singRIGHT",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0],
+  "charScale": 6
+}

@@ -1,0 +1,49 @@
+{
+  "iconColor": null,
+  "img": "spirit",
+  "flipX": false,
+  "flipY": false,
+  "antialiasing": false,
+  "usesAtlas": true,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": -220,
+      "y": -280,
+      "postfix": "idle spirit_",
+      "prefix": "idle",
+      "looped": false
+    },
+    {
+      "x": -220,
+      "y": -240,
+      "postfix": "up_",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": 170,
+      "y": 110,
+      "postfix": "spirit down_",
+      "prefix": "singDOWN",
+      "looped": false
+    },
+    {
+      "x": -220,
+      "y": -280,
+      "postfix": "left_",
+      "prefix": "singLEFT",
+      "looped": false
+    },
+    {
+      "x": -220,
+      "y": -280,
+      "postfix": "right_",
+      "prefix": "singRIGHT",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0],
+  "charScale": 6
+}

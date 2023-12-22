@@ -1,0 +1,41 @@
+{
+  "iconColor": null,
+  "img": "bfPixelsDEAD",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "antialiasing": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "BF Dies pixel",
+      "prefix": "firstDeath",
+      "looped": false
+    },
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "BF Dies pixel",
+      "prefix": "singUP",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": -12,
+      "postfix": "Retry Loop",
+      "prefix": "deathLoop",
+      "looped": false
+    },
+    {
+      "x": -30,
+      "y": -12,
+      "postfix": "RETRY CONFIRM",
+      "prefix": "deathConfirm",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0],
+  "charScale": 6
+}

@@ -1,0 +1,39 @@
+{
+  "iconColor": null,
+  "img": "picoSpeaker",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": false,
+  "anims": [
+    {
+      "x": 0,
+      "y": 0,
+      "postfix": "Pico shoot 1",
+      "prefix": "shoot1",
+      "looped": false
+    },
+    {
+      "x": -1,
+      "y": -128,
+      "postfix": "Pico shoot 2",
+      "prefix": "shoot2",
+      "looped": false
+    },
+    {
+      "x": 412,
+      "y": -64,
+      "postfix": "Pico shoot 3",
+      "prefix": "shoot3",
+      "looped": false
+    },
+    {
+      "x": 439,
+      "y": -19,
+      "postfix": "Pico shoot 4",
+      "prefix": "shoot4",
+      "looped": false
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}

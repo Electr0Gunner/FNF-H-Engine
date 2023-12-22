@@ -1,0 +1,43 @@
+{
+  "iconColor": null,
+  "img": "gfCar",
+  "flipX": false,
+  "flipY": false,
+  "gfIdle": true,
+  "anims": [
+    {
+      "x": 0,
+      "y": -9,
+      "postfix": "GF Dancing Beat Hair blowing CAR",
+      "prefix": "danceLeft",
+      "looped": false,
+      "indices": [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    },
+    {
+      "x": 0,
+      "y": -9,
+      "postfix": "GF Dancing Beat Hair blowing CAR",
+      "prefix": "danceRight",
+      "looped": false,
+      "indices": [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29]
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "postfix": "GF Dancing Beat Hair blowing CAR",
+      "prefix": "singUP",
+      "looped": false,
+      "indices": [0]
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "postfix": "GF Dancing Beat Hair blowing CAR",
+      "prefix": "idleHair",
+      "looped": false,
+      "indices": [10, 11, 12, 25, 26, 27]
+    }
+  ],
+  "charPosition": [0, 0],
+  "charCamPosition": [0, 0]
+}
