@@ -57,13 +57,13 @@ class AnimationDebug extends FlxState
 		}
 		else
 		{
-			var charGhost = new Boyfriend(0, 0, daAnim);
+			var charGhost = new Character(0, 0, daAnim);
 			charGhost.alpha = 0.4;
 			charGhost.color = FlxColor.BLACK;
 			charGhost.debugMode = true;
 			add(charGhost);
 
-			char = new Boyfriend(0, 0);
+			char = new Character(0, 0);
 			char.debugMode = true;
 			add(char);
 		}
@@ -298,8 +298,6 @@ class AnimationDebug extends FlxState
 			char.charPosition = [0, 0];
 		if (char.charCamPosition == null)
 			char.charCamPosition = [0, 0];
-		if (char.charScale == null)
-			char.charScale = [1, 1];
 
 		var data:String = haxe.Json.stringify(char);
 
