@@ -26,6 +26,10 @@ import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
+import lime.utils.Assets;
+#if sys
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -53,7 +57,7 @@ class PlayState extends MusicBeatState
 
 	private var dad:Character;
 	private var gf:Character;
-	private var boyfriend:Boyfriend;
+	private var boyfriend:Character;
 
 	private var notes:FlxTypedGroup<Note>;
 	private var unspawnNotes:Array<Note> = [];
@@ -580,25 +584,112 @@ class PlayState extends MusicBeatState
 		#if sys
 		scripts = new Array<HScript>();
 
-		trace('./mods/${openfl.Assets.getText(Paths.text('modSelected'))}/data/${SONG.song.toLowerCase()}');
-
-		if (sys.FileSystem.exists('./mods/${openfl.Assets.getText(Paths.text('modSelected'))}/data/${SONG.song.toLowerCase()}'))
+		for (allowed in HScript.allowedExtensions)
 		{
-			for (allow in HScript.allowedExtensions)
+			if (FileSystem.exists('./mods/${Assets.getText(Paths.text('modSelected'))}/data/${SONG.song}'))
 			{
-				for (file in sys.FileSystem.readDirectory('./mods/${openfl.Assets.getText(Paths.text('modSelected'))}/data/${SONG.song.toLowerCase()}'))
+				for (i in FileSystem.readDirectory('./mods/${Assets.getText(Paths.text('modSelected'))}/data/${SONG.song}'))
 				{
-					var realFile = file.split(".");
-					
-					if (file.contains(allow))
-						loadScript(realFile[0]);
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('data/' + SONG.song + '/' + scriptrel[0]);
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						scripts.push(script);
+					}
+				}
+			}
+
+			if (FileSystem.exists('./mods/${Assets.getText(Paths.text('modSelected'))}/scripts'))
+			{
+				for (i in FileSystem.readDirectory('./mods/${Assets.getText(Paths.text('modSelected'))}/scripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/${scriptrel[0]}');
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
+			if (FileSystem.exists('./mods/Global/data/${SONG.song}'))
+			{
+				for (i in FileSystem.readDirectory('./mods/Global/data/${SONG.song}'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('data/' + SONG.song + '/' + scriptrel[0]);
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
+			if (FileSystem.exists('./mods/scripts'))
+			{
+				for (i in FileSystem.readDirectory('./mods/scripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/${scriptrel[0]}');
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
 				}
 			}
 		}
 
-		for (script in scripts)
-			script.callFunction('create');
+		for (i in scripts)
+			i.callFunction('create');
 		#end
+
 
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
@@ -665,7 +756,7 @@ class PlayState extends MusicBeatState
 				dad.y += 180;
 		}
 
-		boyfriend = new Boyfriend(770, 450, SONG.player1);
+		boyfriend = new Character(770, 450, SONG.player1);
 
 		// REPOSITIONING PER STAGE
 		switch (curStage)
@@ -933,7 +1024,7 @@ class PlayState extends MusicBeatState
 			default:
 				boyfriend.alpha = 0.0001;
 				remove(boyfriend);
-				boyfriend = new Boyfriend(x, y, character);
+				boyfriend = new Character(x, y, character);
 				add(boyfriend);
 				boyfriend.alpha = 1;
 				iconP1.changeIcon(character);
