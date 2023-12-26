@@ -55,9 +55,9 @@ class PlayState extends MusicBeatState
 	public var vocals:FlxSound;
 	private var vocalsFinished:Bool = false;
 
-	private var dad:Character;
-	private var gf:Character;
-	private var boyfriend:Character;
+	public var dad:Character;
+	public var gf:Character;
+	public var boyfriend:Character;
 
 	private var notes:FlxTypedGroup<Note>;
 	private var unspawnNotes:Array<Note> = [];
@@ -663,6 +663,31 @@ class PlayState extends MusicBeatState
 			if (FileSystem.exists('./mods/scripts'))
 			{
 				for (i in FileSystem.readDirectory('./mods/scripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/${scriptrel[0]}');
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
+			if (FileSystem.exists('./assets/scripts'))
+			{
+				for (i in FileSystem.readDirectory('./assets/scripts'))
 				{
 					if (i.contains(allowed))
 					{

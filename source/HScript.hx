@@ -80,6 +80,8 @@ class HScript
 				"CoolUtil" => CoolUtil,
 				"Conductor" => Conductor,
 				"PlayState" => PlayState,
+				"Character" => Character,
+				"Note" => Note,
 				"MusicBeatState" => MusicBeatState,
 			];
 			for (va in defaultVars.keys())
