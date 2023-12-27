@@ -164,6 +164,7 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.resetState();
 				case "Options":
 					FlxG.switchState(new ui.OptionsState());
+					ui.OptionsState.fromPlayState = true;
 				case 'Toggle Practice Mode':
 					PlayState.practiceMode = !PlayState.practiceMode;
 					practiceText.visible = PlayState.practiceMode;
