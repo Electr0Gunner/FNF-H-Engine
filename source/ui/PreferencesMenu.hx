@@ -38,6 +38,8 @@ class PreferencesMenu extends ui.OptionsState.Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Botplay', 'botplay', false);
+		createPrefItem('Ghost Tapping', 'ghost-tapping', false);
+		createPrefItem('Downscroll', 'downscroll', false);
 		createPrefItem('Auto Pause', 'auto-pause', false);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
@@ -79,7 +81,9 @@ class PreferencesMenu extends ui.OptionsState.Page
 		preferenceCheck('cutscenes', true);
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('botplay', false);
+		preferenceCheck('ghost-tapping', false);
 		preferenceCheck('auto-pause', false);
+		preferenceCheck('downscroll', false);
 		preferenceCheck('master-volume', 1);
 		}
 

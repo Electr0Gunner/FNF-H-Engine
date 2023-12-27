@@ -14,6 +14,7 @@ class OptionsState extends MusicBeatState
 	var pages = new Map<PageName, Page>();
 	var currentName:PageName = Options;
 	var currentPage(get, never):Page;
+	public static var fromPlayState:Bool = false;
 
 	inline function get_currentPage()
 		return pages[currentName];
@@ -97,7 +98,11 @@ class OptionsState extends MusicBeatState
 	{
 		currentPage.enabled = false;
 		// Todo animate?
-		FlxG.switchState(new MainMenuState());
+		// Todo make the exiting go to playstate if going in from there -electr0
+		if (!fromPlayState)
+			FlxG.switchState(new MainMenuState());
+		else
+			LoadingState.loadAndSwitchState(new PlayState());
 	}
 }
 
