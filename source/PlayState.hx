@@ -2832,13 +2832,15 @@ class PlayState extends MusicBeatState
 			var possibleNotes:Array<Note> = []; // notes that can be hit
 			var directionList:Array<Int> = []; // directions that can be hit
 			var dumbNotes:Array<Note> = []; // notes to kill later
+			var directionsAccounted:Array<Bool> = [false, false, false, false]; // we don't want to do judgments for more than one presses
 
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.canBeHit && daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit)
+				if (daNote.canBeHit && daNote.mustPress && !daNote.wasGoodHit && !directionsAccounted[daNote.noteData])
 				{
 					if (directionList.contains(daNote.noteData))
 					{
+						directionsAccounted[daNote.noteData] = true;
 						for (coolNote in possibleNotes)
 						{
 							if (coolNote.noteData == daNote.noteData && Math.abs(daNote.strumTime - coolNote.strumTime) < 10)
@@ -2857,6 +2859,7 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
+						directionsAccounted[daNote.noteData] = true;
 						possibleNotes.push(daNote);
 						directionList.push(daNote.noteData);
 					}
@@ -2895,23 +2898,23 @@ class PlayState extends MusicBeatState
 						noteMiss(shit);
 			}
 		}
-
-		notes.forEachAlive(function(daNote:Note)
-		{
-			if (PreferencesMenu.getPref('botplay')
-				&& daNote.y > strumLine.y
-				|| !PreferencesMenu.getPref('downscroll')
-				&& daNote.y < strumLine.y)
+		if (PreferencesMenu.getPref('botplay')){
+			notes.forEachAlive(function(daNote:Note)
 			{
-				// Force good note hit regardless if it's too late to hit it or not as a fail safe
-				if (PreferencesMenu.getPref('botplay') && daNote.canBeHit && daNote.mustPress || PreferencesMenu.getPref('botplay') && daNote.tooLate
-					&& daNote.mustPress)
+				if (PreferencesMenu.getPref('botplay')
+					&& daNote.y > strumLine.y
+					|| !PreferencesMenu.getPref('downscroll')
+					&& daNote.y < strumLine.y)
 				{
-					goodNoteHit(daNote);
-					boyfriend.holdTimer = daNote.sustainLength;
+					// Force good note hit regardless if it's too late to hit it or not as a fail safe
+					if (daNote.mustPress && Conductor.songPosition >= daNote.strumTime)
+					{
+						goodNoteHit(daNote);
+						boyfriend.holdTimer = daNote.sustainLength;
+					}
 				}
-			}
-		});
+			});
+		};
 
 		if (boyfriend.holdTimer > Conductor.stepCrochet * 4 * 0.001 && !holdArray.contains(true))
 		{
