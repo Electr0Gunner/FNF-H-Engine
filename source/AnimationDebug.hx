@@ -11,6 +11,10 @@ import flixel.util.FlxColor;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
+import flixel.addons.ui.FlxUIDropDownMenu;
+import flixel.addons.ui.FlxUITabMenu;
+import flixel.addons.ui.FlxUI;
+import flixel.ui.FlxButton;
 
 using StringTools;
 
@@ -20,6 +24,7 @@ using StringTools;
 class AnimationDebug extends FlxState
 {
 	var char:Character;
+	var charGhost:Character;
 	var textAnim:FlxText;
 	var dumbTexts:FlxTypedGroup<FlxText>;
 	var animList:Array<String> = [];
@@ -27,6 +32,9 @@ class AnimationDebug extends FlxState
 	var isDad:Bool = true;
 	var daAnim:String = 'spooky';
 	var camFollow:FlxObject;
+	var UI_box:FlxUITabMenu;
+	public static var curChar:String = "dad";
+	
 
 	public function new(daAnim:String = 'spooky', isPlayer:Bool = false)
 	{
@@ -39,31 +47,33 @@ class AnimationDebug extends FlxState
 	{
 		FlxG.sound.music.stop();
 
+		var characters:Array<String> = CoolUtil.coolTextFile(Paths.text('characterList'));
+
 		var gridBG:FlxSprite = FlxGridOverlay.create(10, 10);
 		gridBG.scrollFactor.set(0.5, 0.5);
 		add(gridBG);
 
 		if (isDad)
 		{
-			var charGhost = new Character(0, 0, daAnim);
+			charGhost = new Character(0, 0, daAnim);
 			charGhost.alpha = 0.4;
 			charGhost.color = FlxColor.BLACK;
 			charGhost.debugMode = true;
 			add(charGhost);
 
-			char = new Character(0, 0, daAnim);
+			char = new Character(0, 0, curChar);
 			char.debugMode = true;
 			add(char);
 		}
 		else
 		{
-			var charGhost = new Character(0, 0, daAnim);
+			charGhost = new Character(0, 0, daAnim);
 			charGhost.alpha = 0.4;
 			charGhost.color = FlxColor.BLACK;
 			charGhost.debugMode = true;
 			add(charGhost);
 
-			char = new Character(0, 0);
+			char = new Character(0, 0, curChar);
 			char.debugMode = true;
 			add(char);
 		}
@@ -75,6 +85,33 @@ class AnimationDebug extends FlxState
 		textAnim.size = 26;
 		textAnim.scrollFactor.set();
 		add(textAnim);
+
+		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+		{
+			curChar = characters[Std.parseInt(character)];
+		});
+		player1DropDown.selectedLabel = curChar;
+
+		var tabs = [
+			{name: "Character Info", label: 'Character Info'}
+		];
+
+		UI_box = new FlxUITabMenu(null, tabs, true);
+
+		UI_box.resize(300, 400);
+		UI_box.x = FlxG.width / 2;
+		UI_box.y = 20;
+		add(UI_box);
+
+		var tab_group_song = new FlxUI(null, UI_box);
+		tab_group_song.name = "Character Info";
+		tab_group_song.add(player1DropDown);
+
+		UI_box.addGroup(tab_group_song);
+
+		var button = new FlxButton(0, 0, "Reload Character", updateChar);
+		button.screenCenter();
+		add(button);
 
 		genBoyOffsets();
 
@@ -114,6 +151,22 @@ class AnimationDebug extends FlxState
 			text.kill();
 			dumbTexts.remove(text, true);
 		});
+	}
+
+	function updateChar(){
+		charGhost.alpha = 0.0001;
+		remove(charGhost);
+		charGhost = new Character(0, 0, curChar);
+		charGhost.alpha = 0.4;
+		charGhost.color = FlxColor.BLACK;
+		charGhost.debugMode = true;
+		add(charGhost);
+
+		char.alpha = 0.0001;
+		remove(char);
+		char = new Character(0, 0, curChar);
+		add(char);
+		char.alpha = 1;
 	}
 
 	override function update(elapsed:Float)
