@@ -186,6 +186,7 @@ class MainMenuState extends MusicBeatState
 										//FlxTransitionableState.skipNextTransIn = true;
 										//FlxTransitionableState.skipNextTransOut = true;
 										FlxG.switchState(new ui.OptionsState());
+										trace("Options Menu Selected");
 								}
 							});
 						}
@@ -218,7 +219,7 @@ class MainMenuState extends MusicBeatState
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
-				
+				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
 			}
 
 			spr.updateHitbox();

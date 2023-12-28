@@ -28,6 +28,9 @@ import flixel.util.FlxTimer;
 import shaderslmfao.ColorSwap;
 import ui.PreferencesMenu;
 import lime.utils.Assets;
+import hxvlc.flixel.FlxVideo as VideoHandler;
+import hxvlc.flixel.FlxVideoSprite as VideoSprite;
+
 #if sys
 import sys.FileSystem;
 #end
@@ -1068,6 +1071,11 @@ class PlayState extends MusicBeatState
 		camFollow.y += 100;
 
 		if (PreferencesMenu.getPref('cutscenes')){
+			camHUD.visible = false;
+
+			playCutscene("assets/videos/ughCutscene.mp4", false);
+		};
+		else{
 			dad.visible = false;
 			var tankCutscene:TankCutscene = new TankCutscene(-20, 320);
 			tankCutscene.frames = Paths.getSparrowAtlas('cutsceneStuff/tankTalkSong1');
@@ -1126,11 +1134,7 @@ class PlayState extends MusicBeatState
 					});
 				});
 			});
-		}else{
-		cameraMovement();
-		startCountdown();
-		camHUD.visible = true;
-	}
+		}
 	}
 
 	function gunsIntro()
@@ -1140,12 +1144,7 @@ class PlayState extends MusicBeatState
 		if (PreferencesMenu.getPref('cutscenes')){
 			camHUD.visible = false;
 
-			videoCutscene(Paths.video("gunsCutscene"), function()
-			{
-				FlxG.camera.zoom = defaultCamZoom * 1.2;
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, ((Conductor.crochet / 1000) * 5) - 0.1, {ease: FlxEase.quadOut});
-				camHUD.visible = true;
-			});
+			playCutscene("assets/videos/gunsCutscene.mp4", false);
 		};
 		else
 		{
@@ -1200,6 +1199,12 @@ class PlayState extends MusicBeatState
 		inCutscene = true;
 
 		if (PreferencesMenu.getPref('cutscenes')){
+			camHUD.visible = false;
+
+			playCutscene("assets/videos/stressCutscene.mp4", false);
+		};
+		else{
+			
 			camHUD.visible = false;
 
 			// for story mode shit
@@ -1414,57 +1419,46 @@ class PlayState extends MusicBeatState
 					gfCutsceneLayer.remove(cutsceneShit);
 				});
 			});
-		}else{
-
-				FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, (Conductor.crochet / 1000) * 5, {ease: FlxEase.quadInOut});
-				startCountdown();
-				cameraMovement();
-			}
+		}
 		}
 
-	function videoCutscene(path:String, ?endFunc:Void->Void, ?startFunc:Void->Void)
+	function playCutscene(path:String, ?atend:Bool)
 	{
 		inCutscene = true;
 
-		var blackShit:FlxSprite = new FlxSprite(-200, -200).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
-		blackShit.screenCenter();
-		blackShit.scrollFactor.set();
-		add(blackShit);
+		var difficulty:String = "";
 
-		var video = new VideoHandler();
-		video.scrollFactor.set();
-		video.antialiasing = true;
+		if (storyDifficulty != 'normal')
+			difficulty += '-$storyDifficulty';
 
-		FlxG.camera.zoom = 1;
+		var video:VideoHandler = new VideoHandler();
 
-		video.playMP4(path, function()
+		video.onEndReached.add(function()
 		{
-			FlxTween.tween(blackShit, {alpha: 0}, 0.4, {
-				ease: FlxEase.quadInOut,
-				onComplete: function(t)
-				{
-					remove(blackShit);
-				}
-			});
-
-			remove(video);
-
-			FlxG.camera.zoom = defaultCamZoom;
-
-			if (endFunc != null)
+			if (atend == true)
 			{
-				endFunc();
+				if (storyPlaylist.length <= 0)
+					LoadingState.loadAndSwitchState(new StoryMenuState());
+				else
+				{
+					prevCamFollow = camFollow;
+
+					SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase() + difficulty, storyPlaylist[0]);
+					LoadingState.loadAndSwitchState(new PlayState());
+				}
 			}
+			else
+				startCountdown();
 
-			startCountdown();
-		}, false, true);
+			video.dispose();
+		});
+		video.load(path);
+		video.play();
 
-		add(video);
-
-		if (startFunc != null)
-		{
-			startFunc();
-		}
+		#if sys
+		for (script in scripts)
+			script.callFunction('playCutscenePost');
+		#end
 	}
 
 	function initDiscord():Void
@@ -1583,6 +1577,11 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
+		#if sys
+		for (script in scripts)
+			script.callFunction('startCountdown');
+		#end
+
 		inCutscene = false;
 		camHUD.visible = true;
 
