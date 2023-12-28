@@ -81,7 +81,10 @@ class HScript
 				"Conductor" => Conductor,
 				"PlayState" => PlayState,
 				"Character" => Character,
+				"Alphabet" => Alphabet,
 				"Note" => Note,
+				"Main" => Main,
+				//"OptionsInfo" => OptionsInfo, not yet
 				"MusicBeatState" => MusicBeatState,
 			];
 			for (va in defaultVars.keys())
