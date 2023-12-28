@@ -11,6 +11,7 @@ import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.addons.effects.FlxTrail;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.animation.FlxBaseAnimation;
 import flixel.group.FlxGroup;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
@@ -2324,52 +2325,7 @@ class PlayState extends MusicBeatState
 				}
 
 				if (!daNote.mustPress && daNote.wasGoodHit)
-				{
-					#if sys
-					for (script in scripts)
-						script.callFunction('dadNoteHit', [daNote]);
-					#end
-
-					if (SONG.song != 'Tutorial')
-						camZooming = true;
-
-					var altAnim:String = "";
-
-					if (SONG.notes[Math.floor(curStep / 16)] != null)
-					{
-						if (SONG.notes[Math.floor(curStep / 16)].altAnim)
-							altAnim = '-alt';
-					}
-
-					if (daNote.altNote)
-						altAnim = '-alt';
-
-					switch (Math.abs(daNote.noteData))
-					{
-						case 0:
-							dad.playAnim('singLEFT' + altAnim, true);
-						case 1:
-							dad.playAnim('singDOWN' + altAnim, true);
-						case 2:
-							dad.playAnim('singUP' + altAnim, true);
-						case 3:
-							dad.playAnim('singRIGHT' + altAnim, true);
-					}
-
-					dad.holdTimer = 0;
-
-					if (SONG.needsVoices)
-						vocals.volume = 1;
-
-					#if sys
-					for (script in scripts)
-						script.callFunction('dadNoteHitPost', [daNote]);
-					#end
-
-					daNote.kill();
-					notes.remove(daNote, true);
-					daNote.destroy();
-				}
+					dadNoteHit(daNote);
 
 				if (daNote.isSustainNote && daNote.wasGoodHit)
 				{
@@ -2413,6 +2369,55 @@ class PlayState extends MusicBeatState
 		for (script in scripts)
 			script.callFunction('updatePost', [elapsed]);
 		#end
+	}
+
+	function dadNoteHit(daNote:Note){
+		#if sys
+		for (script in scripts)
+			script.callFunction('dadNoteHit', [daNote]);
+		#end
+
+		if (SONG.song != 'Tutorial')
+			camZooming = true;
+
+		var altAnim:String = "";
+
+		if (SONG.notes[Math.floor(curStep / 16)] != null)
+		{
+			if (SONG.notes[Math.floor(curStep / 16)].altAnim)
+				altAnim = '-alt';
+		}
+
+		if (daNote.altNote)
+			altAnim = '-alt';
+
+		switch (Math.abs(daNote.noteData))
+		{
+			case 0:
+				dad.playAnim('singLEFT' + altAnim, true);
+			case 1:
+				dad.playAnim('singDOWN' + altAnim, true);
+			case 2:
+				dad.playAnim('singUP' + altAnim, true);
+			case 3:
+				dad.playAnim('singRIGHT' + altAnim, true);
+		}
+		//daNote.animation.play('pressed'); // later
+
+		dad.holdTimer = 0;
+
+		if (SONG.needsVoices)
+			vocals.volume = 1;
+
+		#if sys
+		for (script in scripts)
+			script.callFunction('dadNoteHitPost', [daNote]);
+		#end
+		
+
+		daNote.kill();
+		notes.remove(daNote, true);
+		daNote.destroy();
 	}
 
 	function killCombo():Void
