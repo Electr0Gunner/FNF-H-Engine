@@ -18,3 +18,4 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 
 # Compiling
 to compile follow the FunkinCrew/Funkin tutorial
+and also install some stuff from project.xml
