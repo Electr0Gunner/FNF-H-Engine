@@ -4,6 +4,9 @@ This is the repository for Friday Night Funkin H-Engine, a engine based on the o
 
 This engine is still in development and more features will be added with time.
 
+At the moment the curent build has some missing stages in some songs and some features are broken.
+Those issues will be fixed
+
 if you have feature ideas or you find bugs you can go on the Pull requests for Ideas and Issues for.. issues.
 
 IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN SOURCE YOUR MOD AS WELL
