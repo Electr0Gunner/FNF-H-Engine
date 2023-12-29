@@ -18,21 +18,37 @@ import lime.net.curl.CURLCode;
 
 using StringTools;
 
-typedef StorySongLoader =
+typedef WeekInfo =
 {
-	var songs:Array<String>;
 	var name:String;
-	var difficulty:Array<String>;
-	var num:Int;
-	var locked:Bool;
+	var songs:Array<String>;
+	var dadChar:String;
+	var bfChar:String;
+	var gfChar:String;
+	var background:String;
+	var difficulties:Array<String>;
+	var unlocked:Bool;
+}
+
+typedef StoryInfo =
+{
+	var weeks:Array<WeekInfo>;
 }
 
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-    // Load week data from JSON file
-    var weekData:Array<Dynamic> = Json.parse(openfl.Assets.getText(Paths.json('weekData')));
+	var weekData:Array<Dynamic> = [
+		['Tutorial'],
+		['Bopeebo', 'Fresh', 'Dadbattle'],
+		['Spookeez', 'South', "Monster"],
+		['Pico', 'Philly', "Blammed"],
+		['Satin-Panties', "High", "Milf"],
+		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
+		['Senpai', 'Roses', 'Thorns'],
+		['Ugh', 'Guns', 'Stress']
+	];
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
@@ -59,13 +75,6 @@ class StoryMenuState extends MusicBeatState
 		"TANKMAN"
 	];
 
-
-
-	/**
-	 * just a temp until i softcode story
-	 */
-	var diffs:Array<String> = ['easy', 'normal', 'hard'];
-
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;
@@ -82,13 +91,12 @@ class StoryMenuState extends MusicBeatState
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 
+	var diffs:Array<String> = ["easy", "normal", "hard"];
+
 	override function create()
 	{
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
-
-		// Load week data from JSON file
-    	var weekData:Array<Dynamic> = Json.parse(openfl.Assets.getText(Paths.json('weekData')));
 
 		if (FlxG.sound.music != null)
 		{
@@ -107,7 +115,7 @@ class StoryMenuState extends MusicBeatState
 
 		var rankText:FlxText = new FlxText(0, 10);
 		rankText.text = 'RANK: GREAT';
-		rankText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
+		rankText.setFormat(Paths.font("vcr.ttf"), 32);
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
 
@@ -243,8 +251,7 @@ class StoryMenuState extends MusicBeatState
 
 		scoreText.text = "WEEK SCORE:" + Math.round(lerpScore);
 
-		txtWeekTitle.text = weekData[curWeek].name.toUpperCase();
-		//txtWeekTitle.text = weekNames[curWeek].toUpperCase();
+		txtWeekTitle.text = weekNames[curWeek].toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
 
 		// FlxG.watch.addQuick('font', scoreText.font);
@@ -350,8 +357,8 @@ class StoryMenuState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
+			curDifficulty = diffs.length - 1;
+		if (curDifficulty > diffs.length - 1)
 			curDifficulty = 0;
 
 		sprDifficulty.offset.x = 0;
@@ -373,7 +380,7 @@ class StoryMenuState extends MusicBeatState
 
 		// USING THESE WEIRD VALUES SO THAT IT DOESNT FLOAT UP
 		sprDifficulty.y = leftArrow.y - 15;
-		intendedScore = Highscore.getWeekScore(curWeek, diffs[curDifficulty]);
+		intendedScore = Highscore.getWeekScore(curWeek, diffs[curDifficulty].toLowerCase());
 
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 	}
@@ -409,10 +416,9 @@ class StoryMenuState extends MusicBeatState
 
 	function updateText()
 	{
-        // Update character animations based on JSON data
-        grpWeekCharacters.members[0].animation.play(weekCharacters[curWeek][0]);
-        grpWeekCharacters.members[1].animation.play(weekCharacters[curWeek][1]);
-        grpWeekCharacters.members[2].animation.play(weekCharacters[curWeek][2]);
+		grpWeekCharacters.members[0].animation.play(weekCharacters[curWeek][0]);
+		grpWeekCharacters.members[1].animation.play(weekCharacters[curWeek][1]);
+		grpWeekCharacters.members[2].animation.play(weekCharacters[curWeek][2]);
 		txtTracklist.text = "Tracks\n";
 
 		switch (grpWeekCharacters.members[0].animation.curAnim.name)
@@ -442,7 +448,7 @@ class StoryMenuState extends MusicBeatState
 				// grpWeekCharacters.members[0].updateHitbox();
 		}
 
-        var stringThing:Array<String> = weekData[curWeek];
+		var stringThing:Array<String> = weekData[curWeek];
 
 		for (i in stringThing)
 		{
@@ -454,6 +460,6 @@ class StoryMenuState extends MusicBeatState
 		txtTracklist.screenCenter(X);
 		txtTracklist.x -= FlxG.width * 0.35;
 
-		intendedScore = Highscore.getWeekScore(curWeek, diffs[curDifficulty]);
+		intendedScore = Highscore.getWeekScore(curWeek, diffs[curDifficulty].toLowerCase());
 	}
 }
