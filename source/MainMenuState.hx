@@ -102,6 +102,11 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
+		var randInfo:FlxText = new FlxText(970, FlxG.height - 18, 0, "press 'u' to access the tools menu",  12);
+		randInfo.scrollFactor.set();
+		randInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(randInfo);
+
 		// NG.core.calls.event.logEvent('swag').send();
 
 		changeItem();
@@ -131,11 +136,6 @@ class MainMenuState extends MusicBeatState
 				changeItem(-1);
 			}
 
-			if (controls.UI_UP_P)
-				{
-					FlxG.sound.play(Paths.sound('scrollMenu'));
-					changeItem(-1);
-				}
 
 			if (controls.UI_DOWN_P)
 			{

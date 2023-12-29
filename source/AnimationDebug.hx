@@ -45,6 +45,9 @@ class AnimationDebug extends FlxState
 
 	override function create()
 	{
+		FlxG.mouse.visible = true;
+		Character.inAnimState = true;
+
 		FlxG.sound.music.stop();
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.text('characterList'));
@@ -86,11 +89,11 @@ class AnimationDebug extends FlxState
 		textAnim.scrollFactor.set();
 		add(textAnim);
 
-		var player1DropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+		var charDropDown = new FlxUIDropDownMenu(10, 100, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
 			curChar = characters[Std.parseInt(character)];
 		});
-		player1DropDown.selectedLabel = curChar;
+		charDropDown.selectedLabel = curChar;
 
 		var tabs = [
 			{name: "Character Info", label: 'Character Info'}
@@ -101,16 +104,17 @@ class AnimationDebug extends FlxState
 		UI_box.resize(300, 400);
 		UI_box.x = FlxG.width / 2;
 		UI_box.y = 20;
+		UI_box.x += 100;
 		add(UI_box);
 
 		var tab_group_song = new FlxUI(null, UI_box);
 		tab_group_song.name = "Character Info";
-		tab_group_song.add(player1DropDown);
+		tab_group_song.add(charDropDown);
 
 		UI_box.addGroup(tab_group_song);
 
-		var button = new FlxButton(0, 0, "Reload Character", updateChar);
-		button.screenCenter();
+		var button = new FlxButton(800, 100, "Reload Character", updateChar);
+		//button.screenCenter();
 		add(button);
 
 		genBoyOffsets();
@@ -154,6 +158,9 @@ class AnimationDebug extends FlxState
 	}
 
 	function updateChar(){
+		animList = [];
+		genBoyOffsets(true);
+
 		charGhost.alpha = 0.0001;
 		remove(charGhost);
 		charGhost = new Character(0, 0, curChar);
@@ -200,14 +207,14 @@ class AnimationDebug extends FlxState
 		}
 
 		if (FlxG.keys.justPressed.W)
-		{
-			curAnim--;
-		}
+			{
+				curAnim -= 1;
+			}
 
-		if (FlxG.keys.justPressed.S)
-		{
-			curAnim++;
-		}
+			if (FlxG.keys.justPressed.S)
+			{
+				curAnim += 1;
+			}
 
 		if (curAnim < 0)
 			curAnim = animList.length - 1;
@@ -249,19 +256,11 @@ class AnimationDebug extends FlxState
 		}
 
 		if (FlxG.keys.justPressed.ESCAPE)
-		{
-			/*var outputString:String = "";
-
-			for (swagAnim in animList)
 			{
-				outputString += swagAnim + " " + char.animOffsets.get(swagAnim)[0] + " " + char.animOffsets.get(swagAnim)[1] + "\n";
+				Character.inAnimState = false;
+				FlxG.mouse.visible = false;
+				FlxG.switchState(new ui.ToolsState());
 			}
-
-			outputString.trim();
-			saveOffsets(outputString);*/
-
-			saveChar();
-		}
 
 		super.update(elapsed);
 	}

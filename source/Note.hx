@@ -15,6 +15,14 @@ using StringTools;
 import polymod.format.ParseRules.TargetSignatureElement;
 #end
 
+typedef ArrowData = { // not implemented yet
+	var imageNote:String;
+	var	?imageSplash:String;
+	var hasSplashes:Bool;
+	var avoidedBot:Bool;
+	var avoidedDad:Bool;
+}
+
 class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
