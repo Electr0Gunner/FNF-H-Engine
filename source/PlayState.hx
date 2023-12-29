@@ -1003,12 +1003,12 @@ class PlayState extends MusicBeatState
 					});
 				case 'senpai' | 'roses' | 'thorns':
 					schoolIntro(doof);
-				case 'ugh':
-					ughIntro();
-				case 'stress':
-					stressIntro();
-				case 'guns':
-					gunsIntro();
+				// case 'ugh':
+				// 	//ughIntro();
+				// case 'stress':
+				// 	//stressIntro();
+				// case 'guns':
+				// 	//gunsIntro();
 
 				default:
 					startCountdown();
