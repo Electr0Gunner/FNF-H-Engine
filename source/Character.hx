@@ -60,6 +60,8 @@ class Character extends FlxSprite
 
 	public var startedDeath:Bool = false;
 
+	public static var inAnimState:Bool = false;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
@@ -73,6 +75,7 @@ class Character extends FlxSprite
 
 		switch (curCharacter)
 		{
+
 			default:
 				if (Assets.exists(Paths.json(curCharacter, 'characters')))
 					jsonSystem = Json.parse(Assets.getText(Paths.json(curCharacter, 'characters')));
@@ -139,7 +142,9 @@ class Character extends FlxSprite
 		switch(curCharacter)
 		{
 			case 'pico-speaker':
-				loadMappedAnims();
+				if (!inAnimState){
+					loadMappedAnims();	
+				}
 				playAnim("shoot1");
 		}
 
@@ -253,11 +258,13 @@ class Character extends FlxSprite
 				playAnim('idleHair');
 		}
 
+		if (danceIdle){
+			if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+				playAnim('danceRight');
+		}	
 		switch (curCharacter)
 		{
-			case 'gf':
-				if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
-					playAnim('danceRight');
+				
 			case "pico-speaker":
 				// for pico??
 				if (animationNotes.length > 0)
