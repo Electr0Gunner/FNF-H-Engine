@@ -1,0 +1,15 @@
+{
+	"name": "Test Week",
+
+	"songs": [
+		"test",
+		"bopeebo"
+	],
+	"difficulties": ["normal"],
+
+	"chars": [
+		"dad",
+		"bf",
+		"gf"
+	]
+}

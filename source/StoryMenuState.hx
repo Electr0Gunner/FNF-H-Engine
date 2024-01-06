@@ -1,5 +1,9 @@
 package;
 
+import lime.utils.Assets;
+import haxe.Json;
+import sys.io.File;
+import sys.FileSystem;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
@@ -18,28 +22,23 @@ import lime.net.curl.CURLCode;
 
 using StringTools;
 
-typedef WeekInfo =
+typedef WeekInfo = 
 {
 	var name:String;
 	var songs:Array<String>;
-	var dadChar:String;
-	var bfChar:String;
-	var gfChar:String;
-	var background:String;
-	var difficulties:Array<String>;
-	var unlocked:Bool;
-}
+	var chars:Array<String>;
 
-typedef StoryInfo =
-{
-	var weeks:Array<WeekInfo>;
+	@:optional var unlockConditions:Null<Array<Dynamic>>;
+	@:optional var difficulties:Null<Array<String>>;
+	// var background:String; // TODO: Add story mode BGS
 }
 
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var weekData:Array<Dynamic> = [
+	var weekData:Array<Dynamic> = 
+	[
 		['Tutorial'],
 		['Bopeebo', 'Fresh', 'Dadbattle'],
 		['Spookeez', 'South', "Monster"],
@@ -51,9 +50,10 @@ class StoryMenuState extends MusicBeatState
 	];
 	var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true];
+	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true, true, true];
 
-	var weekCharacters:Array<Dynamic> = [
+	var weekCharacters:Array<Dynamic> = 
+	[
 		['dad', 'bf', 'gf'],
 		['dad', 'bf', 'gf'],
 		['spooky', 'bf', 'gf'],
@@ -64,15 +64,16 @@ class StoryMenuState extends MusicBeatState
 		['tankman', 'bf', 'gf']
 	];
 
-	var weekNames:Array<String> = [
-		"",
+	var weekNames:Array<String> = 
+	[
+		"How to Funk",
 		"Daddy Dearest",
 		"Spooky Month",
-		"PICO",
+		"Pico",
 		"MOMMY MUST MURDER",
-		"RED SNOW",
-		"hating simulator ft. moawling",
-		"TANKMAN"
+		"Red Snow",
+		"Hating Simulator ft. Moawling",
+		"Tankman"
 	];
 
 	var txtWeekTitle:FlxText;
@@ -106,18 +107,12 @@ class StoryMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
+		scoreText = new FlxText(10, 10, 0, "SCORE: N/A", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
 		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
-
-		var rankText:FlxText = new FlxText(0, 10);
-		rankText.text = 'RANK: GREAT';
-		rankText.setFormat(Paths.font("vcr.ttf"), 32);
-		rankText.size = scoreText.size;
-		rankText.screenCenter(X);
 
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
@@ -133,7 +128,24 @@ class StoryMenuState extends MusicBeatState
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
 
-		trace("Line 70");
+		var funk = FileSystem.readDirectory('assets/weeks');
+		for (shitRead in funk)
+		{
+			if (shitRead.endsWith('.json'))
+			{
+				var fileWithoutExt = shitRead.substring(0, shitRead.lastIndexOf('.'));
+				var rawFile = Assets.getText(Paths.json(fileWithoutExt, 'weeks')).trim();
+
+				// TODO: Improve this system
+				var daJson:WeekInfo = cast Json.parse(rawFile);
+				if (!weekNames.contains(daJson.name)) weekNames.push(daJson.name);
+				weekCharacters.push(daJson.chars);
+
+				if (!weekData.contains(daJson.songs)) weekData.push(daJson.songs);
+				// FIXME: When the array's lenth goes smaller than 3, the difficulty system goes crazy
+				// if (daJson.difficulties != null) diffs = daJson.difficulties;
+			}
+		}
 
 		#if discord_rpc
 		// Updating Discord Rich Presence
@@ -164,8 +176,6 @@ class StoryMenuState extends MusicBeatState
 			}
 		}
 
-		trace("Line 96");
-
 		for (char in 0...3)
 		{
 			var weekCharacterThing:MenuCharacter = new MenuCharacter((FlxG.width * 0.25) * (1 + char) - 150, weekCharacters[curWeek][char]);
@@ -173,17 +183,13 @@ class StoryMenuState extends MusicBeatState
 			weekCharacterThing.antialiasing = true;
 			switch (weekCharacterThing.character)
 			{
-				case 'dad':
+				case 'dad' | 'gf':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
 					weekCharacterThing.updateHitbox();
-
 				case 'bf':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
 					weekCharacterThing.updateHitbox();
 					weekCharacterThing.x -= 80;
-				case 'gf':
-					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
-					weekCharacterThing.updateHitbox();
 				case 'pico':
 					weekCharacterThing.flipX = true;
 				case 'parents-christmas':
@@ -197,8 +203,6 @@ class StoryMenuState extends MusicBeatState
 		difficultySelectors = new FlxGroup();
 		add(difficultySelectors);
 
-		trace("Line 124");
-
 		leftArrow = new FlxSprite(grpWeekText.members[0].x + grpWeekText.members[0].width + 10, grpWeekText.members[0].y + 10);
 		leftArrow.frames = ui_tex;
 		leftArrow.animation.addByPrefix('idle', "arrow left");
@@ -211,9 +215,7 @@ class StoryMenuState extends MusicBeatState
 		sprDifficulty.animation.addByPrefix('easy', 'EASY');
 		sprDifficulty.animation.addByPrefix('normal', 'NORMAL');
 		sprDifficulty.animation.addByPrefix('hard', 'HARD');
-		sprDifficulty.animation.play('easy');
 		changeDifficulty();
-
 		difficultySelectors.add(sprDifficulty);
 
 		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
@@ -223,33 +225,25 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.animation.play('idle');
 		difficultySelectors.add(rightArrow);
 
-		trace("Line 150");
-
 		add(yellowBG);
 		add(grpWeekCharacters);
 
-		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 100, 0, "Tracks", 32);
-		txtTracklist.alignment = CENTER;
-		txtTracklist.font = rankText.font;
-		txtTracklist.color = 0xFFe55777;
+		txtTracklist = new FlxText(FlxG.width * 0.05, yellowBG.x + yellowBG.height + 100, 0, "Tracks\n---", 32);
+		txtTracklist.setFormat("VCR OSD Mono", 32, 0xFFe55777, CENTER);
 		add(txtTracklist);
-		// add(rankText);
 		add(scoreText);
 		add(txtWeekTitle);
 
 		updateText();
-
-		trace("Line 165");
 
 		super.create();
 	}
 
 	override function update(elapsed:Float)
 	{
-		// scoreText.setFormat('VCR OSD Mono', 32);
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.5);
 
-		scoreText.text = "WEEK SCORE:" + Math.round(lerpScore);
+		scoreText.text = "SCORE:" + Math.round(lerpScore);
 
 		txtWeekTitle.text = weekNames[curWeek].toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
@@ -317,7 +311,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		if (weekUnlocked[curWeek])
 		{
-			if (stopspamming == false)
+			if (!stopspamming)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
 
@@ -325,30 +319,25 @@ class StoryMenuState extends MusicBeatState
 				grpWeekCharacters.members[1].animation.play('bfConfirm');
 				stopspamming = true;
 			}
+			selectedWeek = true;
+			PlayState.isStoryMode = true;
 
 			PlayState.storyPlaylist = weekData[curWeek];
-			PlayState.isStoryMode = true;
-			selectedWeek = true;
-
-			var diffic = "";
-
-			switch (curDifficulty)
-			{
-				case 0:
-					diffic = '-easy';
-				case 2:
-					diffic = '-hard';
-			}
-
 			PlayState.storyDifficulty = diffs[curDifficulty];
 
-			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
+			var diffic:String = null;
+			switch (curDifficulty)
+			{
+				case 0: diffic = 'easy';
+				case 2: diffic = 'hard';
+			}
+			var songJson:String = weekData[curWeek][0]; // The first track of the list 
+			if (diffic != null) songJson += '-$diffic';
+			PlayState.SONG = Song.loadFromJson(songJson);
+
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
-			new FlxTimer().start(1, function(tmr:FlxTimer)
-			{
-				LoadingState.loadAndSwitchState(new PlayState(), true);
-			});
+			new FlxTimer().start(1, (tmr:FlxTimer) -> LoadingState.loadAndSwitchState(new PlayState(), true));
 		}
 	}
 
