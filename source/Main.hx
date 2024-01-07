@@ -85,8 +85,6 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
 
 		#if sys
-		trace(Paths.text('buildNum'));
-
 		if (Assets.exists(Paths.text('buildNum'))){
 			var oldBuild = Std.parseFloat(Assets.getText(Paths.text('buildNum')));
 
@@ -94,10 +92,7 @@ class Main extends Sprite
 
 			buildNumber = Std.parseFloat(Assets.getText(Paths.text('buildNum')));
 		}
-		#else
-		//nothing
 		#end
-
 
 		#if !mobile
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);

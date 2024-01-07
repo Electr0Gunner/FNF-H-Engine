@@ -34,6 +34,8 @@ class MainMenuState extends MusicBeatState
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 
+	public final fnfVersion = "0.2.8";
+
 	override function create()
 	{
 		#if discord_rpc
@@ -48,42 +50,40 @@ class MainMenuState extends MusicBeatState
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
-
+		
 		persistentUpdate = persistentDraw = true;
+		
+		camFollow = new FlxObject(0, 0, 1, 1);
+		add(camFollow);
+		FlxG.camera.follow(camFollow, null, 0.06);
 
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
-		bg.scrollFactor.x = 0;
-		bg.scrollFactor.y = 0.17;
-		bg.setGraphicSize(Std.int(bg.width * 1.1));
+		bg.scale.set(1.1, 1.1);
 		bg.updateHitbox();
 		bg.screenCenter();
+		bg.scrollFactor.set(0, 0.17);
 		bg.antialiasing = true;
 		add(bg);
 
-		camFollow = new FlxObject(0, 0, 1, 1);
-		add(camFollow);
-
+		// Will have the same properties as the original (thanks to `copyFrom`)
 		magenta = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
-		magenta.scrollFactor.x = bg.scrollFactor.x;
-		magenta.scrollFactor.y = bg.scrollFactor.y;
-		magenta.setGraphicSize(Std.int(magenta.width * 1.1));
+		magenta.color = 0xFFfd719b;
+		magenta.scale.copyFrom(bg.scale);
 		magenta.updateHitbox();
 		magenta.screenCenter();
+		magenta.scrollFactor.copyFrom(bg.scrollFactor);
+		magenta.antialiasing = bg.antialiasing;
 		magenta.visible = false;
-		magenta.antialiasing = true;
-		magenta.color = 0xFFfd719b;
 		add(magenta);
-		// magenta.scrollFactor.set();
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
-		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
-
+		var opt_tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
-			menuItem.frames = tex;
+			menuItem.frames = opt_tex;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
@@ -95,17 +95,18 @@ class MainMenuState extends MusicBeatState
 			menuItem.antialiasing = true;
 		}
 
-		FlxG.camera.follow(camFollow, null, 0.06);
-
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "v" + Application.current.meta.get('version') + " (Build " + Main.buildNumber + ")",  12);
-		versionShit.scrollFactor.set();
+		var versionShit:FlxText = new FlxText(5, FlxG.height - 36, 0, 
+			"H-Engine v" + Application.current.meta.get('version') +
+			"\nFriday Night Funkin' v" + fnfVersion
+		, 16);
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.scrollFactor.set();
 		add(versionShit);
 
-		var randInfo:FlxText = new FlxText(970, FlxG.height - 18, 0, "press 'u' to access the tools menu",  12);
-		randInfo.scrollFactor.set();
-		randInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(randInfo);
+		var tipTxt:FlxText = new FlxText(FlxG.width - 262, FlxG.height - 20, 0, "Press U to access Tools Menu", 12);
+		tipTxt.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		tipTxt.scrollFactor.set();
+		add(tipTxt);
 
 		// NG.core.calls.event.logEvent('swag').send();
 

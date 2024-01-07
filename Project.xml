@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' H-Engine" file="H-Engine" packageName="com.Electr0.HEngine" package="com.Electr0.HEngine" main="Main" version="0.1.0" company="Electr0" />
+	<app title="Friday Night Funkin' H-Engine" file="H-Engine" packageName="com.Electr0.HEngine" package="com.Electr0.HEngine" main="Main" version="1.0" company="Electr0" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />

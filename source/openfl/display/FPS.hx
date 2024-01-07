@@ -78,23 +78,30 @@ class FPS extends TextField
 
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
-		/*if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate; */
+		// if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
 			text = "FPS: " + currentFPS;
+			#if (openfl && debug)
 			var memoryMegas:Float = 0;
 			
-			#if openfl
 			memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
-			text += "\nMemory: " + memoryMegas + " MB";
+			text += '\nMemory: ${memoryMegas}MB';
+			#end
+
+			#if sys
+			#if !debug 	text += "\nBuild " + Main.buildNumber;
+			#else 			text += "\nDebug Build"; #end
 			#end
 
 			textColor = 0xFFFFFFFF;
+			#if debug
 			if (memoryMegas > 3000 /*|| currentFPS <= ClientPrefs.framerate / 2 */)
 			{
 				textColor = 0xFFFF0000;
 			}
+			#end
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();
