@@ -46,7 +46,8 @@ class Song
 	public static function loadFromJson(jsonInput:String, ?folder:Null<String>):SwagSong
 	{
 		jsonInput = jsonInput.toLowerCase();
-		if (folder == null) folder = jsonInput.substring(0, jsonInput.lastIndexOf('-'));
+		if (folder == null) folder = jsonInput;
+		if (folder.endsWith('-easy') || folder.endsWith('-hard')) folder = folder.substring(0, folder.lastIndexOf('-')); // Can't really think of a way to check for this -BernardoGP
 		folder = folder.toLowerCase();
 
 		var rawJson = Assets.getText(Paths.json(jsonInput, 'data/$folder')).trim();
