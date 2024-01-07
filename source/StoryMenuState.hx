@@ -107,7 +107,7 @@ class StoryMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		scoreText = new FlxText(10, 10, 0, "SCORE: N/A", 36);
+		scoreText = new FlxText(10, 10, 0, "", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
 
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
@@ -128,24 +128,9 @@ class StoryMenuState extends MusicBeatState
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
 
-		var funk = FileSystem.readDirectory('assets/weeks');
-		for (shitRead in funk)
-		{
-			if (shitRead.endsWith('.json'))
-			{
-				var fileWithoutExt = shitRead.substring(0, shitRead.lastIndexOf('.'));
-				var rawFile = Assets.getText(Paths.json(fileWithoutExt, 'weeks')).trim();
-
-				// TODO: Improve this system
-				var daJson:WeekInfo = cast Json.parse(rawFile);
-				if (!weekNames.contains(daJson.name)) weekNames.push(daJson.name);
-				weekCharacters.push(daJson.chars);
-
-				if (!weekData.contains(daJson.songs)) weekData.push(daJson.songs);
-				// FIXME: When the array's lenth goes smaller than 3, the difficulty system goes crazy
-				// if (daJson.difficulties != null) diffs = daJson.difficulties;
-			}
-		}
+		var customWeeksDir:String = 'assets';
+		if (FileSystem.exists('mods/${Assets.getText(Paths.text('modSelected'))}/weeks')) customWeeksDir = 'mods/${Assets.getText(Paths.text('modSelected'))}';
+		pushCustomWeeks(FileSystem.readDirectory('$customWeeksDir/weeks'));
 
 		#if discord_rpc
 		// Updating Discord Rich Presence
@@ -237,6 +222,27 @@ class StoryMenuState extends MusicBeatState
 		updateText();
 
 		super.create();
+	}
+
+	private function pushCustomWeeks(weekDir:Array<String>)
+	{
+		for (file in weekDir)
+		{
+			if (file.endsWith('.json')) // If the file isn't a json or is a folder, we skip it 
+			{
+				var fileWithoutExt = file.substring(0, file.lastIndexOf('.'));
+				var rawFile = Assets.getText(Paths.json(fileWithoutExt, 'weeks')).trim();
+
+				// TODO: Improve this system
+				var daJson:WeekInfo = cast Json.parse(rawFile);
+				if (!weekNames.contains(daJson.name)) weekNames.push(daJson.name);
+				weekCharacters.push(daJson.chars);
+
+				if (!weekData.contains(daJson.songs)) weekData.push(daJson.songs);
+				// FIXME: When the array's lenth goes smaller than 3, the difficulty system goes crazy
+				// if (daJson.difficulties != null) diffs = daJson.difficulties;
+			}
+		}
 	}
 
 	override function update(elapsed:Float)
@@ -331,7 +337,7 @@ class StoryMenuState extends MusicBeatState
 				case 0: diffic = 'easy';
 				case 2: diffic = 'hard';
 			}
-			var songJson:String = weekData[curWeek][0]; // The first track of the list 
+			var songJson:String = weekData[curWeek][0]; // The first track of the list, it's the same as PlayState.storyPlaylist[0]
 			if (diffic != null) songJson += '-$diffic';
 			PlayState.SONG = Song.loadFromJson(songJson);
 
