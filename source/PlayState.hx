@@ -142,6 +142,7 @@ class PlayState extends MusicBeatState
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
 
+	
 	var inCutscene:Bool = false;
 
 	#if discord_rpc
@@ -1001,12 +1002,12 @@ class PlayState extends MusicBeatState
 					});
 				case 'senpai' | 'roses' | 'thorns':
 					schoolIntro(doof);
-				// case 'ugh':
-				// 	//ughIntro();
-				// case 'stress':
-				// 	//stressIntro();
-				// case 'guns':
-				// 	//gunsIntro();
+				case 'ugh':
+					ughIntro();
+				case 'stress':
+					stressIntro();
+				case 'guns':
+					gunsIntro();
 
 				default:
 					startCountdown();
