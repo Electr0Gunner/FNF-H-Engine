@@ -1,5 +1,6 @@
 package;
 
+import lime.utils.Log;
 #if discord_rpc
 import Discord.DiscordClient;
 #end
@@ -26,7 +27,13 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
 	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
+	var optionShit:Array<String> = 
+	[
+		'story mode',
+		'freeplay',
+		'donate',
+		'options'
+	];
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
@@ -63,6 +70,16 @@ class MainMenuState extends MusicBeatState
 		bg.screenCenter();
 		bg.scrollFactor.set(0, 0.17);
 		bg.antialiasing = true;
+		// Some changes to help with not showing the border of this whenever we have more than 5 options
+		if (optionShit.length >= 4)
+		{
+			final scaleMult = (optionShit.length - 1) + .81;
+			bg.scale.x *= optionShit.length / scaleMult;
+			bg.scale.y *= optionShit.length / scaleMult;
+
+			final decimalShit = (optionShit.length <= 7) ? '0' : '';
+			bg.scrollFactor.y -= Std.parseFloat('0.$decimalShit${optionShit.length + 2}');
+		}
 		add(bg);
 
 		// Will have the same properties as the original (thanks to `copyFrom`)
@@ -82,7 +99,7 @@ class MainMenuState extends MusicBeatState
 		var opt_tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 		for (i in 0...optionShit.length)
 		{
-			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
+			var menuItem:FlxSprite = new FlxSprite(0, 60 + ((i * 160) / 1.05));
 			menuItem.frames = opt_tex;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
@@ -90,8 +107,8 @@ class MainMenuState extends MusicBeatState
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
-			var scr:Float = (optionShit.length - 4) * 0.135;
-			menuItem.scrollFactor.set(0,scr);
+			var scr:Float = 0.135 * Math.round(optionShit.length - 2.15); // Just to make it feel better
+			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = true;
 		}
 
@@ -128,6 +145,7 @@ class MainMenuState extends MusicBeatState
 		{
 			if (FlxG.keys.justPressed.U)
 			{
+				selectedSomethin = true;
 				FlxG.switchState(new ui.ToolsState());
 			}
 
@@ -231,7 +249,9 @@ class MainMenuState extends MusicBeatState
 			if (spr.ID == curSelected)
 			{
 				spr.animation.play('selected');
-				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
+				camFollow.setPosition(0, spr.getGraphicMidpoint().y);
+				// Incase you selected the 5th option or higher, the camera goes up to avoid showing the boundaries of the background
+				if (optionShit.length >= 5 && curSelected >= 3) camFollow.y -= optionShit.length * 10;
 			}
 
 			spr.updateHitbox();
