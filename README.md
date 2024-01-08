@@ -17,6 +17,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 - [504Brandon](https://github.com/504brandon) - Coder
 - [Dezerin](https://github.com/DemonDezerin) - Coder
 - [Gangster_bacon3](https://www.youtube.com/channel/UCvdmgoCsWhcVPSwB7h91GEg) - Help with making stages appear based on chart
+- [BernardoGP4504](https://github.com/BernardoGP4504) - Coder
 - [TheRealJake_12](https://github.com/TheRealJake12) - Recommendations and let us use some of his code (W, Check out his kade fork lol)
 
 
