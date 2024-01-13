@@ -200,9 +200,27 @@ class PlayState extends MusicBeatState
 		initDiscord();
 		#end
 
-		if (SONG.stage == null)
-		{
-			SONG.stage = "stage";
+		if (SONG.stage == null) {
+			SONG.stage = 'stage';
+
+			switch (curSong.toLowerCase()) {
+				case 'spookeez' | 'south' | 'monster':
+					SONG.stage = 'spooky';
+				case 'pico' | 'philly nice' | 'blammed':
+					SONG.stage = 'philly';
+				case 'satin-panties' | 'high' | 'm.i.l.f':
+					SONG.stage = 'limo';
+				case 'cocoa' | 'eggnog':
+					SONG.stage = 'mall';
+				case 'winter-horrorland':
+					SONG.stage = 'mallEevil';
+				case 'senpai':
+					SONG.stage = 'school';
+				case 'roses':
+					SONG.stage = 'school';
+				case 'thorns':
+					SONG.stage = 'schoolEvil';
+			}
 		}
 
 		switch (SONG.stage)
