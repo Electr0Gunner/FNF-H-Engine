@@ -27,6 +27,8 @@ class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
 
+	public var arrowInfo:ArrowData;
+
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var canBeHit:Bool = false;
@@ -79,7 +81,7 @@ class Note extends FlxSprite
 		switch (daStage)
 		{
 			case 'school' | 'schoolEvil':
-				loadGraphic(Paths.image('week6/weeb/pixelUI/arrows-pixels'), true, 17, 17);
+				loadGraphic(Paths.image('notes/base/NOTE_assets-pixel'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
@@ -88,7 +90,7 @@ class Note extends FlxSprite
 
 				if (isSustainNote)
 				{
-					loadGraphic(Paths.image('week6/weeb/pixelUI/arrowEnds'), true, 7, 6);
+					loadGraphic(Paths.image('notes/base/arrowEnds-pixel'), true, 7, 6);
 
 					animation.add('purpleholdend', [4]);
 					animation.add('greenholdend', [6]);
@@ -105,7 +107,7 @@ class Note extends FlxSprite
 				updateHitbox();
 
 			default:
-				frames = Paths.getSparrowAtlas('NOTE_assets');
+				frames = Paths.getSparrowAtlas('notes/base/NOTE_assets');
 
 				animation.addByPrefix('greenScroll', 'green instance');
 				animation.addByPrefix('redScroll', 'red instance');
