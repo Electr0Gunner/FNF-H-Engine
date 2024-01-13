@@ -72,6 +72,11 @@ class HScript
 				"FlxText" => flixel.text.FlxText,
 				"FlxTween" => flixel.tweens.FlxTween,
 				"FlxTrail" => flixel.addons.effects.FlxTrail,
+				"FlxSound" => #if (flixel >= "5.3.0")
+				flixel.sound.FlxSound;
+				#else
+				flixel.system.FlxSound;
+				#end
 				"TankmenBG" => TankmenBG,
 				"FlxBackdrop" => flixel.addons.display.FlxBackdrop,
 				"FlxTypedGroup" => flixel.group.FlxGroup.FlxTypedGroup,
