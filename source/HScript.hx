@@ -4,6 +4,7 @@ package;
 import hscript.Expr.Error;
 import openfl.Assets;
 import hscript.*;
+import stageObjects.*;
 #end
 
 using StringTools;

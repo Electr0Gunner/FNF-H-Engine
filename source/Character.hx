@@ -10,6 +10,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import haxe.io.Path;
+import stageObjects.*;
 
 using StringTools;
 
