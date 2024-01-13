@@ -108,7 +108,7 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		FlxG.save.bind('Funkin Sourse', 'Electr0');
+		FlxG.save.bind('Funkin H-Engine', 'Electr0'); //fixed dumb OLD OLD spelling mistake
 		PreferencesMenu.initPrefs();
 		PlayerSettings.init();
 		Highscore.load();
