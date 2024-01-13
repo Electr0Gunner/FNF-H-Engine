@@ -28,6 +28,8 @@ class HScript
 	var blankVars:Map<String, Null<Dynamic>>;
 	public var path:String;
 
+	private var flxSoundtxt:String = #if (flixel >= "5.3.0") "flixel.sound.FlxSound" #else "flixel.system.FlxSound" #end;
+
 	#if sys
 	public function new(scriptPath:String)
 	{
@@ -72,11 +74,7 @@ class HScript
 				"FlxText" => flixel.text.FlxText,
 				"FlxTween" => flixel.tweens.FlxTween,
 				"FlxTrail" => flixel.addons.effects.FlxTrail,
-				"FlxSound" => #if (flixel >= "5.3.0")
-				flixel.sound.FlxSound;
-				#else
-				flixel.system.FlxSound;
-				#end
+				"FlxSound" => flxSoundtxt,
 				"TankmenBG" => TankmenBG,
 				"FlxBackdrop" => flixel.addons.display.FlxBackdrop,
 				"FlxTypedGroup" => flixel.group.FlxGroup.FlxTypedGroup,
