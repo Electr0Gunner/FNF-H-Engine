@@ -11,7 +11,8 @@
       "postfix": "spooky dance idle",
       "prefix": "danceLeft",
       "looped": false,
-      "indices": [0, 2, 6]
+      "indices": [0, 2, 6],
+      "fps": 12
     },
     {
       "x": 0,
@@ -19,7 +20,8 @@
       "postfix": "spooky dance idle",
       "prefix": "danceRight",
       "looped": false,
-      "indices": [8, 10, 12, 14]
+      "indices": [8, 10, 12, 14],
+      "fps": 12
     },
     {
       "x": -20,
