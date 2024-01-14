@@ -97,8 +97,8 @@ class PlayState extends MusicBeatState
 
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
-	private var camHUD:FlxCamera;
-	private var camGame:FlxCamera;
+	public var camHUD:FlxCamera;
+	public var camGame:FlxCamera;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
@@ -791,7 +791,7 @@ class PlayState extends MusicBeatState
 
 			if (FileSystem.exists('./mods/Global/scripts/characterScripts'))
 			{
-				for (i in FileSystem.readDirectory('./mods/scripts/characterScripts'))
+				for (i in FileSystem.readDirectory('./mods/Global/scripts/characterScripts'))
 				{
 					if (i.contains(allowed))
 					{
