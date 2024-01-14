@@ -789,7 +789,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			if (FileSystem.exists('./mods/scripts/characterScripts'))
+			if (FileSystem.exists('./mods/Global/scripts/characterScripts'))
 			{
 				for (i in FileSystem.readDirectory('./mods/scripts/characterScripts'))
 				{
@@ -799,7 +799,7 @@ class PlayState extends MusicBeatState
 
 						scriptrel.remove(allowed);
 
-						var script:HScript = new HScript('scripts/characterScripts/${scriptrel[0]}');
+						var script:HScript = new HScript('scripts/Global/characterScripts/${scriptrel[0]}');
 
 						if (!script.isBlank && script.expr != null)
 						{
