@@ -689,6 +689,31 @@ class PlayState extends MusicBeatState
 				}
 			}
 
+			if (FileSystem.exists('./mods/Global/scripts'))
+			{
+				for (i in FileSystem.readDirectory('./mods/Global/scripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/' + scriptrel[0]);
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
 			if (FileSystem.exists('./mods/scripts'))
 			{
 				for (i in FileSystem.readDirectory('./mods/scripts'))
@@ -742,6 +767,31 @@ class PlayState extends MusicBeatState
 			if (FileSystem.exists('./assets/scripts/characterScripts'))
 			{
 				for (i in FileSystem.readDirectory('./assets/scripts/characterScripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/characterScripts/${scriptrel[0]}');
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
+			if (FileSystem.exists('./mods/scripts/characterScripts'))
+			{
+				for (i in FileSystem.readDirectory('./mods/scripts/characterScripts'))
 				{
 					if (i.contains(allowed))
 					{
