@@ -92,8 +92,8 @@ class PreferencesMenu extends ui.OptionsState.Page
 		FlxG.sound.muted = true;
 		#end
 
-		if (!getPref('fps-counter'))
-			FlxG.stage.removeChild(Main.fpsCounter);
+		//if (!getPref('fps-counter'))
+			//Main.fpsCounter.alpha = 0;
 
 		FlxG.autoPause = getPref('auto-pause');
 	}

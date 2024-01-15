@@ -113,6 +113,13 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 		Highscore.load();
 
+		if (!PreferencesMenu.getPref('fps-counter')){
+			FlxG.stage.removeChild(Main.fpsCounter);
+			trace("the fps text is NOT visible");
+		}
+		else
+			trace("the fps text is visible");
+
 		if (FlxG.save.data.weekUnlocked != null)
 		{
 			// FIX LATER!!!

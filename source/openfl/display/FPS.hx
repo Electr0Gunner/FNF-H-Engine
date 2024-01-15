@@ -50,6 +50,7 @@ class FPS extends TextField
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";
+		alpha = 0;
 
 		cacheCount = 0;
 		currentTime = 0;
