@@ -76,6 +76,7 @@ class HScript
 				"FlxTrail" => flixel.addons.effects.FlxTrail,
 				"FlxSound" => flxSoundtxt,
 				"TankmenBG" => TankmenBG,
+				"BGSprite" => BGSprite,
 				"FlxBackdrop" => flixel.addons.display.FlxBackdrop,
 				"FlxTypedGroup" => flixel.group.FlxGroup.FlxTypedGroup,
 				"Assets" => openfl.Assets,
