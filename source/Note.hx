@@ -59,6 +59,8 @@ class Note extends FlxSprite
 
 	public static var arrowColors:Array<Float> = [1, 1, 1, 1];
 
+	public var noteType:String = '';
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
 		super();
@@ -78,9 +80,12 @@ class Note extends FlxSprite
 
 		var daStage:String = PlayState.curStage;
 
-		switch (daStage)
-		{
-			case 'school' | 'schoolEvil':
+		var isPixel:Bool = false;
+
+		if (daStage.startsWith("school"))
+			isPixel = true;
+
+			if(isPixel){
 				loadGraphic(Paths.image('notes/base/NOTE_assets-pixel'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
@@ -105,8 +110,8 @@ class Note extends FlxSprite
 
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
-
-			default:
+			}
+			else{
 				frames = Paths.getSparrowAtlas('notes/base/NOTE_assets');
 
 				animation.addByPrefix('greenScroll', 'green instance');
@@ -134,7 +139,7 @@ class Note extends FlxSprite
 				// color = FlxG.random.color();
 				// color.saturation *= 4;
 				// replaceColor(0xFFC1C1C1, FlxColor.RED);
-		}
+			}
 
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
