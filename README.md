@@ -19,6 +19,7 @@ IF YOU MAKE A MOD AND DISTRIBUTE A MODIFIED / RECOMPILED VERSION, YOU MUST OPEN 
 - [Gangster_bacon3](https://www.youtube.com/channel/UCvdmgoCsWhcVPSwB7h91GEg) - Help with making stages appear based on chart
 - [BernardoGP4504](https://github.com/BernardoGP4504) - Coder
 - [TheRealJake_12](https://github.com/TheRealJake12) - Recommendations and let us use some of his code (W, Check out his kade fork lol)
+- [folks behind Test Engine](https://github.com/Test-Engine-Team/Test-Engine-V1---FNF/tree/master) - Inspired from them for the Stage System
 
 
 # Compiling
