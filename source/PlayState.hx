@@ -161,6 +161,11 @@ class PlayState extends MusicBeatState
 	public var scripts:Array<HScript>;
 	var stage:Stage;
 
+	var halloweenBG:FlxSprite;
+	var isHalloween:Bool = false;
+	var lightningStrikeBeat:Int = 0;
+	var lightningOffset:Int = 8; // temp
+
 	override public function create()
 	{
 		misses = 0;
@@ -197,9 +202,8 @@ class PlayState extends MusicBeatState
 		initDiscord();
 		#end
 
-		stage = new Stage(SONG.stage, this);
-		add(stage);
-		/*
+
+		
 		if (SONG.stage == null) {
 			SONG.stage = 'stage';
 
@@ -227,7 +231,7 @@ class PlayState extends MusicBeatState
 		{
 			case 'halloween':
 				curStage = "halloween";
-				halloweenLevel = true;
+				//halloweenLevel = true;
 
 				var hallowTex = Paths.getSparrowAtlas('week2/halloween_bg');
 
@@ -582,8 +586,8 @@ class PlayState extends MusicBeatState
 					bgText.scrollFactor.set(0.9,0.9);
 					bgText.text = "there aint a stage in the chart, add one dumbass";
 					add(bgText);
-		//}
-		*/
+		}
+		
 		var gfVersion:String = 'gf';
 
 		if (SONG.gfVersion == null)
@@ -1129,7 +1133,7 @@ class PlayState extends MusicBeatState
 			script.callFunction('createPost');
 		#end
 
-		stage.callFromScript("createPost");
+		//stage.callFromScript("createPost");
 
 		super.create();
 	}
