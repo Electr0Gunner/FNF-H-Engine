@@ -6,36 +6,33 @@ import flixel.FlxSubState;
 
 class MusicBeatSubstate extends FlxSubState
 {
-	public function new()
-	{
-		super();
-
-		openfl.system.System.gc();
-	}
-
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
 	private var controls(get, never):Controls;
-
-	inline function get_controls():Controls
+	function get_controls():Controls
 		return PlayerSettings.player1.controls;
+	
+	public function new()
+	{
+		#if flash openfl.system.System.gc(); #end
+		
+		super();
+	}
 
 	override function update(elapsed:Float)
 	{
-		//everyStep();
 		var oldStep:Int = curStep;
 
-		updateCurStep();
-		curBeat = Math.floor(curStep / 4);
+		updateStep();
+		updateBeat();
 
 		if (oldStep != curStep && curStep >= 0)
 			stepHit();
 
-
 		super.update(elapsed);
 	}
 
-	private function updateCurStep():Void
+	private function updateStep():Void
 	{
 		var lastChange:BPMChangeEvent = {
 			stepTime: 0,
@@ -50,6 +47,10 @@ class MusicBeatSubstate extends FlxSubState
 
 		curStep = lastChange.stepTime + Math.floor((Conductor.songPosition - lastChange.songTime) / Conductor.stepCrochet);
 	}
+	private function updateBeat():Void
+	{
+		curBeat = Math.floor(curStep / 4);
+	}
 
 	public function stepHit():Void
 	{
@@ -59,6 +60,6 @@ class MusicBeatSubstate extends FlxSubState
 
 	public function beatHit():Void
 	{
-		//do literally nothing dumbass
+		// do literally nothing dumbass
 	}
 }

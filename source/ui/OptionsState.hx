@@ -21,13 +21,12 @@ class OptionsState extends MusicBeatState
 
 	override function create()
 	{
-		var menuBG = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		menuBG.color = 0xFFea71fd;
-		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
-		menuBG.updateHitbox();
-		menuBG.screenCenter();
-		menuBG.scrollFactor.set(0, 0);
-		add(menuBG);
+		var bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.color = 0xFFea71fd;
+		bg.scale.set(1.1, 1.1);
+		bg.updateHitbox();
+		bg.screenCenter();
+		add(bg);
 
 		var options = addPage(Options, new OptionsMenu(false));
 		var preferences = addPage(Preferences, new PreferencesMenu());
@@ -195,12 +194,6 @@ class OptionsMenu extends Page
 			var hasPopupBlocker = #if web true #else false #end;
 			createItem('donate', selectDonate, hasPopupBlocker);
 		}
-		#end
-		#if newgrounds
-		//if (NGio.isLoggedIn)
-			//createItem("logout", selectLogout);
-		//else
-			//createItem("login", selectLogin);
 		#end
 		createItem("exit", exit);
 	}

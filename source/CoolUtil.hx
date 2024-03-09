@@ -38,7 +38,24 @@ class CoolUtil
 	}
 
 	/**
-		Lerps camera, but accountsfor framerate shit?
+	 * Opens a link, except it has linux support.
+	 * @param link The link you want to open
+	 */
+	public static function openLink(link:String)
+	{
+		#if CAN_OPEN_LINKS
+		#if linux
+		Sys.command('/usr/bin/xdg-open', [link, "&"]);
+		#else
+		FlxG.openURL(link);
+		#end
+		#else
+		throw lime.utils.Log.error('Links aren\'t supported on this platform!');
+		#end
+	}
+
+	/**
+		Lerps camera, but accounts for framerate shit?
 		Right now it's simply for use to change the followLerp variable of a camera during update
 		TODO LATER MAYBE:
 			Actually make and modify the scroll and lerp shit in it's own function
@@ -49,7 +66,8 @@ class CoolUtil
 		return lerp * (FlxG.elapsed / (1 / 60));
 	}
 
-	inline public static function boundTo(value:Float, min:Float, max:Float):Float {
+	public static function boundTo(value:Float, min:Float, max:Float):Float
+	{
 		return Math.max(min, Math.min(max, value));
 	}
 

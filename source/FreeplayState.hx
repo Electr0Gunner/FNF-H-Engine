@@ -205,18 +205,6 @@ class FreeplayState extends MusicBeatState
 			trace('CUR WEEK' + PlayState.storyWeek);
 			LoadingState.loadAndSwitchState(new PlayState());
 		}
-
-		#if debug
-		if (FlxG.keys.justPressed.U)
-		{
-			PlayState.isStoryMode = true;
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(), songs[curSelected].songDifficultys[curDifficulty].toLowerCase());
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
-			PlayState.storyWeek = songs[curSelected].week;
-			trace('CUR WEEK' + PlayState.storyWeek);
-			LoadingState.loadAndSwitchState(new PlayState());
-		}
-		#end
 	}
 
 	function changeDiff(change:Int = 0)
@@ -251,22 +239,19 @@ class FreeplayState extends MusicBeatState
 		// lerpScore = 0;
 
 		#if sys
-		FlxG.sound.playMusic(Paths.song(songs[curSelected].songName.toLowerCase(), "Inst", "Normal"), 0);
+		FlxG.sound.playMusic(Paths.song(songs[curSelected].songName, 'Inst', songs[curSelected].songDifficultys[curDifficulty]), 0);
 		#end
-
-		var bullShit:Int = 0;
 
 		for (i in 0...iconArray.length)
 		{
 			iconArray[i].alpha = 0.6;
 		}
-
 		iconArray[curSelected].alpha = 1;
-
+		
+		var bullShit:Int = 0;
 		for (item in grpSongs.members)
 		{
 			item.targetY = bullShit - curSelected;
-			bullShit++;
 
 			item.alpha = 0.6;
 			// item.setGraphicSize(Std.int(item.width * 0.8));
@@ -276,6 +261,8 @@ class FreeplayState extends MusicBeatState
 				item.alpha = 1;
 				// item.setGraphicSize(Std.int(item.width));
 			}
+
+			bullShit++;
 		}
 
 		changeDiff();

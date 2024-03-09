@@ -49,7 +49,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		add(camFollow);
 
 		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix));
-		Conductor.changeBPM(100);
+		Conductor.bpm = 100;
 
 		// FlxG.camera.followLerp = 1;
 		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
@@ -97,7 +97,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.switchState(new AnimationDebug(bf.curCharacter));
 		#end
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
+		if (bf.animation.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
 		{
 			FlxG.camera.follow(camFollow, LOCKON, 0.01);
 		}
@@ -105,7 +105,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		switch (PlayState.storyWeek)
 		{
 			case 7:
-				if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished && !playingDeathSound)
+				if (bf.animation.name == 'firstDeath' && bf.animation.curAnim.finished && !playingDeathSound)
 				{
 					playingDeathSound = true;
 
@@ -119,7 +119,7 @@ class GameOverSubstate extends MusicBeatSubstate
 					});
 				}
 			default:
-				if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
+				if (bf.animation.name == 'firstDeath' && bf.animation.curAnim.finished)
 				{
 					bf.startedDeath = true;
 					coolStartDeath();

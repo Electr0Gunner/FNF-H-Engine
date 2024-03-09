@@ -70,7 +70,7 @@ class AtlasMenuItem extends MenuItem
 	
 	override function get_selected()
 	{
-		return animation.curAnim != null && animation.curAnim.name == "selected";
+		return animation.curAnim != null && animation.name == "selected";
 	}
 	
 	override function destroy()

@@ -44,12 +44,6 @@ class ChartingState extends MusicBeatState
 
 	var UI_box:FlxUITabMenu;
 
-	/**
-	 * Array of notes showing when each section STARTS in STEPS
-	 * Usually rounded up??
-	 */
-	var curSection:Int = 0;
-
 	public static var lastSection:Int = 0;
 
 	var bpmTxt:FlxText;
@@ -98,7 +92,6 @@ class ChartingState extends MusicBeatState
 
 	override function create()
 	{
-
 		curSection = lastSection;
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('chartEditor/ChartMenuBG'));
@@ -192,7 +185,7 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 
 		loadSong(_song.song);
-		Conductor.changeBPM(_song.bpm);
+		Conductor.bpm = _song.bpm;
 		Conductor.mapBPMChanges(_song);
 
 		bpmTxt = new FlxText(1000, 50, 0, "", 16);
@@ -547,7 +540,7 @@ class ChartingState extends MusicBeatState
 			{
 				tempBpm = nums.value;
 				Conductor.mapBPMChanges(_song);
-				Conductor.changeBPM(nums.value);
+				Conductor.bpm = nums.value;
 			}
 			else if (wname == 'note_susLength')
 			{
@@ -703,21 +696,17 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.justPressed.SPACE)
 			{
 				if (FlxG.sound.music.playing)
-					{
-						FlxG.sound.music.pause();
-						vocals.pause();
-	
-						lilBf.animation.play("idle");
-						lilOpp.animation.play("idle");
-					}
-					else
-					{
-						vocals.play();
-						FlxG.sound.music.play();
-	
-						lilBf.animation.play("idle");
-						lilOpp.animation.play("idle");
-					}
+				{
+					vocals.pause();
+					FlxG.sound.music.pause();
+				}
+				else
+				{
+					vocals.play();
+					FlxG.sound.music.play();
+				}
+				lilBf.animation.play('idle');
+				lilOpp.animation.play('idle');
 			}
 
 			if (FlxG.keys.justPressed.R)
@@ -788,10 +777,8 @@ class ChartingState extends MusicBeatState
 
 		_song.bpm = tempBpm;
 
-		/* if (FlxG.keys.justPressed.UP)
-				Conductor.changeBPM(Conductor.bpm + 1);
-			if (FlxG.keys.justPressed.DOWN)
-				Conductor.changeBPM(Conductor.bpm - 1); */
+		/* if (FlxG.keys.justPressed.UP) Conductor.bpm += 1;
+		else if (FlxG.keys.justPressed.DOWN) Conductor.bpm -= 1; */
 
 		var shiftThing:Int = 1;
 		if (FlxG.keys.pressed.SHIFT)
@@ -912,7 +899,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		vocals.time = FlxG.sound.music.time;
-		updateCurStep();
+		updateStep();
 
 		updateGrid();
 		updateSectionUI();
@@ -946,7 +933,7 @@ class ChartingState extends MusicBeatState
 
 				FlxG.sound.music.time = sectionStartTime();
 				vocals.time = FlxG.sound.music.time;
-				updateCurStep();
+				updateStep();
 			}
 
 			updateGrid();
@@ -1022,7 +1009,7 @@ class ChartingState extends MusicBeatState
 
 		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
 		{
-			Conductor.changeBPM(_song.notes[curSection].bpm);
+			Conductor.bpm = _song.notes[curSection].bpm;
 			FlxG.log.add('CHANGED BPM!');
 		}
 		else
@@ -1032,7 +1019,7 @@ class ChartingState extends MusicBeatState
 			for (i in 0...curSection)
 				if (_song.notes[i].changeBPM)
 					daBPM = _song.notes[i].bpm;
-			Conductor.changeBPM(daBPM);
+			Conductor.bpm = daBPM;
 		}
 
 		/* // PORT BULLSHIT, INCASE THERE'S NO SUSTAIN DATA FOR A NOTE

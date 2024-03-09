@@ -1,22 +1,18 @@
 package;
 
-import lime.utils.Log;
-#if discord_rpc
-import Discord.DiscordClient;
-#end
 import flixel.FlxG;
+import lime.app.Application;
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.effects.FlxFlicker;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.math.FlxMath;
 import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
-import lime.app.Application;
+import flixel.effects.FlxFlicker;
+
+#if discord_rpc import Discord.DiscordClient; #end
 
 using StringTools;
 
@@ -26,17 +22,12 @@ class MainMenuState extends MusicBeatState
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 
-	#if !switch
-	var optionShit:Array<String> = 
-	[
+	var optionShit:Array<String> = [
 		'story mode',
 		'freeplay',
-		'donate',
+		#if CAN_OPEN_LINKS 'donate', #end
 		'options'
 	];
-	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
-	#end
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -45,20 +36,16 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		#if discord_rpc
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
-		#end
+		#if discord_rpc DiscordClient.changePresence("In the Menus", null); #end
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
 
 		if (!FlxG.sound.music.playing)
-		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		}
 		
-		persistentUpdate = persistentDraw = true;
+		for (persistentVar in [persistentUpdate, persistentDraw]) persistentVar = true;
 		
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
@@ -107,7 +94,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
-			var scr:Float = 0.135 * Math.round(optionShit.length - 2.15); // Just to make it feel better
+			var scr:Float = 0.135 * Math.round(optionShit.length - 2.15); // Making scrolling trough options feel better
 			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = true;
 		}
@@ -125,11 +112,8 @@ class MainMenuState extends MusicBeatState
 		tipTxt.scrollFactor.set();
 		add(tipTxt);
 
-		// NG.core.calls.event.logEvent('swag').send();
-
-		changeItem();
-
 		super.create();
+		changeSelection();
 	}
 
 	var selectedSomethin:Bool = false;
@@ -149,35 +133,29 @@ class MainMenuState extends MusicBeatState
 				FlxG.switchState(new ui.ToolsState());
 			}
 
-			if (controls.UI_UP_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				changeItem(-1);
-			}
-
-
-			if (controls.UI_DOWN_P)
-			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
-				changeItem(1);
-			}
+			if (controls.UI_UP_P) changeSelection(-1);
+			if (controls.UI_DOWN_P) changeSelection(1);
 
 			if (controls.BACK)
 			{
+				selectedSomethin = true;
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+
 				FlxG.switchState(new TitleState());
 			}
 
 			if (controls.ACCEPT)
 			{
+				#if CAN_OPEN_LINKS
 				if (optionShit[curSelected] == 'donate')
 				{
-					#if linux
-					Sys.command('/usr/bin/xdg-open', ["https://ninja-muffin24.itch.io/funkin", "&"]);
-					#else
-					FlxG.openURL('https://ninja-muffin24.itch.io/funkin');
-					#end
+					selectedSomethin = true;
+					FlxG.sound.play(Paths.sound('confirmMenu'));
+
+					CoolUtil.openLink('https://ninja-muffin24.itch.io/funkin');
 				}
 				else
+				#end
 				{
 					selectedSomethin = true;
 					FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -188,36 +166,25 @@ class MainMenuState extends MusicBeatState
 					{
 						if (curSelected != spr.ID)
 						{
-							FlxTween.tween(spr, {alpha: 0}, 0.4, {
+							FlxTween.tween(spr, {alpha: 0}, 0.4, 
+							{
 								ease: FlxEase.quadOut,
-								onComplete: function(twn:FlxTween)
-								{
-									spr.kill();
-								}
+								onComplete: (twn:FlxTween) -> spr.kill()
 							});
 						}
 						else
 						{
-							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+							FlxFlicker.flicker(spr, 1, 0.06, true, false, function(flick:FlxFlicker)
 							{
-								var daChoice:String = optionShit[curSelected];
-
-								switch (daChoice)
+								static var daChoiceMenu:flixel.FlxState;
+								switch (optionShit[curSelected])
 								{
-									case 'story mode':
-										FlxG.switchState(new StoryMenuState());
-										trace("Story Menu Selected");
-									case 'freeplay':
-										FlxG.switchState(new FreeplayState());
-
-										trace("Freeplay Menu Selected");
-
-									case 'options':
-										//FlxTransitionableState.skipNextTransIn = true;
-										//FlxTransitionableState.skipNextTransOut = true;
-										FlxG.switchState(new ui.OptionsState());
-										trace("Options Menu Selected");
+									case 'story mode': daChoiceMenu = new StoryMenuState();
+									case 'freeplay': daChoiceMenu = new FreeplayState();
+									case 'options': daChoiceMenu = new ui.OptionsState();
 								}
+
+								FlxG.switchState(daChoiceMenu);
 							});
 						}
 					});
@@ -227,16 +194,13 @@ class MainMenuState extends MusicBeatState
 
 		super.update(elapsed);
 
-		menuItems.forEach(function(spr:FlxSprite)
-		{
-			spr.screenCenter(X);
-		});
+		menuItems.forEach((spr:FlxSprite) -> spr.screenCenter(X));
 	}
 
-	function changeItem(huh:Int = 0)
+	function changeSelection(change:Int = 0)
 	{
-		curSelected += huh;
-
+		curSelected += change;
+		
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
 		if (curSelected < 0)
@@ -250,7 +214,7 @@ class MainMenuState extends MusicBeatState
 			{
 				spr.animation.play('selected');
 				camFollow.setPosition(0, spr.getGraphicMidpoint().y);
-				// Incase you selected the 5th option or higher, the camera goes up to avoid showing the boundaries of the background
+				// In-case you selected the 5th option or higher, the camera goes up to avoid showing the boundaries of the background
 				if (optionShit.length >= 5 && curSelected >= 3) camFollow.y -= optionShit.length * 10;
 			}
 

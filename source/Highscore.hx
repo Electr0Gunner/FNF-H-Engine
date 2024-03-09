@@ -62,12 +62,11 @@ class Highscore
 
 	public static function formatSong(song:String, diff:String):String
 	{
-		var daSong:String = song;
+		song = song.toLowerCase();
+		diff = diff.toLowerCase();
 
-		if (diff != 'normal')
-			daSong += '-$diff';
-
-		return daSong;
+		if (diff != 'normal') song += '-$diff';
+		return song;
 	}
 
 	public static function getScore(song:String, diff:String):Int

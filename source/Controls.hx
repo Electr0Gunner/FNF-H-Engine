@@ -230,7 +230,7 @@ class Controls extends FlxActionSet
 	public function getDialogueName(action:FlxActionDigital):String
 	{
 		var input = action.inputs[0];
-		return switch input.device
+		return switch (input.device)
 		{
 			case KEYBOARD: return '[${(input.inputID : FlxKey)}]';
 			case GAMEPAD: return '(${(input.inputID : FlxGamepadInputID)})';
@@ -553,22 +553,20 @@ class Controls extends FlxActionSet
 	public function addDefaultGamepad(id):Void
 	{
 		addGamepadLiteral(id, [
-			
-			Control.ACCEPT => [#if switch B #else A #end],
-			Control.BACK => [#if switch A #else B #end, FlxGamepadInputID.BACK],
-			Control.UI_UP => [DPAD_UP, LEFT_STICK_DIGITAL_UP],
-			Control.UI_DOWN => [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN],
-			Control.UI_LEFT => [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT],
-			Control.UI_RIGHT => [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
-			// don't swap A/B or X/Y for switch on these. A is always the bottom face button
-			Control.NOTE_UP => [DPAD_UP, Y, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
-			Control.NOTE_DOWN => [DPAD_DOWN, A, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
-			Control.NOTE_LEFT => [DPAD_LEFT, X, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
-			Control.NOTE_RIGHT => [DPAD_RIGHT, B, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
-			Control.PAUSE => [START],
-			Control.RESET => [Y]
+			Control.ACCEPT 			=> [A],
+			Control.BACK 				=> [B, FlxGamepadInputID.BACK],
+			Control.UI_LEFT 		=> [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT],
+			Control.UI_RIGHT 		=> [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
+			Control.UI_UP 			=> [DPAD_UP, LEFT_STICK_DIGITAL_UP],
+			Control.UI_DOWN 		=> [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN],
+			Control.NOTE_LEFT 	=> [DPAD_LEFT, X, LEFT_STICK_DIGITAL_LEFT, RIGHT_STICK_DIGITAL_LEFT],
+			Control.NOTE_RIGHT 	=> [DPAD_RIGHT, B, LEFT_STICK_DIGITAL_RIGHT, RIGHT_STICK_DIGITAL_RIGHT],
+			Control.NOTE_UP 		=> [DPAD_UP, Y, LEFT_STICK_DIGITAL_UP, RIGHT_STICK_DIGITAL_UP],
+			Control.NOTE_DOWN 	=> [DPAD_DOWN, A, LEFT_STICK_DIGITAL_DOWN, RIGHT_STICK_DIGITAL_DOWN],
+			Control.PAUSE 			=> [START],
+			Control.RESET 			=> [Y]
 			#if CAN_CHEAT
-			,Control.CHEAT => [X]
+			,Control.CHEAT 			=> [X]
 			#end
 		]);
 	}
@@ -649,7 +647,7 @@ class Controls extends FlxActionSet
 			var inputs:Array<Int> = Reflect.field(data, control.getName());
 			if (inputs != null)
 			{
-				switch(device)
+				switch (device)
 				{
 					case Keys: bindKeys(control, inputs.copy()); 
 					case Gamepad(id): bindButtons(control, id, inputs.copy()); 
@@ -675,7 +673,7 @@ class Controls extends FlxActionSet
 
 	static function isDevice(input:FlxActionInput, device:Device)
 	{
-		return switch device
+		return switch (device)
 		{
 			case Keys: input.device == KEYBOARD;
 			case Gamepad(id): isGamepad(input, id);

@@ -47,14 +47,15 @@ class Song
 	{
 		jsonInput = jsonInput.toLowerCase();
 		if (folder == null) folder = jsonInput;
-		if (folder.endsWith('-easy') || folder.endsWith('-hard')) folder = folder.substring(0, folder.lastIndexOf('-')); // Can't really think of a way to check for this -BernardoGP
+		// Can't really think of a way to check for this -BerGP
+		if (folder.endsWith('-easy') || folder.endsWith('-hard')) folder = folder.substring(0, folder.lastIndexOf('-'));
 		folder = folder.toLowerCase();
 
 		var rawJson = Assets.getText(Paths.json(jsonInput, 'data/$folder')).trim();
+		// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		while (!rawJson.endsWith("}"))
 		{
 			rawJson = rawJson.substr(0, rawJson.length - 1);
-			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
 
 		// FIX THE CASTING ON WINDOWS/NATIVE

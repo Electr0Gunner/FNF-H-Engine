@@ -53,7 +53,7 @@ class TankmenBG extends FlxSprite
 		else
 			visible = true;
 
-		if (animation.curAnim.name == 'run')
+		if (animation.name == 'run')
 		{
 			var endDirection:Float = (FlxG.width * 0.74) + endingOffset;
 
@@ -81,7 +81,7 @@ class TankmenBG extends FlxSprite
 			}
 		}
 
-		if (animation.curAnim.name == 'shot' && animation.curAnim.curFrame >= animation.curAnim.frames.length - 1)
+		if (animation.name == 'shot' && animation.curAnim.curFrame >= animation.curAnim.frames.length - 1)
 		{
 			kill();
 		}

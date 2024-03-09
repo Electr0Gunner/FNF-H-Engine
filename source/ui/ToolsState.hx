@@ -126,14 +126,10 @@ class ToolsState extends MusicBeatState
 		if (curSelected >= tools.length)
 			curSelected = 0;
 
-
 		var bullShit:Int = 0;
-
-
 		for (item in grpTools.members)
-		{
+		{			
 			item.targetY = bullShit - curSelected;
-			bullShit++;
 
 			item.alpha = 0.6;
 			// item.setGraphicSize(Std.int(item.width * 0.8));
@@ -143,8 +139,8 @@ class ToolsState extends MusicBeatState
 				item.alpha = 1;
 				// item.setGraphicSize(Std.int(item.width));
 			}
+
+			bullShit++;
 		}
-
 	}
-
 }

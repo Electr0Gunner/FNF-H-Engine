@@ -16,7 +16,7 @@ typedef BPMChangeEvent =
 
 class Conductor
 {
-	public static var bpm:Float = 100;
+	public static var bpm(default, set):Float = 100; // No extra function call needed, just set the variable
 	public static var crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var stepCrochet:Float = crochet / 4; // steps in milliseconds
 	public static var songPosition:Float;
@@ -27,10 +27,6 @@ class Conductor
 	public static var safeZoneOffset:Float = (safeFrames / 60) * 1000; // is calculated in create(), is safeFrames in milliseconds
 
 	public static var bpmChangeMap:Array<BPMChangeEvent> = [];
-
-	public function new()
-	{
-	}
 
 	public static function mapBPMChanges(song:SwagSong)
 	{
@@ -56,14 +52,16 @@ class Conductor
 			totalSteps += deltaSteps;
 			totalPos += ((60 / curBPM) * 1000 / 4) * deltaSteps;
 		}
-		trace("new BPM map BUDDY " + bpmChangeMap);
+		trace('New BPM Map buddy ($bpmChangeMap)');
 	}
 
-	public static function changeBPM(newBpm:Float)
+	private static function set_bpm(newBpm:Float)
 	{
 		bpm = newBpm;
 
 		crochet = ((60 / bpm) * 1000);
 		stepCrochet = crochet / 4;
+
+		return bpm;
 	}
 }

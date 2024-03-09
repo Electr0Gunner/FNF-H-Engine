@@ -228,20 +228,20 @@ class StoryMenuState extends MusicBeatState
 	{
 		for (file in weekDir)
 		{
-			if (file.endsWith('.json')) // If the file isn't a json or is a folder, we skip it 
-			{
-				var fileWithoutExt = file.substring(0, file.lastIndexOf('.'));
-				var rawFile = Assets.getText(Paths.json(fileWithoutExt, 'weeks')).trim();
+			if (!file.endsWith('.json')) break; // Only when the file is a json, we keep going
+			
+			var fileWithoutExt = file.substring(0, file.lastIndexOf('.'));
+			var rawFile = Assets.getText(Paths.json(fileWithoutExt, 'weeks')).trim();
 
-				// TODO: Improve this system
-				var daJson:WeekInfo = cast Json.parse(rawFile);
-				if (!weekNames.contains(daJson.name)) weekNames.push(daJson.name);
-				weekCharacters.push(daJson.chars);
+			// TODO: Improve this system
+			var daJson:WeekInfo = Json.parse(rawFile);
+			if (!weekNames.contains(daJson.name)) weekNames.push(daJson.name);
+			weekCharacters.push(daJson.chars);
 
-				if (!weekData.contains(daJson.songs)) weekData.push(daJson.songs);
-				// FIXME: When the array's lenth goes smaller than 3, the difficulty system goes crazy
-				// if (daJson.difficulties != null) diffs = daJson.difficulties;
-			}
+			if (!weekData.contains(daJson.songs)) weekData.push(daJson.songs);
+			// TODO: Make a difficulties array specific to a week json
+			// FIXME: When the array's lenth goes smaller than 3, the difficulty system goes crazy
+			// if (daJson.difficulties != null) diffs = daJson.difficulties;
 		}
 	}
 
@@ -416,7 +416,7 @@ class StoryMenuState extends MusicBeatState
 		grpWeekCharacters.members[2].animation.play(weekCharacters[curWeek][2]);
 		txtTracklist.text = "Tracks\n";
 
-		switch (grpWeekCharacters.members[0].animation.curAnim.name)
+		switch (grpWeekCharacters.members[0].animation.name)
 		{
 			case 'parents-christmas':
 				grpWeekCharacters.members[0].offset.set(200, 200);

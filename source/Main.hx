@@ -17,19 +17,35 @@ import openfl.net.NetStream;
 
 class Main extends Sprite
 {
-	public var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	public var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	public var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with. TitleState
-	public var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-	#if web
-	public var framerate:Int = 60; // How many frames per second the game should run at.
-	#else
-	public var framerate:Int = 144; // How many frames per second the game should run at.
-	#end
+	/**
+	 * Width of the game in pixels.
+	 * 
+	 * Can differ deppending on the zoom
+	 */
+	public var gameWidth:Int = 1280;
+	/**
+	 * Height of the game in pixels.
+	 * 
+	 * Can differ deppending on the zoom
+	 */
+	public var gameHeight:Int = 720;
+
+	/**
+	 * The `FlxState` the game starts with.
+	 */
+	public var initialState:Class<FlxState> = TitleState;
+	/**
+	 * The zoom of the game.
+	 * 
+	 * When it's value is `-1`; It's automatically calculated to fit the window dimensions.
+	 */
+	public var zoom:Float = -1;
+	/**
+	 * How many Frames Per Second the game should run at.
+	 */
+	public var framerate:Int = #if !web 120 #else 60 #end;
 	public var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	public var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
-
-	public static var buildNumber:Float = 0;
 
 	public static var fpsCounter:FPS;
 
@@ -78,25 +94,11 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if !debug
 		initialState = TitleState;
-		#end
 
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
 
-		#if sys
-		if (Assets.exists(Paths.text('buildNum'))){
-			var oldBuild = Std.parseFloat(Assets.getText(Paths.text('buildNum')));
-
-			File.saveBytes(FileSystem.absolutePath(Paths.text('buildNum')), Bytes.ofString('${oldBuild += 1}'));
-
-			buildNumber = Std.parseFloat(Assets.getText(Paths.text('buildNum')));
-		}
-		#end
-
-		#if !mobile
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
-		#end
 	}
 }
