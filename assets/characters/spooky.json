@@ -11,7 +11,8 @@
       "postfix": "spooky dance idle",
       "prefix": "danceLeft",
       "looped": false,
-      "indices": [0, 2, 6]
+      "indices": [0, 2, 6],
+      "fps": 12
     },
     {
       "x": 0,
@@ -19,33 +20,34 @@
       "postfix": "spooky dance idle",
       "prefix": "danceRight",
       "looped": false,
-      "indices": [8, 10, 12, 14]
+      "indices": [8, 10, 12, 14],
+      "fps": 12
     },
     {
-      "x": -11,
-      "y": 50,
-      "postfix": "Dad Sing Note UP",
+      "x": -20,
+      "y": 26,
+      "postfix": "spooky UP NOTE",
       "prefix": "singUP",
       "looped": false
     },
     {
-      "x": 0,
-      "y": -30,
-      "postfix": "Dad Sing Note DOWN",
+      "x": -50,
+      "y": -130,
+      "postfix": "spooky DOWN note",
       "prefix": "singDOWN",
       "looped": false
     },
     {
-      "x": -10,
-      "y": 10,
-      "postfix": "Dad Sing Note LEFT",
+      "x": 130,
+      "y": -10,
+      "postfix": "note sing left",
       "prefix": "singLEFT",
       "looped": false
     },
     {
-      "x": -4,
-      "y": 27,
-      "postfix": "Dad Sing Note RIGHT",
+      "x": -130,
+      "y": -14,
+      "postfix": "spooky sing right",
       "prefix": "singRIGHT",
       "looped": false
     }

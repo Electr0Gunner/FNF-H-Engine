@@ -80,10 +80,21 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		FlxG.save.bind('Funkin-Source', 'Electr0');
+		// DEBUG BULLSHIT
+
+		super.create();
+
+		FlxG.save.bind('H-Engine', 'Electr0'); //fixed dumb OLD OLD spelling mistake // and a warning
 		PreferencesMenu.initPrefs();
 		PlayerSettings.init();
 		Highscore.load();
+
+		if (!PreferencesMenu.getPref('fps-counter')){
+			FlxG.stage.removeChild(Main.fpsCounter);
+			trace("the fps text is NOT visible");
+		}
+		else
+			trace("the fps text is visible");
 
 		if (FlxG.save.data.weekUnlocked != null)
 		{

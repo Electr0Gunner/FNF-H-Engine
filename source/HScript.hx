@@ -4,6 +4,7 @@ package;
 import hscript.Expr.Error;
 import openfl.Assets;
 import hscript.*;
+import stageObjects.*;
 #end
 
 using StringTools;
@@ -26,6 +27,8 @@ class HScript
 
 	var blankVars:Map<String, Null<Dynamic>>;
 	public var path:String;
+
+	private var flxSoundtxt:String = #if (flixel >= "5.3.0") "flixel.sound.FlxSound" #else "flixel.system.FlxSound" #end;
 
 	#if sys
 	public function new(scriptPath:String)
@@ -71,7 +74,9 @@ class HScript
 				"FlxText" => flixel.text.FlxText,
 				"FlxTween" => flixel.tweens.FlxTween,
 				"FlxTrail" => flixel.addons.effects.FlxTrail,
+				"FlxSound" => flxSoundtxt,
 				"TankmenBG" => TankmenBG,
+				"BGSprite" => BGSprite,
 				"FlxBackdrop" => flixel.addons.display.FlxBackdrop,
 				"FlxTypedGroup" => flixel.group.FlxGroup.FlxTypedGroup,
 				"Assets" => openfl.Assets,

@@ -17,7 +17,11 @@ import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+#if (flixel >= "5.3.0")
+import flixel.sound.FlxSound;
+#else
 import flixel.system.FlxSound;
+#end
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -30,6 +34,9 @@ import ui.PreferencesMenu;
 import lime.utils.Assets;
 import hxvlc.flixel.FlxVideo as VideoHandler;
 import hxvlc.flixel.FlxVideoSprite as VideoSprite;
+
+import stageObjects.*;
+import Stage;
 
 #if sys
 import sys.FileSystem;
@@ -53,8 +60,6 @@ class PlayState extends MusicBeatState
 	public static var storyDifficulty:String = 'normal';
 	public static var deathCounter:Int = 0;
 	public static var practiceMode:Bool = false;
-
-	var halloweenLevel:Bool = false;
 
 	public var vocals:FlxSound;
 	private var vocalsFinished:Bool = false;
@@ -91,15 +96,12 @@ class PlayState extends MusicBeatState
 
 	private var iconP1:HealthIcon;
 	private var iconP2:HealthIcon;
-	private var camHUD:FlxCamera;
-	private var camGame:FlxCamera;
+	public var camHUD:FlxCamera;
+	public var camGame:FlxCamera;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
 	public static var seenCutscene:Bool = false;
-
-	var halloweenBG:FlxSprite;
-	var isHalloween:Bool = false;
 
 	var phillyCityLights:FlxTypedGroup<FlxSprite>;
 	var phillyTrain:FlxSprite;
@@ -137,7 +139,7 @@ class PlayState extends MusicBeatState
 
 	public static var campaignScore:Int = 0;
 
-	var defaultCamZoom:Float = 1.05;
+	public var defaultCamZoom:Float = 1.05;
 
 	// how big to stretch the pixel art assets
 	public static var daPixelZoom:Float = 6;
@@ -157,6 +159,12 @@ class PlayState extends MusicBeatState
 	var lightFadeShader:BuildingShaders;
 
 	public var scripts:Array<HScript>;
+	var stage:Stage;
+
+	var halloweenBG:FlxSprite;
+	var isHalloween:Bool = false;
+	var lightningStrikeBeat:Int = 0;
+	var lightningOffset:Int = 8; // temp
 
 	override public function create()
 	{
@@ -185,25 +193,23 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		foregroundSprites = new FlxTypedGroup<BGSprite>();
 
 		if (openfl.Assets.exists(Paths.text('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue')))
 			dialogue = CoolUtil.coolTextFile(Paths.text('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue'));
 
-		#if discord_rpc
-		initDiscord();
-		#end
+		instance = this;
+		#if discord_rpc initDiscord(); #end
 
-		if (SONG.stage == null)
-		{
-			SONG.stage = "stage";
-		}
-
-		switch (SONG.stage)
+		foregroundSprites = new FlxTypedGroup<BGSprite>();
+		
+		curStage = SONG.stage;
+		new Stage(curStage);
+		
+		/* switch (SONG.stage)
 		{
 			case 'halloween':
 				curStage = "halloween";
-				halloweenLevel = true;
+				//halloweenLevel = true;
 
 				var hallowTex = Paths.getSparrowAtlas('week2/halloween_bg');
 
@@ -542,7 +548,7 @@ class PlayState extends MusicBeatState
 				stageCurtains.antialiasing = true;
 				stageCurtains.scrollFactor.set(1.3, 1.3);
 				stageCurtains.active = false;
-				add(stageCurtains);
+				add(stageCurtains); 
 			default:
 					defaultCamZoom = 0.9;
 					curStage = 'stage';
@@ -558,8 +564,8 @@ class PlayState extends MusicBeatState
 					bgText.scrollFactor.set(0.9,0.9);
 					bgText.text = "there aint a stage in the chart, add one dumbass";
 					add(bgText);
-		}
-
+		} */
+		
 		var gfVersion:String = 'gf';
 
 		if (SONG.gfVersion == null)
@@ -665,6 +671,31 @@ class PlayState extends MusicBeatState
 				}
 			}
 
+			if (FileSystem.exists('./mods/Global/scripts'))
+			{
+				for (i in FileSystem.readDirectory('./mods/Global/scripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/' + scriptrel[0]);
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
 			if (FileSystem.exists('./mods/scripts'))
 			{
 				for (i in FileSystem.readDirectory('./mods/scripts'))
@@ -714,6 +745,57 @@ class PlayState extends MusicBeatState
 					}
 				}
 			}
+
+			if (FileSystem.exists('./assets/scripts/characterScripts'))
+			{
+				for (i in FileSystem.readDirectory('./assets/scripts/characterScripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/characterScripts/${scriptrel[0]}');
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
+			if (FileSystem.exists('./mods/Global/scripts/characterScripts'))
+			{
+				for (i in FileSystem.readDirectory('./mods/Global/scripts/characterScripts'))
+				{
+					if (i.contains(allowed))
+					{
+						var scriptrel:Array<String> = i.split('.');
+
+						scriptrel.remove(allowed);
+
+						var script:HScript = new HScript('scripts/Global/characterScripts/${scriptrel[0]}');
+
+						if (!script.isBlank && script.expr != null)
+						{
+							script.interp.scriptObject = this;
+							script.setValue('add', add);
+							script.interp.execute(script.expr);
+						}
+
+						if (!scripts.contains(script))
+							scripts.push(script);
+					}
+				}
+			}
+
 		}
 
 		for (i in scripts)
@@ -844,11 +926,13 @@ class PlayState extends MusicBeatState
 		add(bfTankCutsceneLayer);
 
 		// Shitty layering but whatev it works LOL
-		if (curStage == 'limo')
-			add(limo);
+		//if (curStage == 'limo')
+			//add(limo);
 
 		add(dad);
 		add(boyfriend);
+
+
 
 		add(foregroundSprites);
 
@@ -1026,6 +1110,8 @@ class PlayState extends MusicBeatState
 		for (script in scripts)
 			script.callFunction('createPost');
 		#end
+
+		//stage.callFromScript("createPost");
 
 		super.create();
 	}
@@ -1839,7 +1925,7 @@ class PlayState extends MusicBeatState
 					}
 
 				default:
-					babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
+					babyArrow.frames = Paths.getSparrowAtlas('notes/base/NOTE_assets');
 					babyArrow.animation.addByPrefix('green', 'arrowUP');
 					babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
 					babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
@@ -2213,7 +2299,9 @@ class PlayState extends MusicBeatState
 
 				deathCounter += 1;
 
-				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				var deadChar:String = boyfriend.curCharacter + "-dead";
+
+				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y, deadChar));
 
 				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
@@ -3130,18 +3218,6 @@ class PlayState extends MusicBeatState
 		startedMoving = false;
 	}
 
-	function lightningStrikeShit():Void
-	{
-		FlxG.sound.play(Paths.sound('thunder_' + FlxG.random.int(1, 2)));
-		halloweenBG.animation.play('lightning');
-
-		lightningStrikeBeat = curBeat;
-		lightningOffset = FlxG.random.int(8, 24);
-
-		boyfriend.playAnim('scared', true);
-		gf.playAnim('scared', true);
-	}
-
 	override function stepHit()
 	{
 		super.stepHit();
@@ -3172,9 +3248,6 @@ class PlayState extends MusicBeatState
 			// dad.dance();
 		}
 	}
-
-	var lightningStrikeBeat:Int = 0;
-	var lightningOffset:Int = 8;
 
 	override function beatHit()
 	{
@@ -3305,10 +3378,6 @@ class PlayState extends MusicBeatState
 				tankWatchtower.dance();
 		}
 
-		if (isHalloween && FlxG.random.bool(10) && curBeat > lightningStrikeBeat + lightningOffset)
-		{
-			lightningStrikeShit();
-		}
 
 		#if sys
 		for (script in scripts)

@@ -10,6 +10,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import haxe.io.Path;
+import stageObjects.*;
 
 using StringTools;
 
@@ -95,7 +96,7 @@ class Character extends FlxSprite
 					jsonSystem.gfIdle = false;
 
 				if (jsonSystem.antialiasing != true && jsonSystem.antialiasing != false)
-					jsonSystem.antialiasing = false;
+					jsonSystem.antialiasing = true; // it will be changed after we get the antialiasing option
 
 
 				if(jsonSystem.usesAtlas){

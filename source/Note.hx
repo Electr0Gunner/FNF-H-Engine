@@ -27,6 +27,8 @@ class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
 
+	public var arrowInfo:ArrowData;
+
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var canBeHit:Bool = false;
@@ -53,6 +55,8 @@ class Note extends FlxSprite
 
 	public static var arrowColors:Array<Float> = [1, 1, 1, 1];
 
+	public var noteType:String = '';
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
 		super();
@@ -72,10 +76,13 @@ class Note extends FlxSprite
 
 		var daStage:String = PlayState.curStage;
 
-		switch (daStage)
-		{
-			case 'school' | 'schoolEvil':
-				loadGraphic(Paths.image('week6/weeb/pixelUI/arrows-pixels'), true, 17, 17);
+		var isPixel:Bool = false;
+
+		if (daStage.startsWith("school"))
+			isPixel = true;
+
+			if(isPixel){
+				loadGraphic(Paths.image('notes/base/NOTE_assets-pixel'), true, 17, 17);
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
@@ -84,7 +91,7 @@ class Note extends FlxSprite
 
 				if (isSustainNote)
 				{
-					loadGraphic(Paths.image('week6/weeb/pixelUI/arrowEnds'), true, 7, 6);
+					loadGraphic(Paths.image('notes/base/arrowEnds-pixel'), true, 7, 6);
 
 					animation.add('purpleholdend', [4]);
 					animation.add('greenholdend', [6]);
@@ -99,9 +106,9 @@ class Note extends FlxSprite
 
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
-
-			default:
-				frames = Paths.getSparrowAtlas('NOTE_assets');
+			}
+			else{
+				frames = Paths.getSparrowAtlas('notes/base/NOTE_assets');
 
 				animation.addByPrefix('greenScroll', 'green instance');
 				animation.addByPrefix('redScroll', 'red instance');
@@ -128,7 +135,7 @@ class Note extends FlxSprite
 				// color = FlxG.random.color();
 				// color.saturation *= 4;
 				// replaceColor(0xFFC1C1C1, FlxColor.RED);
-		}
+			}
 
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
