@@ -4,12 +4,8 @@
 
 	<app title="Friday Night Funkin' H-Engine" file="H-Engine" packageName="com.Electr0.HEngine" package="com.Electr0.HEngine" main="Main" version="1.0" company="Electr0" />
 
-	<!--Switch Export with Unique ApplicationID and Icon-->
-	<set name="APP_ID" value="0x0100f6c013bbc000" />
-
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
-	<!-- <app preloader="Preloader" resizable="true" /> -->
 	<app preloader="flixel.system.FlxPreloader" />
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
@@ -20,67 +16,52 @@
 	<!--These window settings apply to all targets-->
 	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
 
-	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
-
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false" />
 
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
-
-	<!--Switch-specific-->
-	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
+	<window if="mobile" orientation="landscape" fullscreen="true" resizable="false" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
-	<set name="BUILD_DIR" value="export/debug" if="debug" />
+	<set name="BUILD_DIR" value="export/debug" 	 if="debug" />
 	<set name="BUILD_DIR" value="export/release" unless="debug" />
-	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
+	<set name="BUILD_DIR" value="export/32bit" 	 if="32bit" />
 
 	<classpath name="source" />
 
-	<assets path="assets"/>
-	<assets path="mods"/>
+	<assets path="assets" />
+	<assets path="week_stuff" rename="assets" />
+	<assets path="mods" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
-	<haxedev set='webgl' />
-
-	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
-
-	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-
-	<!--In case you want to use the videos-->
-	<haxelib name="hxCodec"/>
-
-	<haxelib name="scriptless-polymod" unless="web"/>
-
-	<!--Yoshi Crafter Hscript better-->
-	<haxedef name="hscriptPos" unless="web"/>
-	<haxelib name="hscript-improved" unless="web"/>
-
-	<!--haxelib name="newgrounds" unless="switch"/> -->
-	<haxelib name="faxe" if='switch'/>
-	<haxelib name="hxcpp-debug-server" if="desktop debug"/>
+	<haxedev set='webgl' if="web" />
 
 	<section if="cpp">
-	<haxelib name="hxvlc" if="desktop || android" />
+		<!-- In case you want to use the videos -->
+		<haxelib name="hxvlc" if="desktop || android" />
+		<haxelib name="discord_rpc" unless="neko" /> <!-- Doesn't work with Neko -->
 	</section>
+
+	<section unless="web">
+		<haxelib name="scriptless-polymod" />
+
+		<!-- Yoshi Crafter Hscript is better -->
+		<haxedef name="hscriptPos" />
+		<haxelib name="hscript-improved" />
+	</section>
+
+	<!-- TODO: Actually setup Hxcpp to work instead of letting it give errors while doing nothing -->
+	<!-- <haxelib name="hxcpp-debug-server" if="desktop debug" /> -->
+	<haxedef name="no-deprecation-warnings" if="${haxe >= 4.1.0}" />
 	
-	<!-- <haxelib name="flixel-animate" /> -->
-	<!-- <haxelib name="spinehaxe" /> -->
 	<!-- https://github.com/ninjamuffin99/Flixel-Animate-Atlas-Player -->
+	<!-- <haxelib name="flixel-animate" /> -->
 
-
-	<haxelib name="discord_rpc" if="cpp"/> <!-- foesn't work with neko -->
-	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
-
-	<!-- <haxelib name="markdown" /> -->
-	<!-- <haxelib name="HtmlParser" /> -->
 
 	<!--In case you want to use nape with flixel-->
 	<!--<haxelib name="nape-haxe4" />-->
@@ -97,10 +78,10 @@
 	<!--<haxedef name="FLX_NO_NATIVE_CURSOR" />-->
 
 	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
-	<!-- <haxedef name="FLX_NO_MOUSE" if="mobile" /> -->
-	<!-- <haxedef name="FLX_NO_KEYBOARD" if="mobile" /> -->
-	<!-- <haxedef name="FLX_NO_TOUCH" if="desktop" /> -->
-	<!--<haxedef name="FLX_NO_GAMEPAD" />-->
+	<!-- <haxedef name="FLX_NO_MOUSE" 		if="mobile" /> -->
+	<!-- <haxedef name="FLX_NO_KEYBOARD" 	if="mobile" /> -->
+	<haxedef name="FLX_NO_TOUCH" 		if="desktop" />
+	<!-- <haxedef name="FLX_NO_GAMEPAD" /> -->
 
 	<!--Disable the Flixel core sound tray-->
 	<!--<haxedef name="FLX_NO_SOUND_TRAY" />-->
@@ -122,6 +103,5 @@
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
 	
 	<icon path="icon.png" />
-	<haxedef name="CAN_OPEN_LINKS" unless="switch"/>
-	<haxedef name="CAN_CHEAT" if="switch debug"/>
+	<haxedef name="CAN_OPEN_LINKS" />
 </project>
