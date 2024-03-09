@@ -7,62 +7,67 @@ import sys.FileSystem;
 #end
 import flixel.graphics.frames.FlxAtlasFrames;
 
+using StringTools;
+
 class Paths
 {
 	public static function file(key:String, location:String, extension:String):String
 	{
-		var data:String = 'assets/$location/$key.$extension';
-		return data;
+		if (location.startsWith('null')) location = location.substr(5);
+		return 'assets/$location/$key.$extension';
 	}
 
-	public static function image(key:String/* , forceLoadFromDisk:Bool = false */):Dynamic
+	public static function image(key:String/* , forceLoadFromDisk:Bool = false */, ?location:String):Dynamic
 	{
-		return file(key, 'images', 'png');
+		return file(key, '$location/images', 'png');
 	}
 
-	public static function xml(key:String, ?location:String = "images")
+	public static function xml(key:String, ?location:String = 'images')
 	{
-		return file(key, location, "xml");
+		return file(key, location, 'xml');
 	}
 
-	public static function text(key:String, ?location:String = "data")
+	public static function text(key:String, ?location:String = 'data')
 	{
-		return file(key, location, "txt");
+		return file(key, location, 'txt');
 	}
 
-	public static function json(key:String, ?location:String = "data")
+	public static function json(key:String, ?location:String = 'data')
 	{
-		return file(key, location, "json");
+		return file(key, location, 'json');
 	}
 
 	public static function sound(key:String)
 	{
-		return file(key, "sounds", 'ogg');
+		return file(key, 'sounds', 'ogg');
 	}
 
 	public static function music(key:String)
 	{
-		return file(key, "music", 'ogg');
+		return file(key, 'music', 'ogg');
 	}
 
-	public static function song(song:String, type:String = 'Inst', diff:String = 'NORMAL')
+	public static function song(song:String, type:String = 'Inst', diff:String = 'NORMAL'):String
 	{
-		var formatSong = 'assets/songs/${song.toLowerCase()}/$type';
+		song = song.toLowerCase();
+		diff = diff.toLowerCase();
+		
+		var formatSong = '$song/$type';
+		if (Assets.exists('$formatSong-$diff.ogg')) formatSong += '-$diff';
 
-		if (Assets.exists(formatSong + '-' + diff.toLowerCase() + '.ogg'))
-			formatSong += '-' + diff.toLowerCase();
-
-		return formatSong + '.ogg';
+		return file(formatSong, 'songs', 'ogg');
 	}
 
-	public static function getSparrowAtlas(key:String)
+	public static function getSparrowAtlas(key:String, ?location:String)
 	{
-		return FlxAtlasFrames.fromSparrow(image(key), xml(key));
+		var imageKey = {name: key, directory: '$location/images'};
+		return FlxAtlasFrames.fromSparrow(image(imageKey.name), xml(imageKey.name, imageKey.directory));
 	}
 
-	public static function getPackerAtlas(key:String)
+	public static function getPackerAtlas(key:String, ?location:String)
 	{
-		return FlxAtlasFrames.fromSpriteSheetPacker(image(key), text(key, "images"));
+		var imageKey = {name: key, directory: '$location/images'};
+		return FlxAtlasFrames.fromSpriteSheetPacker(image(imageKey.name), text(imageKey.name, imageKey.directory));
 	}
 
 	public static function video(key:String)
