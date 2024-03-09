@@ -2,40 +2,59 @@ package;
 
 import flixel.FlxSprite;
 
+/**
+ * Basically `FlxSprite` but made to be used on the background stages.
+ */
 class BGSprite extends FlxSprite
 {
-	/**
-		Cool lil utility thing just so that it can easy do antialiasing and scrollfactor bullshit
-	 */
 	public var idleAnim:String;
+	public var normalDance:Bool = true;
 
-	public function new(image:String, x:Float = 0, y:Float = 0, parX:Float = 1, parY:Float = 1, ?daAnimations:Array<String>, ?loopingAnim:Bool = false)
+	@:allow(Stage)
+	private function new(image:String, x:Float = 0, y:Float = 0, scrollX:Float = 1, scrollY:Float = 1, ?daAnimations:Array<String>, ?loopingAnim:Bool = false)
 	{
 		super(x, y);
 
 		if (daAnimations != null)
 		{
-			frames = Paths.getSparrowAtlas(image);
-			for (anims in daAnimations)
+			frames = Paths.getSparrowAtlas(image, Stage.stageDirectory);
+			for (anim in daAnimations)
 			{
-				animation.addByPrefix(anims, anims, 24, loopingAnim);
-				animation.play(anims);
-
-				if (idleAnim == null)
-					idleAnim = anims;
+				animation.addByPrefix(anim, anim, 24, loopingAnim);
+				animation.play(anim);
 			}
+
+			Stage.animatedSpritesList.add(this);
 		}
 		else
 		{
-			loadGraphic(Paths.image(image));
+			loadGraphic(Paths.image(image, Stage.stageDirectory));
 			active = false;
 		}
 
-		scrollFactor.set(parX, parY);
+		scrollFactor.set(scrollX, scrollY);
 		antialiasing = true;
 	}
 
-	public function dance():Void
+	@:allow(Stage)
+	private function setScale(x:Float, ?y:Null<Float>)
+	{
+		if (y == null) y = x; // Aspect ratio will be kept if y isn't used
+
+		scale.set(x, y);
+		updateHitbox();
+	}
+
+	/**
+	 * Does sprite animation shit.
+	 * 
+	 * It's an `Dynamic Function` so you can do:
+	 * `stageSpr.dance = function() {}`
+	 * 
+	 * Btw, if you don't want this to get called forcefully on beat, set `normalDance` to false when overriding
+	 */
+	@:allow(Stage)
+	private dynamic function dance()
 	{
 		if (idleAnim != null)
 			animation.play(idleAnim);
