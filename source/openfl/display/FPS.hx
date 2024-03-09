@@ -90,11 +90,6 @@ class FPS extends TextField
 			text += '\nMemory: ${memoryMegas}MB';
 			#end
 
-			#if sys
-			#if !debug 	text += "\nBuild " + Main.buildNumber;
-			#else 			text += "\nDebug Build"; #end
-			#end
-
 			textColor = 0xFFFFFFFF;
 			#if debug
 			if (memoryMegas > 3000 /*|| currentFPS <= ClientPrefs.framerate / 2 */)
