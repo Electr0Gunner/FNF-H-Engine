@@ -178,7 +178,7 @@ class AnimationDebug extends FlxState
 
 	override function update(elapsed:Float)
 	{
-		textAnim.text = char.animation.curAnim.name;
+		textAnim.text = char.animation.name;
 
 		if (FlxG.keys.justPressed.E)
 			FlxG.camera.zoom += 0.25;

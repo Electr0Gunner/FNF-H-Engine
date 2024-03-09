@@ -218,7 +218,7 @@ class Character extends FlxSprite
 	{
 		if (!curCharacter.startsWith('bf'))
 		{
-			if (animation.curAnim.name.startsWith('sing'))
+			if (animation.name.startsWith('sing'))
 			{
 				holdTimer += elapsed;
 			}
@@ -233,19 +233,19 @@ class Character extends FlxSprite
 				holdTimer = 0;
 			}
 		} else {
-			if (animation.curAnim.name.startsWith('sing'))
+			if (animation.name.startsWith('sing'))
 				{
 					holdTimer += elapsed;
 				}
 				else
 					holdTimer = 0;
 	
-				if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
+				if (animation.name.endsWith('miss') && animation.curAnim.finished && !debugMode)
 				{
 					playAnim('idle', true, false, 10);
 				}
 	
-				if (animation.curAnim.name == 'firstDeath' && animation.curAnim.finished && startedDeath)
+				if (animation.name == 'firstDeath' && animation.curAnim.finished && startedDeath)
 				{
 					playAnim('deathLoop');
 				}
@@ -254,12 +254,12 @@ class Character extends FlxSprite
 		if (curCharacter.endsWith('-car'))
 		{
 			// looping hair anims after idle finished
-			if (!animation.curAnim.name.startsWith('sing') && animation.curAnim.finished)
+			if (!animation.name.startsWith('sing') && animation.curAnim.finished)
 				playAnim('idleHair');
 		}
 
 		if (danceIdle){
-			if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
+			if (animation.name == 'hairFall' && animation.curAnim.finished)
 				playAnim('danceRight');
 		}	
 		switch (curCharacter)
@@ -287,7 +287,7 @@ class Character extends FlxSprite
 
 				if (animation.curAnim.finished)
 				{
-					playAnim(animation.curAnim.name, false, false, animation.curAnim.numFrames - 3);
+					playAnim(animation.name, false, false, animation.curAnim.numFrames - 3);
 				}
 		}
 
