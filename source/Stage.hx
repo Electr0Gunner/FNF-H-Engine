@@ -4,7 +4,6 @@ import flixel.FlxG;
 import flixel.sound.FlxSound;
 import flixel.group.FlxGroup;
 
-import BGSprite;
 import shaderslmfao.*;
 
 // TODO: Make it in a stageObjects folder, so no individual imports are needed
@@ -13,17 +12,33 @@ import BackgroundGirls;
 
 class Stage
 {
-	private var game(default, null):PlayState = PlayState.instance;
-	public static var stageDirectory:String;
-
+	private var game(default, null):Dynamic = PlayState.instance;
+	/**
+	 * Override this if you aren't on PlayState and you want foreground sprites.
+	 * Or if you want foreground sprites to go under specific layering, idk
+	 */
+	public var fgSprPath:flixel.util.typeLimit.OneOfThree<FlxTypedGroup<BGSprite>, FlxGroup, FlxTypedGroup<flixel.FlxSprite>>;
 	public static var animatedSpritesList:FlxTypedGroup<BGSprite> = new FlxTypedGroup<BGSprite>();
 
-	public var zoom:Float = 0.9;
+	public static var stageDirectory:String;
+	public static var zoom:Float = 0.9;
 
-	public function new(?stage:String)
+	public function new(?stage:Null<String>, ?pos:haxe.PosInfos)
 	{
+		fgSprPath = game.foregroundSprites;
+
+		// Will work in other States
+		if (pos.className != 'PlayState')
+		{
+			trace(pos.className);
+			
+			game = Type.resolveClass(pos.className);
+			fgSprPath = game;
+		}
+
 		switch (stage)
 		{
+			// I'll add softcoded stages later on -BerGP
 			default:
 				if (stage != 'stage') FlxG.log.warn("Current stage isn't defined dumbass! Come back to Stage.hx and define it");
 
@@ -39,6 +54,15 @@ class Stage
 				var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
 				stageCurtains.setScale(0.9);
 				add(stageCurtains, true);
+			case 'halloween':
+				stageDirectory = 'week2';
+
+				var bg:BGSprite = new BGSprite('halloween_bg', -200, -100);
+				bg.animation.addByIndices('idle', 'halloweem bg', [0], '', 1);
+				bg.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
+				bg.normalDance = false;
+				animatedSpritesList.add(bg);
+				add(bg);
 		}
 
 		game.defaultCamZoom = zoom;
@@ -55,8 +79,8 @@ class Stage
 		var addFunction:BGSprite -> Void;
 		if (!inFront)
 			addFunction = (daSpr:BGSprite) -> game.add(daSpr);
-		else
-			addFunction = (daSpr:BGSprite) -> game.foregroundSprites.add(daSpr);
+		else // Reflect.field had to be used as just saying add would think we're referring to this
+			addFunction = (daSpr:BGSprite) -> Reflect.callMethod(fgSprPath, Reflect.field(fgSprPath, 'add'), [daSpr]);
 
 		addFunction(spr);
 	}
