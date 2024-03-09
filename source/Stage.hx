@@ -4,11 +4,8 @@ import flixel.FlxG;
 import flixel.sound.FlxSound;
 import flixel.group.FlxGroup;
 
+import stageObjects.*;
 import shaderslmfao.*;
-
-// TODO: Make it in a stageObjects folder, so no individual imports are needed
-import BackgroundDancer;
-import BackgroundGirls;
 
 class Stage
 {

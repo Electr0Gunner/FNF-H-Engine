@@ -191,7 +191,7 @@ class PlayState extends MusicBeatState
 			SONG = Song.loadFromJson('tutorial');
 
 		Conductor.mapBPMChanges(SONG);
-		Conductor.changeBPM(SONG.bpm);
+		Conductor.bpm = SONG.bpm;
 
 
 		if (openfl.Assets.exists(Paths.text('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue')))
@@ -1783,7 +1783,7 @@ class PlayState extends MusicBeatState
 		#end
 
 		var songData = SONG;
-		Conductor.changeBPM(songData.bpm);
+		Conductor.bpm = songData.bpm;
 
 		curSong = songData.song;
 
@@ -2520,25 +2520,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function changeSection(sec:Int):Void
-	{
-		FlxG.sound.music.pause();
-
-		var daBPM:Float = SONG.bpm;
-		var daPos:Float = 0;
-		for (i in 0...(Std.int(curStep / 16 + sec)))
-		{
-			if (SONG.notes[i].changeBPM)
-			{
-				daBPM = SONG.notes[i].bpm;
-			}
-			daPos += 4 * (1000 * 60 / daBPM);
-		}
-		Conductor.songPosition = FlxG.sound.music.time = daPos;
-		updateCurStep();
-		resyncVocals();
-	}
-
 	function endSong():Void
 	{
 		#if sys
@@ -3267,11 +3248,11 @@ class PlayState extends MusicBeatState
 		{
 			if (SONG.notes[Math.floor(curStep / 16)].changeBPM)
 			{
-				Conductor.changeBPM(SONG.notes[Math.floor(curStep / 16)].bpm);
+				Conductor.bpm = SONG.notes[Math.floor(curStep / 16)].bpm;
 				FlxG.log.add('CHANGED BPM!');
 			}
 			// else
-			// Conductor.changeBPM(SONG.bpm);
+			// Conductor.bpm = SONG.bpm;
 		}
 		// FlxG.log.add('change bpm' + SONG.notes[Std.int(curStep / 16)].changeBPM);
 		wiggleShit.update(Conductor.crochet);
@@ -3326,11 +3307,6 @@ class PlayState extends MusicBeatState
 			dad.playAnim('cheer', true);
 		}
 
-		foregroundSprites.forEach(function(spr:BGSprite)
-		{
-			spr.dance();
-		});
-
 		// boppin friends
 		switch (curStage)
 		{
@@ -3374,8 +3350,6 @@ class PlayState extends MusicBeatState
 					trainCooldown = FlxG.random.int(-4, 0);
 					trainStart();
 				}
-			case 'tank':
-				tankWatchtower.dance();
 		}
 
 
