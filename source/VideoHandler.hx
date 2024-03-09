@@ -57,7 +57,8 @@ class VideoHandler extends FlxSprite
 	var netLoop:Bool;
 	#end
 
-	public function new(?x:Float = 0, ?y:Float = 0){
+	public function new(?x:Float = 0, ?y:Float = 0)
+	{
 		super(x, y);
 		makeGraphic(1, 1, FlxColor.TRANSPARENT);
 	}
@@ -66,16 +67,15 @@ class VideoHandler extends FlxSprite
 		Generic play function. 
 		Works with both desktop and web builds.
 	**/
-	public function playMP4(videoPath:String, callback:Void->Void, ?repeat:Bool = false, ?canSkip:Bool = false){
-
+	public function playMP4(videoPath:String, callback:Void->Void, ?repeat:Bool = false, ?canSkip:Bool = false)
+	{
 		#if desktop
 		playDesktopMP4(videoPath, callback, repeat, canSkip);
-		#end
-
-		#if web
+		#elseif web
 		playWebMP4(videoPath, callback, repeat, canSkip);
+		#else
+		FlxG.log.error('Videos are not supported/handled on this platform!!');
 		#end
-
 	}
 
 	//===========================================================================================================//
