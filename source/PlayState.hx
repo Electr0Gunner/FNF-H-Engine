@@ -193,41 +193,19 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		foregroundSprites = new FlxTypedGroup<BGSprite>();
 
 		if (openfl.Assets.exists(Paths.text('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue')))
 			dialogue = CoolUtil.coolTextFile(Paths.text('${SONG.song.toLowerCase()}/${SONG.song.toLowerCase()}Dialogue'));
 
-		#if discord_rpc
-		initDiscord();
-		#end
+		instance = this;
+		#if discord_rpc initDiscord(); #end
 
-
+		foregroundSprites = new FlxTypedGroup<BGSprite>();
 		
-		if (SONG.stage == null) {
-			SONG.stage = 'stage';
-
-			switch (curSong.toLowerCase()) {
-				case 'spookeez' | 'south' | 'monster':
-					SONG.stage = 'spooky';
-				case 'pico' | 'philly nice' | 'blammed':
-					SONG.stage = 'philly';
-				case 'satin-panties' | 'high' | 'm.i.l.f':
-					SONG.stage = 'limo';
-				case 'cocoa' | 'eggnog':
-					SONG.stage = 'mall';
-				case 'winter-horrorland':
-					SONG.stage = 'mallEevil';
-				case 'senpai':
-					SONG.stage = 'school';
-				case 'roses':
-					SONG.stage = 'school';
-				case 'thorns':
-					SONG.stage = 'schoolEvil';
-			}
-		}
+		curStage = SONG.stage;
+		new Stage(curStage);
 		
-		switch (SONG.stage)
+		/* switch (SONG.stage)
 		{
 			case 'halloween':
 				curStage = "halloween";
@@ -586,7 +564,7 @@ class PlayState extends MusicBeatState
 					bgText.scrollFactor.set(0.9,0.9);
 					bgText.text = "there aint a stage in the chart, add one dumbass";
 					add(bgText);
-		}
+		} */
 		
 		var gfVersion:String = 'gf';
 
