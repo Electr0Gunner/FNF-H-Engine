@@ -40,10 +40,10 @@ class PauseSubState extends MusicBeatSubstate
 	var practiceText:FlxText;
 	var composer:Null<String>;
 
-	public function new(x:Float, y:Float)
+	public function new()
 	{
 		super();
-		// cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+		camera = FlxG.cameras.list[FlxG.cameras.list.length - 1];
 
 		menuItems = pauseOG;
 
@@ -57,7 +57,7 @@ class PauseSubState extends MusicBeatSubstate
 		bg.scrollFactor.set();
 		add(bg);
 
-		var composerValue = Paths.text('composer', 'data/${PlayState.SONG.song.toLowerCase}');
+		var composerValue = Paths.text('composer', 'data/${PlayState.SONG.song.toLowerCase()}');
 		if (Assets.exists(composerValue)) composer = Assets.getText(composerValue);
 
 		final songText:String = StringTools.replace(PlayState.SONG.song, '-', ' '); // Dashes mean spaces in song names, this is to respect that
@@ -65,25 +65,25 @@ class PauseSubState extends MusicBeatSubstate
 		if (composer != null) levelInfo.text += ' - $composer';
 		levelInfo.setFormat("VCR OSD Mono", 32);
 		// levelInfo.updateHitbox();
-		levelInfo.scrollFactor.set();
+		// levelInfo.scrollFactor.set();
 		add(levelInfo);
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, PlayState.storyDifficulty.toUpperCase(), 32);
 		levelDifficulty.setFormat("VCR OSD Mono", 32);
 		// levelDifficulty.updateHitbox();
-		levelDifficulty.scrollFactor.set();
+		// levelDifficulty.scrollFactor.set();
 		add(levelDifficulty);
 
 		var deathCounter:FlxText = new FlxText(20, 15 + 64, 0, 'Blueballed: ${PlayState.deathCounter}', 32);
 		deathCounter.setFormat("VCR OSD Mono", 32);
 		// deathCounter.updateHitbox();
-		deathCounter.scrollFactor.set();
+		// deathCounter.scrollFactor.set();
 		add(deathCounter);
 
 		practiceText = new FlxText(20, 15 + 64 + 32, 0, 'PRACTICE MODE', 32);
 		practiceText.setFormat("VCR OSD Mono", 32);
 		// practiceText.updateHitbox();
-		practiceText.scrollFactor.set();
+		// practiceText.scrollFactor.set();
 		practiceText.visible = PlayState.practiceMode;
 		add(practiceText);
 		
