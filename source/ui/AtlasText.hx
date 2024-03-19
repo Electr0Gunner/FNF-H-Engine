@@ -8,7 +8,7 @@ import flixel.util.FlxStringUtil;
 @:forward
 abstract BoldText(AtlasText) from AtlasText to AtlasText
 {
-	inline public function new (x = 0.0, y = 0.0, text:String)
+	public function new(x = 0.0, y = 0.0, text:String)
 	{
 		this = new AtlasText(x, y, text, Bold);
 	}
@@ -26,13 +26,15 @@ class AtlasText extends FlxTypedSpriteGroup<AtlasChar>
 	var font:AtlasFontData;
 	
 	public var atlas(get, never):FlxAtlasFrames;
-	inline function get_atlas() return font.atlas;
+	function get_atlas() return font.atlas;
+
 	public var caseAllowed(get, never):Case;
-	inline function get_caseAllowed() return font.caseAllowed;
-	public var maxHeight(get, never):Float;
-	inline function get_maxHeight() return font.maxHeight;
+	function get_caseAllowed() return font.caseAllowed;
 	
-	public function new (x = 0.0, y = 0.0, text:String, fontName:AtlasFont = Default)
+	public var maxHeight(get, never):Float;
+	function get_maxHeight() return font.maxHeight;
+	
+	public function new(x = 0.0, y = 0.0, text:String, fontName:AtlasFont = Default)
 	{
 		if (!fonts.exists(fontName))
 			fonts[fontName] = new AtlasFontData(fontName);
