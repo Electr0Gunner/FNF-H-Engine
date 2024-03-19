@@ -55,7 +55,7 @@ class Conductor
 		trace('New BPM Map buddy ($bpmChangeMap)');
 	}
 
-	private static function set_bpm(newBpm:Float)
+	static function set_bpm(newBpm:Float)
 	{
 		bpm = newBpm;
 
