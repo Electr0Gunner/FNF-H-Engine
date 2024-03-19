@@ -49,8 +49,7 @@ class FPS extends TextField
 		defaultTextFormat = new TextFormat("VCR OSD Mono", 14, color);
 		autoSize = LEFT;
 		multiline = true;
-		text = "FPS: ";
-		alpha = 0;
+		text = 'FPS: Not Defined';
 
 		cacheCount = 0;
 		currentTime = 0;
@@ -71,11 +70,8 @@ class FPS extends TextField
 	{
 		currentTime += deltaTime;
 		times.push(currentTime);
-
 		while (times[0] < currentTime - 1000)
-		{
 			times.shift();
-		}
 
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
@@ -85,24 +81,37 @@ class FPS extends TextField
 		{
 			text = 'FPS: $currentFPS';
 			#if (openfl && debug)
-			var memoryMegas:Float = 0;
-			
-			memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
-			text += '\nMemory: ${memoryMegas}MB';
+			var memoryMegas:Float = Math.abs(FlxMath.roundDecimal(System.totalMemory / 124 / 124, 1));
+			var memoryLabel:String = "M";
+
+			// Gigabyte display
+			if (memoryMegas >= 1000)
+			{
+				memoryMegas /= 1000;
+				memoryMegas = Math.ffloor(memoryMegas);
+				
+				memoryLabel = "G";
+			}
+			// Go back, if that somehow happens
+			if ((memoryMegas * 1000) <= 1000 && memoryLabel == "G")
+			{
+				memoryMegas *= 1000;
+				memoryLabel = "M";
+			}
+
+			var memoryString:String = (memoryMegas + memoryLabel + "B");
+			text += '\nMemory: $memoryString';
 			#end
 
 			textColor = 0xFFFFFFFF;
 			#if debug
-			if (memoryMegas > 3000 /*|| currentFPS <= ClientPrefs.framerate / 2 */)
-			{
-				textColor = 0xFFFF0000;
-			}
+			if (memoryMegas > 3000 /*|| currentFPS <= ClientPrefs.framerate / 2 */) textColor = 0xFFFF0000;
 			#end
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
-			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();
-			text += "\nstageDC: " + Context3DStats.contextDrawCalls(DrawCallContext.STAGE);
-			text += "\nstage3DDC: " + Context3DStats.contextDrawCalls(DrawCallContext.STAGE3D);
+			text += '\nDraw Calls: ${Context3DStats.totalDrawCalls()}';
+			text += '\nDraw Calls (Stage): ${Context3DStats.contextDrawCalls(DrawCallContext.STAGE)}';
+			text += '\nDraw Calls (3D): ${Context3DStats.contextDrawCalls(DrawCallContext.STAGE3D)}';
 			#end
 
 			text += "\n";
