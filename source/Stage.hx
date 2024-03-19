@@ -18,7 +18,7 @@ class Stage
 	public static var animatedSpritesList:FlxTypedGroup<BGSprite> = new FlxTypedGroup<BGSprite>();
 
 	public static var stageDirectory:String;
-	public static var zoom:Float = 0.9;
+	public static var zoom:Float = 0.85;
 
 	public function new(?stage:Null<String>, ?pos:haxe.PosInfos)
 	{
