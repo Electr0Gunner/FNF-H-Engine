@@ -1,0 +1,17 @@
+{
+	"name": "Daddy Dearest",
+	"image": "week1",
+
+	"songs": [
+		{"name": "bopeebo", "icon": "dad"},
+		{"name": "fresh", "icon": "dad"},
+		{"name": "dadbattle", "icon": "dad"}
+	],
+	"difficulties": ["easy", "normal", "hard"],
+
+	"chars": [
+		"dad",
+		"bf",
+		"gf"
+	]
+}

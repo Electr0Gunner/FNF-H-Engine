@@ -2,8 +2,8 @@
 	"name": "Test Week",
 
 	"songs": [
-		"test",
-		"bopeebo"
+		{"name": "test", "icon": null},
+		{"name": "bopeebo", "icon": null}
 	],
 	"difficulties": ["normal"],
 

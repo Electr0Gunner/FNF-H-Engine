@@ -2552,17 +2552,18 @@ class PlayState extends MusicBeatState
 
 				FlxG.switchState(new StoryMenuState());
 
-				// if ()
-				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
-
-				if (SONG.validScore)
+				final nextWeek = StoryMenuState.weeks[storyWeek + 1];
+				if (nextWeek.unlockConditions != null && !nextWeek.unlockConditions[0] && StoryMenuState.weeks[storyWeek].name == nextWeek.unlockConditions[1])
 				{
-					// NGio.unlockMedal(60961);
-					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+					nextWeek.unlockConditions[0] = true;
+					nextWeek.unlockConditions.pop();
+
+					FlxG.save.data.weekUnlocked = nextWeek;
+					FlxG.save.flush();
 				}
 
-				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
-				FlxG.save.flush();
+				if (SONG.validScore)
+					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 			}
 			else
 			{

@@ -180,7 +180,9 @@ class MainMenuState extends MusicBeatState
 								switch (optionShit[curSelected])
 								{
 									case 'story mode': daChoiceMenu = new StoryMenuState();
-									case 'freeplay': daChoiceMenu = new FreeplayState();
+									case 'freeplay':
+										daChoiceMenu = new FreeplayState();
+										if (StoryMenuState.weeks.length == 0) StoryMenuState.initWeeks();
 									case 'options': daChoiceMenu = new ui.OptionsState();
 								}
 
