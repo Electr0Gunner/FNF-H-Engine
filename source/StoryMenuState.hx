@@ -98,13 +98,13 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+		persistentUpdate = true;
+
 		if (FlxG.sound.music != null)
 		{
 			if (!FlxG.sound.music.playing)
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
-
-		persistentUpdate = persistentDraw = true;
 
 		scoreText = new FlxText(10, 10, 0, "", 36);
 		scoreText.setFormat("VCR OSD Mono", 32);
@@ -113,7 +113,7 @@ class StoryMenuState extends MusicBeatState
 		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
 
-		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
+		final ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();

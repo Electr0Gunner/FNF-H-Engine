@@ -107,7 +107,6 @@ class TitleState extends MusicBeatState
 		}
 
 		Conductor.bpm = 102;
-		persistentUpdate = true;
 
 		logoBl = new FlxSprite(-130, -100);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');

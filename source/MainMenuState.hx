@@ -1,14 +1,10 @@
 package;
 
 import flixel.FlxG;
-import lime.app.Application;
-import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
-import flixel.tweens.FlxTween;
-import flixel.tweens.FlxEase;
 import flixel.util.FlxColor;
 import flixel.effects.FlxFlicker;
 
@@ -39,17 +35,12 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		#if discord_rpc DiscordClient.changePresence("In the Menus", null); #end
 
-		transIn = FlxTransitionableState.defaultTransIn;
-		transOut = FlxTransitionableState.defaultTransOut;
-
-		if (!FlxG.sound.music.playing)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-		
-		for (persistentVar in [persistentUpdate, persistentDraw]) persistentVar = true;
-		
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
-		FlxG.camera.follow(camFollow, null, 0.06);
+		FlxG.camera.follow(camFollow, 0.06);
+		
+		if (!FlxG.sound.music.playing)
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
 		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
 		bg.scale.set(1.1, 1.1);
@@ -100,8 +91,8 @@ class MainMenuState extends MusicBeatState
 		}
 
 		var versionShit:FlxText = new FlxText(5, FlxG.height - 36, 0, 
-			"H-Engine v" + Application.current.meta.get('version') +
-			"\nFriday Night Funkin' v" + fnfVersion
+			'H-Engine v${lime.app.Application.current.meta.get('version')}' +
+			'\nFriday Night Funkin\' v$fnfVersion'
 		, 16);
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionShit.scrollFactor.set();
@@ -166,10 +157,10 @@ class MainMenuState extends MusicBeatState
 					{
 						if (curSelected != spr.ID)
 						{
-							FlxTween.tween(spr, {alpha: 0}, 0.4, 
+							flixel.tweens.FlxTween.tween(spr, {alpha: 0}, 0.4, 
 							{
-								ease: FlxEase.quadOut,
-								onComplete: (twn:FlxTween) -> spr.kill()
+								ease: flixel.tweens.FlxEase.quadOut,
+								onComplete: (twn) -> spr.kill()
 							});
 						}
 						else
