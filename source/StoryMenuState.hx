@@ -124,7 +124,7 @@ class StoryMenuState extends MusicBeatState
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
 
-		initWeeks();
+		if (weeks.length == 0) initWeeks();
 
 		#if discord_rpc
 		// Updating Discord Rich Presence
