@@ -55,16 +55,10 @@
 		<haxelib name="hscript-improved" />
 	</section>
 
-	<!-- TODO: Actually setup Hxcpp to work instead of letting it give errors while doing nothing -->
-	<!-- <haxelib name="hxcpp-debug-server" if="desktop debug" /> -->
 	<haxedef name="no-deprecation-warnings" if="${haxe >= 4.1.0}" />
 	
 	<!-- https://github.com/ninjamuffin99/Flixel-Animate-Atlas-Player -->
 	<!-- <haxelib name="flixel-animate" /> -->
-
-
-	<!--In case you want to use nape with flixel-->
-	<!--<haxelib name="nape-haxe4" />-->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -101,7 +95,7 @@
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
-	
 	<icon path="icon.png" />
+	
 	<haxedef name="CAN_OPEN_LINKS" />
 </project>

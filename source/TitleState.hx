@@ -80,8 +80,6 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		// DEBUG BULLSHIT
-
 		super.create();
 
 		FlxG.save.bind('H-Engine', 'Electr0'); //fixed dumb OLD OLD spelling mistake // and a warning
@@ -199,7 +197,7 @@ class TitleState extends MusicBeatState
 			titleText.animation.play('press');
 
 			// Gotta give it some time for a good transition
-			new FlxTimer().start(0.57, tmr -> FlxG.switchState(new MainMenuState()));
+			new FlxTimer().start(1, (tmr) -> FlxG.switchState(new MainMenuState()));
 		}
 		else if (pressedEnter && !skippedIntro && initialized) skipIntro();
 

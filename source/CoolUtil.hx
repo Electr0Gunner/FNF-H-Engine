@@ -50,7 +50,7 @@ class CoolUtil
 		FlxG.openURL(link);
 		#end
 		#else
-		throw lime.utils.Log.error('Links aren\'t supported on this platform!');
+		throw lime.utils.Log.error("Links aren't supported on this platform!");
 		#end
 	}
 
