@@ -32,7 +32,6 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		// Updating Discord Rich Presence
 		#if discord_rpc DiscordClient.changePresence("In the Menus", null); #end
 
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -165,7 +164,7 @@ class MainMenuState extends MusicBeatState
 						}
 						else
 						{
-							FlxFlicker.flicker(spr, 1, 0.06, true, false, function(flick:FlxFlicker)
+							FlxFlicker.flicker(spr, 1, 0.06, true, false, function(flick)
 							{
 								static var daChoiceMenu:flixel.FlxState;
 								switch (optionShit[curSelected])

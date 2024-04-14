@@ -58,10 +58,7 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-		#if discord_rpc
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
-		#end
+		#if discord_rpc DiscordClient.changePresence("In the Menus", null); #end
 
 		for (week in StoryMenuState.weeks)
 		{
