@@ -219,10 +219,10 @@ class StoryMenuState extends MusicBeatState
 	public static function initWeeks()
 	{
 		pushWeekJsons("assets/weeks");
-		#if !desktop return; #end
-		
+		#if desktop
 		final selectedMod:String = 'mods/${Assets.getText(Paths.text('modSelected'))}';
 		if (FileSystem.exists('$selectedMod/weeks')) pushWeekJsons('$selectedMod/weeks');
+		#end
 	}
 
 	private static var songID:Int; // Had to define it here outside or the value would keep resetting
@@ -407,10 +407,9 @@ class StoryMenuState extends MusicBeatState
 		for (item in grpWeekText.members)
 		{
 			item.targetY = bullShit - curWeek;
-			if (item.targetY == Std.int(0) && vis)
-				item.alpha = 1;
-			else
-				item.alpha = 0.6;
+
+			if (item.targetY == 0 && vis) item.alpha = 1;
+			else item.alpha = 0.6;
 
 			bullShit++;
 		}
