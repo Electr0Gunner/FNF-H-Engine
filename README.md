@@ -1,14 +1,14 @@
 [^1]: V0.2.8, the one we all know
 [^2]: If working with a team or open-sourcing your mod here on GitHub, do it
 
-# Friday Night Funkin H-Engine
-A engine based on the Legacy FNF[^1] that adds modding features meant to ease modding.
+# Friday Night Funkin': H-Engine
+A WIP Engine based on Legacy FNF[^1] that adds modding features meant to ease modding.
 
 > [!NOTE]
-> - This engine is still in development and more features will be added with time.
+> - As said, the engine is a WIP, so remember; more features will be added as time goes on.
 > - At the moment, some features and stages are missing. Eventually they'll get ported
 
-# Credits / shoutouts
+# Credits / Shoutouts
 - [Electr0](https://twitter.com/Electr0Gunner) - Owner of the Engine, Programmer
 - [BerGP](https://github.com/BernardoGP4504) - Programmer
 - [504Brandon](https://github.com/504brandon) - Programmer
@@ -25,8 +25,8 @@ A engine based on the Legacy FNF[^1] that adds modding features meant to ease mo
  * (OPTIONAL[^2]) Install [Git](https://git-scm.com/download/win).
 
  > [!WARNING]
- > From now on, to install use the `haxelib install` or `haxelib git` command specified of the mentioned library
- > So for Discord RPC for example, you'd run the `haxelib install discord_rpc` command said on the line
+ > From now on, to install use the `haxelib install` or `haxelib git` command specified of the mentioned library.<br>
+ > For example, to install Discord RPC, you'd run the `haxelib install discord_rpc` command said on the line
 
  * Install Flixel-Addons -> `haxelib install flixel-addons`
  * Install Flixel-UI -> `haxelib install flixel-ui`
