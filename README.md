@@ -9,7 +9,7 @@ A engine based on the Legacy FNF[^1] that adds modding features meant to ease mo
 > - At the moment, some features and stages are missing. Eventually they'll get ported
 
 # Credits / shoutouts
-- [Electr0G](https://twitter.com/Electr0Gunner) - Owner of the Engine, Programmer
+- [Electr0](https://twitter.com/Electr0Gunner) - Owner of the Engine, Programmer
 - [BerGP](https://github.com/BernardoGP4504) - Programmer
 - [504Brandon](https://github.com/504brandon) - Programmer
 - [Dezerin](https://github.com/DemonDezerin) - Programmer
